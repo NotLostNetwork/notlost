@@ -1,13 +1,2 @@
-## Setup
-
-In [web](web):
-
-```
-bun i
-```
-
-## Run
-
-```
-bun dev
-```
+# NotLost Network
+### Enhance your telegram experience
