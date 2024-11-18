@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    { "id": "Andrei S", "group": 1, "username": "shestaya_liniya", "description": "Fullstack developer","topic": "NotLost Creators",
+      "tags": [
+        {"title": "developer"},
+        {"title": "frontend"},
+        {"title": "web3"}
+      ]
+    },
+    { "id": "Maxim", "group": 1, "username": "PiraJoke", "description": "Fullstack developer","topic": "NotLost Creators",
+      "tags": [
+        {"title": "product manager"},
+        {"title": "blockchain"},
+        {"title": "web3"}
+      ]
+    },
+    { "id": "Andrei R", "group": 1, "username": "skywl_k", "description": "Fullstack developer","topic": "NotLost Creators",
+      "tags": [
+        {"title": "backend"},
+        {"title": "security"},
+        {"title": "law"}
+      ]
+    },
+    { "id": "Nikita", "group": 1, "username": "nikivi", "description": "Fullstack developer","topic": "NotLost Creators",
+      "tags": [
+        {"title": "developer"},
+        {"title": "blockchain"},
+        {"title": "web3"}
+      ]
+    },
+    { "id": "NotLost Creators", "group": 2, "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s", "username": "not_lost_bot", "size": 15, "type": "topic" }
+  ],
+  "links": [
+    { "source": "NotLost Creators", "target": "Andrei S", "color": "#0098EA" },
+    { "source": "NotLost Creators", "target": "Maxim", "color": "#0098EA" },
+    { "source": "NotLost Creators", "target": "Andrei R", "color": "#0098EA" },
+    { "source": "NotLost Creators", "target": "Nikita", "color": "#0098EA" }
+  ]
+}

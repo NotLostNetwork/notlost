@@ -2,16 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html,
-  body {
-    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200;
-  }
-  .using-mouse * {
-    outline: none !important;
-  }
+body {
+  background: var(--tg-theme-bg-color, white);
+  overscroll-behavior: none !important;
 }
 
-a {
-  @apply text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300;
+/* Resetting telegram ui components specific styles */
+
+/* Input vertical padding */
+.tgui-8ca550c2fc85eff5 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/* Make small button full rounded */
+.tgui-13f23a224303ddaa {
+  border-radius: 50%;
+  padding: 8px;
+  height: 52px;
+  width: 52px;
+}
+
+/* Make plain button text color primary */
+.tgui-48956537c34690db {
+  color: var(--tg-theme-text-color);
+  display: block;
+  height: 100%;
 }
