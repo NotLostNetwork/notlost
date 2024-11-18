@@ -63,7 +63,7 @@ export const FilterByTag = ({
       >
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {tags.map((tag) => (
-            <div style={{ marginTop: 'unset' }}>
+            <div style={{ marginTop: 'unset' }} key={tag}>
               <Button
                 mode={'bezeled'}
                 onClick={() => {

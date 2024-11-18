@@ -3,6 +3,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '@/index.css';
 import ForceGraph from './-force-graph';
+import React, { useState } from 'react';
+import graphBgDark from '@/assets/chat-bg-pattern-dark.png';
 
 export const Route = createFileRoute('/_layout/graph/')({
   component: Index,
@@ -10,9 +12,20 @@ export const Route = createFileRoute('/_layout/graph/')({
 });
 
 function Index() {
+  const [visible, setVisible] = useState(false);
+
+  setTimeout(() => {
+    setVisible(true);
+  }, 100);
+
   return (
     <div>
-      <ForceGraph />
+      <img src={graphBgDark} alt="" className="absolute h-screen" />
+      <div
+        className={`transition-all duration-300 ease-in-out ${visible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <ForceGraph />
+      </div>
     </div>
   );
 }

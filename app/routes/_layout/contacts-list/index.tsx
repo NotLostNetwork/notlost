@@ -8,8 +8,9 @@ import {
   FilterBySearch,
   FilterByTag,
 } from '@/routes/_layout/contacts-list/-filters';
-import { Contact } from '@/routes/_layout/contacts-list/-contact';
+import Contact from '@/routes/_layout/contacts-list/-contact';
 import { Pencil } from '@/routes/_layout/contacts-list/-pencil';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export interface NodeBody {
   id: string;
@@ -38,6 +39,8 @@ const Index = () => {
 
   const filtersBlock = useRef<HTMLDivElement>(null);
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0);
+
+  let animationDelay = -0.1;
 
   useEffect(() => {
     if (filtersBlock.current) {
@@ -112,7 +115,27 @@ const Index = () => {
         {filtersBlockHeight > 0 &&
           filteredData.map((node) => {
             if (node.type === 'topic') return;
-            return <Contact node={node} key={node.id} />;
+            animationDelay += 0.05;
+            return (
+              <AnimatePresence key={node.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{
+                    type: 'spring',
+                    damping: 50,
+                    stiffness: 500,
+                    delay: animationDelay,
+                  }}
+                >
+                  <Contact node={node} />
+                </motion.div>
+              </AnimatePresence>
+            );
           })}
       </div>
       <Pencil />

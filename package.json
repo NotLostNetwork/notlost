@@ -22,6 +22,7 @@
     "@telegram-apps/sdk-react": "^2.0.10",
     "@telegram-apps/telegram-ui": "^2.1.8",
     "eruda": "^3.4.1",
+    "framer-motion": "^11.11.17",
     "jazz-react": "^0.8.19",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

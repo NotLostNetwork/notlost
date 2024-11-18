@@ -37,15 +37,19 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
       {({ isActive }) => (
         <>
           <div
-            className={`h-6 w-6 rounded-full transition-all duration-150 ease-in-out ${isActive ? 'bg-buttonBezeled p-[6px] h-8 w-8' : 'bg-transparent'}`}
+            className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${isActive ? 'bg-buttonBezeled' : 'bg-transparent '}`}
           >
-            <Icon
-              color={
-                isActive
-                  ? getCssVariableValue('--tg-theme-accent-text-color')
-                  : 'white'
-              }
-            />
+            <div
+              className={`transition-all duration-150 ease-in-out ${isActive ? 'p-1' : 'p-[3px]'}`}
+            >
+              <Icon
+                color={
+                  isActive
+                    ? getCssVariableValue('--tg-theme-accent-text-color')
+                    : 'white'
+                }
+              />
+            </div>
           </div>
           <span
             className={`font-medium transition-all duration-150 ease-in-out capitalize ${isActive && 'px-2 rounded-2xl text-accent'}`}

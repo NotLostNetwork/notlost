@@ -6,7 +6,6 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d';
 import data from '@/lib/utils/graph-demo-data.json';
-import graphBgDark from '@/assets/chat-bg-pattern-dark.png';
 import TelegramHelper from '@/lib/utils/telegram/telegram-helper';
 
 type ImageCache = {
@@ -18,7 +17,7 @@ const ForceGraph = () => {
   useEffect(() => {
     fgRef?.current?.d3Force('charge')!.distanceMax(80);
     fgRef?.current?.centerAt(0, 0);
-    fgRef?.current?.zoom(2);
+    fgRef?.current?.zoom(3);
   }, []);
   const [imageCache, setImageCache] = useState<ImageCache>({});
 
@@ -84,12 +83,10 @@ const ForceGraph = () => {
   return (
     <div
       style={{
-        backgroundImage: '/chat-bg-pattern-dark.png',
         minHeight: '100vh',
         color: 'white',
       }}
     >
-      <img src={graphBgDark} alt="" className="absolute h-screen" />
       <ForceGraph2D
         ref={fgRef}
         graphData={data}
