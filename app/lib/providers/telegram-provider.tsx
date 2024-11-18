@@ -42,6 +42,10 @@ function Inner({ children }: PropsWithChildren) {
       });
   }, []);
 
+  useEffect(() => {
+    debug && import('eruda').then((lib) => lib.default.init());
+  }, [debug]);
+
   if (loadingTgApi) return <div>Loading TGApi</div>;
 
   return (

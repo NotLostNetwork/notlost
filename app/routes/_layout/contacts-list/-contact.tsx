@@ -16,12 +16,16 @@ export const Contact = ({ node }: { node: NodeBody }) => {
     <Button mode={'plain'} stretched={true} style={{ padding: 0 }}>
       <div className={`flex px-4 min-h-20 justify-center text-sm relative`}>
         <div className="h-20 flex items-center">
-          <img
-            loading="lazy"
-            src={avatarUrl}
-            className="h-14 min-w-14 rounded-full"
-            alt=""
-          />
+          {avatarUrl ? (
+            <img
+              loading="lazy"
+              src={avatarUrl}
+              className="h-14 min-w-14 rounded-full"
+              alt=""
+            />
+          ) : (
+            <div className="h-14 min-w-14 rounded-full animate-pulse bg-skeleton"></div>
+          )}
         </div>
         <div className="h-full ml-4 w-full ">
           <div className={'h-full flex items-center w-full py-2'}>

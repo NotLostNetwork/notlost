@@ -21,7 +21,8 @@ module.exports = {
         secondary: 'var(--tg-theme-secondary-bg-color)',
         button: 'var(--tg-theme-button-color)',
         buttonBezeled: 'var(--tgui--secondary_fill)',
-        divider: 'var(--tgui--divider)'
+        divider: 'var(--tgui--divider)',
+        skeleton: 'var(--tgui--skeleton)'
       },
       borderColor: {
         primary: 'var(--tgui--divider)',

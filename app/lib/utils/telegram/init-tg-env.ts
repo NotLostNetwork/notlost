@@ -38,6 +38,9 @@ export function initTgEnv(debug: boolean): void {
       console.error('Something went wrong mounting the viewport', e);
     });
 
+  debug &&
+    import('eruda').then((lib) => lib.default.init()).catch(console.error);
+
   // Define components-related CSS variables.
   // Once mounted, bind CSS variables
 }

@@ -6,7 +6,7 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d';
 import data from '@/lib/utils/graph-demo-data.json';
-import graphBgDark from '@/assets/chat-bg-pattern-dark.png'
+import graphBgDark from '@/assets/chat-bg-pattern-dark.png';
 import TelegramHelper from '@/lib/utils/telegram/telegram-helper';
 
 type ImageCache = {
@@ -52,7 +52,7 @@ const ForceGraph = () => {
       ctx.font = `${fontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = `rgba(201, 225, 253, ${textOpacity})`;
+      ctx.fillStyle = `rgba(255, 255, 255, ${textOpacity})`;
       ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 2 + 1);
 
       const img = imageCache[node.id!];
@@ -89,11 +89,7 @@ const ForceGraph = () => {
         color: 'white',
       }}
     >
-      <img
-        src={graphBgDark}
-        alt=""
-        className="absolute h-screen"
-      />
+      <img src={graphBgDark} alt="" className="absolute h-screen" />
       <ForceGraph2D
         ref={fgRef}
         graphData={data}
