@@ -63,7 +63,7 @@ export const FilterByTag = ({
       >
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {tags.map((tag) => (
-            <div style={{marginTop: 'unset'}}>
+            <div style={{ marginTop: 'unset' }}>
               <Button
                 mode={'bezeled'}
                 onClick={() => {
@@ -73,7 +73,6 @@ export const FilterByTag = ({
                 {tag}
               </Button>
             </div>
-
           ))}
         </div>
         <Button onClick={handleReset} stretched={true}>

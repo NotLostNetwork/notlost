@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import mockData from '@/lib/utils/graph-demo-data.json';
@@ -10,12 +10,10 @@ import {
 } from '@/routes/_layout/contacts-list/-filters';
 import { Contact } from '@/routes/_layout/contacts-list/-contact';
 import { Pencil } from '@/routes/_layout/contacts-list/-pencil';
-import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
 
 export interface NodeBody {
   id: string;
   group: number;
-  avatar: string;
   username: string;
   description?: string;
   tags?: Tag[];
@@ -78,7 +76,6 @@ const Index = () => {
     new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
   );
 
-
   return (
     <div className="py-4 overflow-hidden">
       <div
@@ -112,7 +109,8 @@ const Index = () => {
         </div>
       </div>
       <div className="pb-16" style={{ marginTop: filtersBlockHeight - 16 }}>
-        {filtersBlockHeight > 0 && filteredData.map((node) => {
+        {filtersBlockHeight > 0 &&
+          filteredData.map((node) => {
             if (node.type === 'topic') return;
             return <Contact node={node} key={node.id} />;
           })}

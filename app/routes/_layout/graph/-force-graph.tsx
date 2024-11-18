@@ -6,7 +6,8 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d';
 import data from '@/lib/utils/graph-demo-data.json';
-import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
+import graphBgDark from '@/assets/chat-bg-pattern-dark.png'
+import TelegramHelper from '@/lib/utils/telegram/telegram-helper';
 
 type ImageCache = {
   [key: string]: HTMLImageElement;
@@ -33,7 +34,7 @@ const ForceGraph = () => {
     const preloadImages = async () => {
       const cache: ImageCache = {};
       for (const node of data.nodes) {
-        const avatarUrl = await TelegramHelper.getProfileAvatar(node.username)
+        const avatarUrl = await TelegramHelper.getProfileAvatar(node.username);
         cache[node.id] = await loadImage(avatarUrl);
       }
       setImageCache(cache);
@@ -52,11 +53,7 @@ const ForceGraph = () => {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillStyle = `rgba(201, 225, 253, ${textOpacity})`;
-      ctx.fillText(
-        node.id!.toString(),
-        node.x!,
-        node.y! + imgSize / 2 + 1,
-      );
+      ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 2 + 1);
 
       const img = imageCache[node.id!];
 
@@ -93,7 +90,7 @@ const ForceGraph = () => {
       }}
     >
       <img
-        src="/app/assets/chat-bg-pattern-dark.png"
+        src={graphBgDark}
         alt=""
         className="absolute h-screen"
       />

@@ -1,15 +1,15 @@
 import { NodeBody } from '@/routes/_layout/contacts-list/index';
 import { Button } from '@telegram-apps/telegram-ui';
-import {useEffect, useState} from "react";
-import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
+import { useEffect, useState } from 'react';
+import TelegramHelper from '@/lib/utils/telegram/telegram-helper';
 
 export const Contact = ({ node }: { node: NodeBody }) => {
-  const [avatarUrl, setAvatarUrl] = useState('blob:http://localhost:3000/335fbd84-ffb8-4927-aa21-2ba88c0e5b53')
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   useEffect(() => {
     TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
       setAvatarUrl(avatarBlobUrl);
-    })
+    });
   }, []);
 
   return (
@@ -53,6 +53,3 @@ export const Contact = ({ node }: { node: NodeBody }) => {
     </Button>
   );
 };
-
-
-

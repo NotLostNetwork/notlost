@@ -4,7 +4,7 @@ import { Api, TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions';
 import bigInt from 'big-integer';
 import Photo = Api.Photo;
-import {Buffer} from "buffer";
+import { Buffer } from 'buffer';
 
 class TelegramApiClient {
   private static instance: TelegramApiClient;
@@ -16,7 +16,7 @@ class TelegramApiClient {
   private API_HASH = import.meta.env.VITE_TELEGRAM_API_HASH;
 
   private avatarsQueue: (() => Promise<void>)[] = [];
-  private downloadedAvatars = 0
+  private downloadedAvatars = 0;
   private isProcessingInAvatarQueue = false;
 
   private constructor() {
@@ -41,8 +41,9 @@ class TelegramApiClient {
     return new Promise((resolve, reject) => {
       const task = async () => {
         try {
-          if (this.downloadedAvatars % 4 === 0 && this.downloadedAvatars !== 0) await new Promise((resolve) => setTimeout(resolve, 10_000));
-          this.downloadedAvatars += 1
+          if (this.downloadedAvatars % 4 === 0 && this.downloadedAvatars !== 0)
+            await new Promise((resolve) => setTimeout(resolve, 10_000));
+          this.downloadedAvatars += 1;
 
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
@@ -105,6 +106,5 @@ class TelegramApiClient {
     return TelegramApiClient.instance;
   }
 }
-
 
 export default TelegramApiClient;
