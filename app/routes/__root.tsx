@@ -10,6 +10,7 @@ import type { ReactNode } from 'react';
 import { JazzAndAuth } from '@/lib/providers/jazz-provider';
 import { useTelegramMock } from '@/lib/utils/telegram/hooks/use-telegram-mock';
 import TelegramProvider from '@/lib/providers/telegram-provider';
+import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
 
 export const Route = createRootRoute({
   meta: () => [

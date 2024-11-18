@@ -1,6 +1,6 @@
 'use client';
 
-import React, { PropsWithChildren } from 'react';
+import React, {PropsWithChildren, useEffect, useState} from 'react';
 import { initTgEnv } from '@/lib/utils/telegram/init-tg-env';
 import { useClientOnce } from '@/lib/utils/telegram/hooks/use-client-once';
 import { useTelegramMock } from '@/lib/utils/telegram/hooks/use-telegram-mock';
@@ -10,9 +10,12 @@ import { useDidMount } from '@/lib/utils/telegram/hooks/use-did-mount';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { ErrorPage } from '@/components/error-page';
 import '@telegram-apps/telegram-ui/dist/styles.css';
+import TelegramApiClient from "@/lib/utils/telegram/telegram-api-client";
 
 function Inner({ children }: PropsWithChildren) {
   const isDev = process.env.NODE_ENV === 'development';
+
+  const [loadingTgApi, setLoadingTgApi] = useState(false)
 
   // Mock Telegram environment in development mode if needed.
   if (true) {
@@ -29,6 +32,15 @@ function Inner({ children }: PropsWithChildren) {
   });
 
   const isDark = useSignal(miniApp.isDark);
+
+  useEffect(() => {
+    setLoadingTgApi(true)
+    TelegramApiClient.getInstance().initialize().then(() => {
+      setLoadingTgApi(false)
+    })
+  }, []);
+
+  if (loadingTgApi) return <div>Loading TGApi</div>
 
   return (
     <AppRoot appearance={isDark ? 'dark' : 'light'} platform={'base'}>

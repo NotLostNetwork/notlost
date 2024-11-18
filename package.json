@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@instructure/idb-cache": "^1.0.3",
     "@tanstack/react-router": "^1.81.2",
     "@tanstack/start": "^1.81.2",
     "@telegram-apps/sdk-react": "^2.0.10",

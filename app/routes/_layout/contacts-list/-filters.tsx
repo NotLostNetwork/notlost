@@ -61,16 +61,19 @@ export const FilterByTag = ({
         onClose={() => setOpen(false)}
         title={'Filter by tag'}
       >
-        <div className="mb-8 space-x-2">
+        <div className="mb-8 flex flex-wrap justify-center gap-2">
           {tags.map((tag) => (
-            <Button
-              mode={'bezeled'}
-              onClick={() => {
-                handleTagSet(tag);
-              }}
-            >
-              {tag}
-            </Button>
+            <div style={{marginTop: 'unset'}}>
+              <Button
+                mode={'bezeled'}
+                onClick={() => {
+                  handleTagSet(tag);
+                }}
+              >
+                {tag}
+              </Button>
+            </div>
+
           ))}
         </div>
         <Button onClick={handleReset} stretched={true}>

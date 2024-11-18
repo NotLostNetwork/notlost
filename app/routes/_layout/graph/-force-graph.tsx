@@ -6,6 +6,7 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d';
 import data from '@/lib/utils/graph-demo-data.json';
+import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
 
 type ImageCache = {
   [key: string]: HTMLImageElement;
@@ -32,10 +33,7 @@ const ForceGraph = () => {
     const preloadImages = async () => {
       const cache: ImageCache = {};
       for (const node of data.nodes) {
-        // TODO: REPLACE PLACEHOLDER AVATAR
-        const avatarUrl =
-          node.avatar ||
-          'https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp';
+        const avatarUrl = await TelegramHelper.getProfileAvatar(node.username)
         cache[node.id] = await loadImage(avatarUrl);
       }
       setImageCache(cache);
@@ -49,6 +47,17 @@ const ForceGraph = () => {
       const imgSize = node.size || 10;
       const fontSize = Math.min(3, (12 * globalScale) / 4);
       const textOpacity = Math.min(globalScale / 4, 0.9);
+
+      ctx.font = `${fontSize}px Sans-Serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = `rgba(201, 225, 253, ${textOpacity})`;
+      ctx.fillText(
+        node.id!.toString(),
+        node.x!,
+        node.y! + imgSize / 2 + 1,
+      );
+
       const img = imageCache[node.id!];
 
       if (img) {
@@ -66,16 +75,6 @@ const ForceGraph = () => {
         );
         ctx.restore();
       }
-
-      ctx.font = `${fontSize}px Sans-Serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = `rgba(201, 225, 253, ${textOpacity})`;
-      ctx.fillText(
-        node.username || node.id,
-        node.x!,
-        node.y! + imgSize / 2 + 1,
-      );
     },
     [imageCache],
   );

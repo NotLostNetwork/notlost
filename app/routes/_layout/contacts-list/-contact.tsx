@@ -1,16 +1,24 @@
 import { NodeBody } from '@/routes/_layout/contacts-list/index';
 import { Button } from '@telegram-apps/telegram-ui';
+import {useEffect, useState} from "react";
+import TelegramHelper from "@/lib/utils/telegram/telegram-helper";
 
 export const Contact = ({ node }: { node: NodeBody }) => {
+  const [avatarUrl, setAvatarUrl] = useState('blob:http://localhost:3000/335fbd84-ffb8-4927-aa21-2ba88c0e5b53')
+
+  useEffect(() => {
+    TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
+      setAvatarUrl(avatarBlobUrl);
+    })
+  }, []);
+
   return (
     <Button mode={'plain'} stretched={true} style={{ padding: 0 }}>
       <div className={`flex px-4 min-h-20 justify-center text-sm relative`}>
         <div className="h-20 flex items-center">
           <img
-            src={
-              node.avatar ||
-              'https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp'
-            }
+            loading="lazy"
+            src={avatarUrl}
             className="h-14 min-w-14 rounded-full"
             alt=""
           />
@@ -45,3 +53,6 @@ export const Contact = ({ node }: { node: NodeBody }) => {
     </Button>
   );
 };
+
+
+
