@@ -1,7 +1,7 @@
 'use client';
 
 import { createFileRoute } from '@tanstack/react-router';
-import '@/index.css';
+import '@/styles/app.css';
 import ForceGraph from './-force-graph';
 import React, { useState } from 'react';
 import graphBgDark from '@/assets/chat-bg-pattern-dark.png';

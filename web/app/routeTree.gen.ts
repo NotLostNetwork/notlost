@@ -13,6 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as LayoutGraphIndexImport } from './routes/_layout/graph/index'
+import { Route as LayoutContactsListIndexImport } from './routes/_layout/contacts-list/index'
 
 // Create/Update Routes
 
@@ -25,6 +27,18 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutGraphIndexRoute = LayoutGraphIndexImport.update({
+  id: '/graph/',
+  path: '/graph/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutContactsListIndexRoute = LayoutContactsListIndexImport.update({
+  id: '/contacts-list/',
+  path: '/contacts-list/',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -45,44 +59,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
+    '/_layout/contacts-list/': {
+      id: '/_layout/contacts-list/'
+      path: '/contacts-list'
+      fullPath: '/contacts-list'
+      preLoaderRoute: typeof LayoutContactsListIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/graph/': {
+      id: '/_layout/graph/'
+      path: '/graph'
+      fullPath: '/graph'
+      preLoaderRoute: typeof LayoutGraphIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface LayoutRouteChildren {
+  LayoutContactsListIndexRoute: typeof LayoutContactsListIndexRoute
+  LayoutGraphIndexRoute: typeof LayoutGraphIndexRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutContactsListIndexRoute: LayoutContactsListIndexRoute,
+  LayoutGraphIndexRoute: LayoutGraphIndexRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
+  '': typeof LayoutRouteWithChildren
+  '/contacts-list': typeof LayoutContactsListIndexRoute
+  '/graph': typeof LayoutGraphIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
+  '': typeof LayoutRouteWithChildren
+  '/contacts-list': typeof LayoutContactsListIndexRoute
+  '/graph': typeof LayoutGraphIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_layout': typeof LayoutRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/contacts-list/': typeof LayoutContactsListIndexRoute
+  '/_layout/graph/': typeof LayoutGraphIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | ''
+  fullPaths: '/' | '' | '/contacts-list' | '/graph'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | ''
-  id: '__root__' | '/' | '/_layout'
+  to: '/' | '' | '/contacts-list' | '/graph'
+  id:
+    | '__root__'
+    | '/'
+    | '/_layout'
+    | '/_layout/contacts-list/'
+    | '/_layout/graph/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRoute,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -103,7 +155,19 @@ export const routeTree = rootRoute
       "filePath": "index.tsx"
     },
     "/_layout": {
-      "filePath": "_layout.tsx"
+      "filePath": "_layout.tsx",
+      "children": [
+        "/_layout/contacts-list/",
+        "/_layout/graph/"
+      ]
+    },
+    "/_layout/contacts-list/": {
+      "filePath": "_layout/contacts-list/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/graph/": {
+      "filePath": "_layout/graph/index.tsx",
+      "parent": "/_layout"
     }
   }
 }
