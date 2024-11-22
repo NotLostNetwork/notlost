@@ -15,10 +15,9 @@ import TelegramApiClient from '@/lib/utils/telegram/telegram-api-client';
 function Inner({ children }: PropsWithChildren) {
   const isDev = process.env.NODE_ENV === 'development';
 
-  const [loadingTgApi, setLoadingTgApi] = useState(false);
-
   // Mock Telegram environment in development mode if needed.
   if (true) {
+    console.log('HELLO');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useTelegramMock();
   }
@@ -34,19 +33,8 @@ function Inner({ children }: PropsWithChildren) {
   const isDark = useSignal(miniApp.isDark);
 
   useEffect(() => {
-    setLoadingTgApi(true);
-    TelegramApiClient.getInstance()
-      .initialize()
-      .then(() => {
-        setLoadingTgApi(false);
-      });
-  }, []);
-
-  useEffect(() => {
     debug && import('eruda').then((lib) => lib.default.init());
   }, [debug]);
-
-  if (loadingTgApi) return <div>Loading TGApi</div>;
 
   return (
     <AppRoot appearance={isDark ? 'dark' : 'light'} platform={'base'}>

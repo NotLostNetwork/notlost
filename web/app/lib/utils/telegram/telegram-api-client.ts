@@ -41,6 +41,8 @@ class TelegramApiClient {
     return new Promise((resolve, reject) => {
       const task = async () => {
         try {
+          await this.initialize()
+
           if (this.downloadedAvatars % 4 === 0 && this.downloadedAvatars !== 0)
             await new Promise((resolve) => setTimeout(resolve, 10_000));
           this.downloadedAvatars += 1;

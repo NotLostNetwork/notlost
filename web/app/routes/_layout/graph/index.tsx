@@ -2,30 +2,32 @@
 
 import { createFileRoute } from '@tanstack/react-router';
 import '@/styles/app.css';
-import ForceGraph from './-force-graph';
-import React, { useState } from 'react';
-import graphBgDark from '@/assets/chat-bg-pattern-dark.png';
+import ForceGraph from '../../../components/force-graph';
+import React, { useRef, useState } from 'react';
+import graphBgDark from '@/assets/tattoos-tg-bg.svg';
+import TWallpaper, { TWallpaperHandlers } from "@twallpaper/react"
+import "@twallpaper/react/css";
+
 
 export const Route = createFileRoute('/_layout/graph/')({
-  component: Index,
-  staleTime: 60_000,
+  component: App,
 });
 
-function Index() {
-  const [visible, setVisible] = useState(false);
-
-  setTimeout(() => {
-    setVisible(true);
-  }, 100);
-
+export default function App() {
+  const ref = useRef<TWallpaperHandlers>(null);
   return (
-    <div>
-      <img src={graphBgDark} alt="" className="absolute h-screen" />
-      <div
-        className={`transition-all duration-300 ease-in-out ${visible ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <ForceGraph />
-      </div>
-    </div>
+    <TWallpaper
+      ref={ref}
+      options={{
+        fps: 120,
+        tails: 30,
+        colors: ["#efd359", "#e984d8", "#ac86ed", "#40cdde"],
+        pattern: {
+          mask: true,
+          size: "300px",
+          image: "https://twallpaper.js.org/patterns/tattoos.svg"
+        }
+      }}
+    />
   );
 }

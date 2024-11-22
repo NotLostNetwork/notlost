@@ -12,9 +12,11 @@ import { useClientOnce } from './use-client-once';
  */
 export function useTelegramMock(): void {
   useClientOnce(() => {
-    if (!sessionStorage.getItem('env-mocked') && isTMA('simple')) {
+    /*if (!sessionStorage.getItem('env-mocked') && isTMA('simple')) {
       return;
-    }
+    }*/
+
+    console.log('MOCK TG');
 
     // Determine which launch params should be applied. We could already
     // apply them previously, or they may be specified on purpose using the
@@ -27,7 +29,7 @@ export function useTelegramMock(): void {
         [
           'user',
           JSON.stringify({
-            id: 99281932,
+            id: 99281933,
             first_name: 'Andrew',
             last_name: 'Rogue',
             username: 'rogue',
