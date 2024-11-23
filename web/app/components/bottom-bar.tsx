@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { SearchIcon } from '@/assets/icons/iconsAsComponent/search-icon';
 import { GraphIcon } from '@/assets/icons/iconsAsComponent/graph-icon';
 import React from 'react';
+import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value';
 
 export default function BottomBar() {
   return (
@@ -12,7 +13,7 @@ export default function BottomBar() {
         <div className="flex justify-around items-center">
           <BottomBarLink to="/graph" title="Graph" Icon={GraphIcon} />
           <BottomBarLink
-            to="/contacts-list"
+            to="/contacts"
             title="Contacts"
             Icon={SearchIcon}
           />
@@ -61,9 +62,3 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
     </Link>
   );
 };
-
-function getCssVariableValue(variableName: string) {
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue(variableName)
-    .trim();
-}

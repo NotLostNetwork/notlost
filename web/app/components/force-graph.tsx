@@ -5,8 +5,9 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from "react-force-graph-2d"
-import TelegramHelper from '~/lib/utils/telegram/telegram-helper';
+import TelegramHelper from '~/lib/telegram/telegram-helper';
 import { NodeBody } from 'app/routes/_layout/contacts';
+import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value';
 
 type ImageCache = {
   [key: string]: HTMLImageElement;
@@ -52,6 +53,7 @@ const ForceGraph = ({nodes} : {nodes: NodeBody[]}) => {
       const cache: ImageCache = {};
       for (const node of graphData.nodes) {
         const avatarUrl = await TelegramHelper.getProfileAvatar(node.username);
+        console.log('AVATAR URL', avatarUrl);
         cache[node.id] = await loadImage(avatarUrl);
       }
       setImageCache(cache);
@@ -113,6 +115,28 @@ const ForceGraph = ({nodes} : {nodes: NodeBody[]}) => {
         ctx.strokeStyle = getCssVariableValue('--tg-theme-accent-text-color');
         ctx.stroke();
         ctx.restore();
+      } else {
+        const img = new Image();
+        img.src = 'https://www.pngkey.com/png/detail/18-187900_starfield-hourglass-windows-98-hourglass.png';
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(
+          img,
+          node.x! - imgSize / 2,
+          node.y! - imgSize / 2,
+          imgSize,
+          imgSize,
+        );
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = getCssVariableValue('--tg-theme-accent-text-color');
+        ctx.stroke();
+        ctx.restore();
       }
     },
     [imageCache],
@@ -131,6 +155,7 @@ const ForceGraph = ({nodes} : {nodes: NodeBody[]}) => {
         nodeAutoColorBy="group"
         nodeCanvasObject={drawNode}
         dagLevelDistance={-100}
+        warmupTicks={10}
         nodePointerAreaPaint={(node, color, ctx) => {
           const imgSize = 10;
           ctx.fillStyle = color;
@@ -157,12 +182,6 @@ const ForceGraph = ({nodes} : {nodes: NodeBody[]}) => {
     </div>
   );
 };
-
-function getCssVariableValue(variableName: string) {
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue(variableName)
-    .trim();
-}
 
 function hexToRgba(hex: string, alpha = 1) {
   hex = hex.replace(/^#/, "");

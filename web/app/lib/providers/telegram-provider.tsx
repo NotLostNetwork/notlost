@@ -1,16 +1,16 @@
 'use client';
 
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { initTgEnv } from '@/lib/utils/telegram/init-tg-env';
-import { useClientOnce } from '@/lib/utils/telegram/hooks/use-client-once';
-import { useTelegramMock } from '@/lib/utils/telegram/hooks/use-telegram-mock';
+import { initTgEnv } from '~/lib/telegram/init-tg-env';
+import { useClientOnce } from '~/lib/telegram/hooks/use-client-once';
+import { useTelegramMock } from '~/lib/telegram/hooks/use-telegram-mock';
 import { miniApp, useLaunchParams, useSignal } from '@telegram-apps/sdk-react';
 import { AppRoot } from '@telegram-apps/telegram-ui';
-import { useDidMount } from '@/lib/utils/telegram/hooks/use-did-mount';
+import { useDidMount } from '~/lib/telegram/hooks/use-did-mount';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { ErrorPage } from '@/components/error-page';
 import '@telegram-apps/telegram-ui/dist/styles.css';
-import TelegramApiClient from '@/lib/utils/telegram/telegram-api-client';
+import TelegramApiClient from '~/lib/telegram/telegram-api-client';
 
 function Inner({ children }: PropsWithChildren) {
   const isDev = process.env.NODE_ENV === 'development';

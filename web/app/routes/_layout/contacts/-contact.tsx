@@ -1,7 +1,7 @@
 import { NodeBody } from '~/routes/_layout/contacts/index';
 import { Button } from '@telegram-apps/telegram-ui';
 import { memo, useEffect, useState } from 'react';
-import TelegramHelper from '@/lib/utils/telegram/telegram-helper';
+import TelegramHelper from '~/lib/telegram/telegram-helper';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const Contact = ({ node }: { node: NodeBody }) => {

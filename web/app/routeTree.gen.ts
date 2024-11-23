@@ -11,19 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as OnboardingImport } from './routes/onboarding'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as OnboardingIndexImport } from './routes/onboarding/index'
 import { Route as LayoutGraphIndexImport } from './routes/_layout/graph/index'
 import { Route as LayoutContactsIndexImport } from './routes/_layout/contacts/index'
 
 // Create/Update Routes
-
-const OnboardingRoute = OnboardingImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
@@ -33,6 +27,12 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OnboardingIndexRoute = OnboardingIndexImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -66,11 +66,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/onboarding': {
-      id: '/onboarding'
+    '/onboarding/': {
+      id: '/onboarding/'
       path: '/onboarding'
       fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingImport
+      preLoaderRoute: typeof OnboardingIndexImport
       parentRoute: typeof rootRoute
     }
     '/_layout/contacts/': {
@@ -108,7 +108,7 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
+  '/onboarding': typeof OnboardingIndexRoute
   '/contacts': typeof LayoutContactsIndexRoute
   '/graph': typeof LayoutGraphIndexRoute
 }
@@ -116,7 +116,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
+  '/onboarding': typeof OnboardingIndexRoute
   '/contacts': typeof LayoutContactsIndexRoute
   '/graph': typeof LayoutGraphIndexRoute
 }
@@ -125,7 +125,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/onboarding': typeof OnboardingRoute
+  '/onboarding/': typeof OnboardingIndexRoute
   '/_layout/contacts/': typeof LayoutContactsIndexRoute
   '/_layout/graph/': typeof LayoutGraphIndexRoute
 }
@@ -139,7 +139,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_layout'
-    | '/onboarding'
+    | '/onboarding/'
     | '/_layout/contacts/'
     | '/_layout/graph/'
   fileRoutesById: FileRoutesById
@@ -148,13 +148,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-  OnboardingRoute: typeof OnboardingRoute
+  OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
-  OnboardingRoute: OnboardingRoute,
+  OnboardingIndexRoute: OnboardingIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -169,7 +169,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_layout",
-        "/onboarding"
+        "/onboarding/"
       ]
     },
     "/": {
@@ -182,8 +182,8 @@ export const routeTree = rootRoute
         "/_layout/graph/"
       ]
     },
-    "/onboarding": {
-      "filePath": "onboarding.tsx"
+    "/onboarding/": {
+      "filePath": "onboarding/index.tsx"
     },
     "/_layout/contacts/": {
       "filePath": "_layout/contacts/index.tsx",
