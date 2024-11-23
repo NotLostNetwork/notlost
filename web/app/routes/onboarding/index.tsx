@@ -57,7 +57,9 @@ function Onboarding() {
       </div>
       <div className="flex flex-col items-center justify-center flex-1">
         <img src={utyaCool} alt={'Utya sticker'} height={180} width={180} />
-        <div className="text-3xl mt-4 text-center">Make your contacts NOTLOST</div>
+        <div className="text-3xl mt-4 text-center">
+          Make your contacts NOTLOST
+        </div>
         <div className="text-primary text-center mt-4">
           Let's get started to enhance your networking experience through
           telegram

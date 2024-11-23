@@ -1,11 +1,11 @@
-import React from 'react';
-import { Icon28CloseAmbient } from '@telegram-apps/telegram-ui/dist/icons/28/close_ambient';
+import React from 'react'
+import { Icon28CloseAmbient } from '@telegram-apps/telegram-ui/dist/icons/28/close_ambient'
 
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  title: string;
+  isOpen: boolean
+  onClose: () => void
+  children: React.ReactNode
+  title: string
 }
 
 const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

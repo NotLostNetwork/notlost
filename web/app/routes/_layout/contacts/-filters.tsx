@@ -1,14 +1,14 @@
-import Modal from '@/components/modal';
-import { useState } from 'react';
-import { Button, Input } from '@telegram-apps/telegram-ui';
-import searchIcon from '@/assets/icons/search-icon.svg';
+import Modal from '@/components/modal'
+import { useState } from 'react'
+import { Button, Input } from '@telegram-apps/telegram-ui'
+import searchIcon from '@/assets/icons/search-icon.svg'
 
 export const FilterBySearch = ({
   value,
   onChange,
 }: {
-  value: string;
-  onChange: (value: string) => void;
+  value: string
+  onChange: (value: string) => void
 }) => {
   return (
     <Input
@@ -19,33 +19,33 @@ export const FilterBySearch = ({
       onChange={(e) => onChange(e.target.value)}
       after={<img className="h-6 w-6" src={searchIcon} alt="" />}
     />
-  );
-};
+  )
+}
 
 export const FilterByTag = ({
   tags,
   setSelectedTag,
 }: {
-  tags: string[];
-  setSelectedTag: (tag: string | null) => void;
+  tags: string[]
+  setSelectedTag: (tag: string | null) => void
 }) => {
-  const [open, setOpen] = useState(false);
-  const [buttonText, setButtonText] = useState('No tag selected');
-  const [buttonMode, setButtonMode] = useState('outline');
+  const [open, setOpen] = useState(false)
+  const [buttonText, setButtonText] = useState('No tag selected')
+  const [buttonMode, setButtonMode] = useState('outline')
 
   const handleTagSet = (tag: string) => {
-    setSelectedTag(tag);
-    setButtonText(tag);
-    setButtonMode('filled');
-    setOpen(false);
-  };
+    setSelectedTag(tag)
+    setButtonText(tag)
+    setButtonMode('filled')
+    setOpen(false)
+  }
 
   const handleReset = () => {
-    setSelectedTag(null);
-    setButtonText('No tag selected');
-    setOpen(false);
-    setButtonMode('outline');
-  };
+    setSelectedTag(null)
+    setButtonText('No tag selected')
+    setOpen(false)
+    setButtonMode('outline')
+  }
 
   return (
     <div>
@@ -67,7 +67,7 @@ export const FilterByTag = ({
               <Button
                 mode={'bezeled'}
                 onClick={() => {
-                  handleTagSet(tag);
+                  handleTagSet(tag)
                 }}
               >
                 {tag}
@@ -80,27 +80,27 @@ export const FilterByTag = ({
         </Button>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
 export const FilterByLatest = ({
   enable,
   disable,
 }: {
-  enable: () => void;
-  disable: () => void;
+  enable: () => void
+  disable: () => void
 }) => {
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(false)
 
   const handleToggle = () => {
     if (enabled) {
-      disable();
-      setEnabled(false);
+      disable()
+      setEnabled(false)
     } else {
-      enable();
-      setEnabled(true);
+      enable()
+      setEnabled(true)
     }
-  };
+  }
 
   return (
     <div>
@@ -108,5 +108,5 @@ export const FilterByLatest = ({
         Filter by latest
       </Button>
     </div>
-  );
-};
+  )
+}

@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@telegram-apps/telegram-ui';
-import personIcon from '@/assets/icons/person-icon.svg';
-import connectionIcon from '@/assets/icons/connection-icon.svg';
-import PencilIcon from '@/assets/icons/iconsAsComponent/pencil-icon';
+import { useEffect, useRef, useState } from 'react'
+import { Button } from '@telegram-apps/telegram-ui'
+import personIcon from '@/assets/icons/person-icon.svg'
+import connectionIcon from '@/assets/icons/connection-icon.svg'
+import PencilIcon from '@/assets/icons/iconsAsComponent/pencil-icon'
 
 export const Pencil = () => {
-  const [showToolTip, setShowToolTip] = useState(false);
-  const tooltipRef = useRef<HTMLDivElement>(null);
+  const [showToolTip, setShowToolTip] = useState(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
 
   const toggleShowToolTip = () => {
-    setShowToolTip(!showToolTip);
-  };
+    setShowToolTip(!showToolTip)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
@@ -18,16 +18,16 @@ export const Pencil = () => {
         tooltipRef.current &&
         !tooltipRef.current.contains(event.target as Node)
       ) {
-        setShowToolTip(false);
+        setShowToolTip(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   return (
     <div className="fixed bottom-20 right-6">
@@ -58,17 +58,17 @@ export const Pencil = () => {
         </div>
       </Button>
     </div>
-  );
-};
+  )
+}
 
 const ToolTipItem = ({
   icon,
   title,
   action,
 }: {
-  icon: string;
-  title: string;
-  action: () => void;
+  icon: string
+  title: string
+  action: () => void
 }) => {
   return (
     <Button mode={'plain'} stretched={true} onClick={action}>
@@ -79,5 +79,5 @@ const ToolTipItem = ({
         </div>
       </div>
     </Button>
-  );
-};
+  )
+}

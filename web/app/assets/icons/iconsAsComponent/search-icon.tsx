@@ -25,5 +25,5 @@ export const SearchIcon = ({ color = '#fff' }: { color: string }) => {
         </g>
       </svg>
     </div>
-  );
-};
+  )
+}

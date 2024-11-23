@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { Link } from '@tanstack/react-router';
-import { SearchIcon } from '@/assets/icons/iconsAsComponent/search-icon';
-import { GraphIcon } from '@/assets/icons/iconsAsComponent/graph-icon';
-import React from 'react';
-import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value';
+import { Link } from '@tanstack/react-router'
+import { SearchIcon } from '@/assets/icons/iconsAsComponent/search-icon'
+import { GraphIcon } from '@/assets/icons/iconsAsComponent/graph-icon'
+import React from 'react'
+import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
 
 export default function BottomBar() {
   return (
@@ -12,21 +12,17 @@ export default function BottomBar() {
       <div className="max-w-screen-xl mx-auto px-4 py-2">
         <div className="flex justify-around items-center">
           <BottomBarLink to="/graph" title="Graph" Icon={GraphIcon} />
-          <BottomBarLink
-            to="/contacts"
-            title="Contacts"
-            Icon={SearchIcon}
-          />
+          <BottomBarLink to="/contacts" title="Contacts" Icon={SearchIcon} />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 interface BottomBarLinkProps {
-  to: string;
-  title: string;
-  Icon: React.FC<{ color: string }>;
+  to: string
+  title: string
+  Icon: React.FC<{ color: string }>
 }
 
 const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
@@ -60,5 +56,5 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
         </>
       )}
     </Link>
-  );
-};
+  )
+}

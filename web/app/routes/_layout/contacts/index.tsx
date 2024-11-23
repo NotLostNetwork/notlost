@@ -1,30 +1,30 @@
-'use client';
+'use client'
 
-import React, { useEffect, useRef, useState } from 'react';
-import mockData from '@/lib/utils/graph-demo-data.json';
-import { createFileRoute } from '@tanstack/react-router';
+import React, { useEffect, useRef, useState } from 'react'
+import mockData from '@/lib/utils/graph-demo-data.json'
+import { createFileRoute } from '@tanstack/react-router'
 import {
   FilterByLatest,
   FilterBySearch,
   FilterByTag,
-} from '~/routes/_layout/contacts/-filters';
-import ContactsList from '~/routes/_layout/contacts/-list';
-import ContactsGraph from '~/routes/_layout/contacts/-graph';
+} from '~/routes/_layout/contacts/-filters'
+import ContactsList from '~/routes/_layout/contacts/-list'
+import ContactsGraph from '~/routes/_layout/contacts/-graph'
 
 export interface NodeBody {
-  id: string;
-  group: number;
-  username: string;
-  description?: string;
-  tags?: Tag[];
-  topic?: string;
-  type?: string;
-  createdAt: Date;
+  id: string
+  group: number
+  username: string
+  description?: string
+  tags?: Tag[]
+  topic?: string
+  type?: string
+  createdAt: Date
 }
 
 interface Tag {
-  title: string;
-  color: string;
+  title: string
+  color: string
 }
 
 enum FilterOptions {
@@ -35,7 +35,7 @@ const Index = () => {
   const [graphMode, setGraphMode] = useState(false)
 
   const [filterState, setFilterState] = useState<FilterOptions[]>([])
-  const [searchState, setSearchState] = useState("")
+  const [searchState, setSearchState] = useState('')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
   const filtersBlock = useRef<HTMLDivElement>(null)
@@ -74,7 +74,7 @@ const Index = () => {
     })
 
   const uniqueTags = Array.from(
-    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
+    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
   )
 
   const toggleGraphMode = () => {
@@ -91,7 +91,7 @@ const Index = () => {
           value={searchState}
           onChange={(value: string) => setSearchState(value)}
         />
-        <div className={"flex space-x-2"}>
+        <div className={'flex space-x-2'}>
           <FilterByTag
             tags={uniqueTags}
             setSelectedTag={(tag: string | null) => {
@@ -106,26 +106,29 @@ const Index = () => {
             disable={() => {
               setFilterState(
                 filterState.filter(
-                  (option) => option !== FilterOptions.LAST_ADDED,
-                ),
+                  (option) => option !== FilterOptions.LAST_ADDED
+                )
               )
             }}
           />
         </div>
       </div>
-      {
-        graphMode ?
-          <ContactsGraph data={filteredData} toggleGraphMode={toggleGraphMode}/>
-          :
-          <div className='pb-32' style={{marginTop: filtersBlockHeight - 16}}>
-            <ContactsList filtersBlockHeight={filtersBlockHeight} data={filteredData} toggleGraphMode={toggleGraphMode}/>
-          </div>
-      }
+      {graphMode ? (
+        <ContactsGraph data={filteredData} toggleGraphMode={toggleGraphMode} />
+      ) : (
+        <div className="pb-32" style={{ marginTop: filtersBlockHeight - 16 }}>
+          <ContactsList
+            filtersBlockHeight={filtersBlockHeight}
+            data={filteredData}
+            toggleGraphMode={toggleGraphMode}
+          />
+        </div>
+      )}
     </div>
   )
 }
 
-export const Route = createFileRoute("/_layout/contacts/")({
+export const Route = createFileRoute('/_layout/contacts/')({
   component: Index,
   staleTime: Infinity,
 })

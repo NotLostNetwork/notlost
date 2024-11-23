@@ -1,19 +1,22 @@
-import { useQuery } from "@tanstack/react-query"
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { $getContactsForUser, $getUser } from '~/actions';
-import { useLaunchParams } from '@telegram-apps/sdk-react';
-
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { $getUser } from '~/actions'
+import { useLaunchParams } from '@telegram-apps/sdk-react'
+import { useEffect } from 'react'
 
 function RouteComponent() {
-
   const navigate = useNavigate()
   const lp = useLaunchParams()
   const telegramId = lp.initData!.user!.id.toString()
 
-  console.log(telegramId);
+  console.log(telegramId)
 
-  const { data, isError } = useQuery({
-    queryKey: ["/"],
+  const {
+    data: user,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['user'],
     queryFn: async () => {
       const user = await $getUser({
         data: {
@@ -21,20 +24,27 @@ function RouteComponent() {
         },
       })
 
-      if (!user) {
-        await navigate({to: '/onboarding'})
-      } else {
-        await navigate({to: '/contacts'})
-      }
-
-      return user
+      return user || null
     },
   })
 
-  console.log(data, "data")
+  useEffect(() => {
+    if (isSuccess) {
+      if (!user) {
+        navigate({ to: '/onboarding' })
+      } else {
+        navigate({ to: '/contacts' })
+      }
+    }
+
+    if (isLoading) {
+      // TODO: add initial request loader
+    }
+  })
+
   return <></>
 }
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: RouteComponent,
 })

@@ -1,17 +1,17 @@
-import { NodeBody } from '~/routes/_layout/contacts/index';
-import { Button } from '@telegram-apps/telegram-ui';
-import { memo, useEffect, useState } from 'react';
-import TelegramHelper from '~/lib/telegram/telegram-helper';
-import { AnimatePresence, motion } from 'framer-motion';
+import { NodeBody } from '~/routes/_layout/contacts/index'
+import { Button } from '@telegram-apps/telegram-ui'
+import { memo, useEffect, useState } from 'react'
+import TelegramHelper from '~/lib/telegram/telegram-helper'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Contact = ({ node }: { node: NodeBody }) => {
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   useEffect(() => {
     TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
-      setAvatarUrl(avatarBlobUrl);
-    });
-  }, []);
+      setAvatarUrl(avatarBlobUrl)
+    })
+  }, [])
 
   return (
     <AnimatePresence>
@@ -23,12 +23,12 @@ const Contact = ({ node }: { node: NodeBody }) => {
         }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{
-          type: "spring",
+          type: 'spring',
           damping: 20,
           stiffness: 300,
         }}
       >
-        <Button mode={"plain"} stretched={true} style={{ padding: 0 }}>
+        <Button mode={'plain'} stretched={true} style={{ padding: 0 }}>
           <div className={`flex px-4 min-h-20 justify-center text-sm relative`}>
             <div className="h-20 flex items-center">
               {avatarUrl ? (
@@ -44,12 +44,14 @@ const Contact = ({ node }: { node: NodeBody }) => {
               )}
             </div>
             <div className="h-full ml-4 w-full ">
-              <div className={"h-full flex items-center w-full py-2"}>
+              <div className={'h-full flex items-center w-full py-2'}>
                 <div className="w-full py-2">
                   <div className="flex w-full">
                     <div>
                       <div className="font-medium text-left">{node.id}</div>
-                      <div className="font-medium text-link text-xs">@{node.username}</div>
+                      <div className="font-medium text-link text-xs">
+                        @{node.username}
+                      </div>
                     </div>
                     {node.topic && (
                       <div className="ml-auto text-link rounded-xl text-xs flex font-medium mt-[3px]">
@@ -77,6 +79,6 @@ const Contact = ({ node }: { node: NodeBody }) => {
       </motion.div>
     </AnimatePresence>
   )
-};
+}
 
-export default memo(Contact);
+export default memo(Contact)

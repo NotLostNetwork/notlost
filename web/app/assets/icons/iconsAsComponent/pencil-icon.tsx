@@ -11,7 +11,7 @@ const PencilIcon = ({ color }: { color: string }) => {
         fill={color}
       />
     </svg>
-  );
-};
+  )
+}
 
-export default PencilIcon;
+export default PencilIcon

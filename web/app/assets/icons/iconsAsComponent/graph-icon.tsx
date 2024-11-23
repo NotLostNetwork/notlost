@@ -97,5 +97,5 @@ export const GraphIcon = ({ color }: { color: string }) => {
         strokeWidth="16"
       />
     </svg>
-  );
-};
+  )
+}

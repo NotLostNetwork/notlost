@@ -1,15 +1,15 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router"
-import BottomBar from '~/components/bottom-bar';
+import { Outlet, createFileRoute } from '@tanstack/react-router'
+import BottomBar from '~/components/bottom-bar'
 
 function LayoutComponent() {
   return (
     <>
       <Outlet />
-      <BottomBar/>
+      <BottomBar />
     </>
   )
 }
 
-export const Route = createFileRoute("/_layout")({
+export const Route = createFileRoute('/_layout')({
   component: LayoutComponent,
 })
