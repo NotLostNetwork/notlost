@@ -31,9 +31,9 @@
     { "id": "NotLost Creators", "group": 2, "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s", "username": "not_lost_bot", "size": 15, "type": "topic" }
   ],
   "links": [
-    { "source": "NotLost Creators", "target": "Andrei S", "color": "#0098EA" },
-    { "source": "NotLost Creators", "target": "Maxim", "color": "#0098EA" },
-    { "source": "NotLost Creators", "target": "Andrei R", "color": "#0098EA" },
-    { "source": "NotLost Creators", "target": "Nikita", "color": "#0098EA" }
+    { "source": "NotLost Creators", "target": "Andrei S" },
+    { "source": "NotLost Creators", "target": "Maxim" },
+    { "source": "NotLost Creators", "target": "Andrei R" },
+    { "source": "NotLost Creators", "target": "Nikita" }
   ]
 }

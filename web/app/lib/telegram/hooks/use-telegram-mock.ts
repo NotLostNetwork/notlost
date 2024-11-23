@@ -12,9 +12,11 @@ import { useClientOnce } from './use-client-once';
  */
 export function useTelegramMock(): void {
   useClientOnce(() => {
-    if (!sessionStorage.getItem('env-mocked') && isTMA('simple')) {
+    /*if (!sessionStorage.getItem('env-mocked') && isTMA('simple')) {
       return;
-    }
+    }*/
+
+    console.log('MOCK TG');
 
     // Determine which launch params should be applied. We could already
     // apply them previously, or they may be specified on purpose using the
@@ -27,7 +29,7 @@ export function useTelegramMock(): void {
         [
           'user',
           JSON.stringify({
-            id: 99281932,
+            id: 99281933,
             first_name: 'Andrew',
             last_name: 'Rogue',
             username: 'rogue',
@@ -69,7 +71,6 @@ export function useTelegramMock(): void {
       };
     }
 
-    sessionStorage.setItem('env-mocked', '1');
     mockTelegramEnv(lp);
     console.warn(
       '⚠️ As long as the current environment was not considered as the Telegram-based one, it was mocked. Take a note, that you should not do it in production and current behavior is only specific to the development process. Environment mocking is also applied only in development mode. So, after building the application, you will not see this behavior and related warning, leading to crashing the application outside Telegram.',

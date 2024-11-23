@@ -1,22 +1,36 @@
 import { useQuery } from "@tanstack/react-query"
-import { createFileRoute } from "@tanstack/react-router"
-import { $getContactsForUser } from "~/actions"
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { $getContactsForUser, $getUser } from '~/actions';
+import { useLaunchParams } from '@telegram-apps/sdk-react';
+
 
 function RouteComponent() {
-  // assume we get it from tg init data
-  const telegramId = "123"
 
-  const { data } = useQuery({
+  const navigate = useNavigate()
+  const lp = useLaunchParams()
+  const telegramId = lp.initData!.user!.id.toString()
+
+  console.log(telegramId);
+
+  const { data, isError } = useQuery({
     queryKey: ["/"],
     queryFn: async () => {
-      const contacts = await $getContactsForUser({
+      const user = await $getUser({
         data: {
           telegramId,
         },
       })
-      return contacts
+
+      if (!user) {
+        await navigate({to: '/onboarding'})
+      } else {
+        await navigate({to: '/contacts'})
+      }
+
+      return user
     },
   })
+
   console.log(data, "data")
   return <></>
 }

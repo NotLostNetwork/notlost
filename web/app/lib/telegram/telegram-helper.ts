@@ -1,5 +1,5 @@
-import { getCachedAvatar, setCachedAvatar } from '@/lib/utils/local-db';
-import TelegramApiClient from '@/lib/utils/telegram/telegram-api-client';
+import { getCachedAvatar, setCachedAvatar } from '~/lib/utils/local-db';
+import TelegramApiClient from '~/lib/telegram/telegram-api-client';
 
 class TelegramHelper {
   private sessionAvatarBlobs = new Map<string, string>();
