@@ -1,14 +1,14 @@
 'use server'
 
 import { useQuery } from '@tanstack/react-query'
-import { $getContactsForUser } from '~/actions'
+import { getContactsForUserApi } from "~/routes/_layout/contacts/-$api"
 
 const telegramId = '123'
 
 const { data } = useQuery({
   queryKey: ['/'],
   queryFn: async () => {
-    const contacts = await $getContactsForUser({
+    const contacts = await getContactsForUserApi({
       data: {
         telegramId,
       },

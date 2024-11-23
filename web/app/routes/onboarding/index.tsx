@@ -4,10 +4,10 @@ import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import utyaCool from '~/assets/utya-cool.gif'
 import { Button } from '@telegram-apps/telegram-ui'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { $createUser, $getUser } from '~/actions'
+import { useMutation } from '@tanstack/react-query'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import TWallpaper from '@twallpaper/react'
+import { createUserApi } from "~/routes/-$api"
 
 function Onboarding() {
   const navigate = useNavigate()
@@ -15,10 +15,10 @@ function Onboarding() {
   const lp = useLaunchParams()
   const telegramId = lp.initData!.user!.id.toString()
 
-  const { mutate: createUser, isError } = useMutation({
+  const { mutate: mutateCreateUser, isError } = useMutation({
     mutationKey: ['/'],
     mutationFn: async () => {
-      const user = await $createUser({
+      const user = await createUserApi({
         data: {
           telegramId,
         },
@@ -31,7 +31,7 @@ function Onboarding() {
   })
 
   const handleOnClick = () => {
-    createUser()
+    mutateCreateUser()
   }
 
   return (

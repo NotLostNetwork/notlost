@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { $getUser } from '~/actions'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import { useEffect } from 'react'
+import { getUserApi } from "~/routes/-$api"
 
 function RouteComponent() {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ function RouteComponent() {
   } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
-      const user = await $getUser({
+      const user = await getUserApi({
         data: {
           telegramId,
         },
