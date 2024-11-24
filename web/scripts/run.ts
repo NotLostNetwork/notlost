@@ -1,7 +1,7 @@
 'use server'
 
 import { useQuery } from '@tanstack/react-query'
-import { getContactsForUserApi } from "~/routes/_layout/contacts/-$api"
+import { getContactsForUserApi } from '~/routes/_layout/contacts/-$api'
 
 const telegramId = '123'
 

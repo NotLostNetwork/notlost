@@ -29,3 +29,7 @@ body {
   display: block;
   height: 100%;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
+}

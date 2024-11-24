@@ -25,9 +25,11 @@ export const FilterBySearch = ({
 export const FilterByTag = ({
   tags,
   setSelectedTag,
+  selectedTag,
 }: {
   tags: string[]
   setSelectedTag: (tag: string | null) => void
+  selectedTag: string | null
 }) => {
   const [open, setOpen] = useState(false)
   const [buttonText, setButtonText] = useState('No tag selected')
@@ -65,12 +67,77 @@ export const FilterByTag = ({
           {tags.map((tag) => (
             <div style={{ marginTop: 'unset' }} key={tag}>
               <Button
-                mode={'bezeled'}
+                mode={tag === selectedTag ? 'filled' : 'bezeled'}
                 onClick={() => {
                   handleTagSet(tag)
                 }}
               >
                 {tag}
+              </Button>
+            </div>
+          ))}
+        </div>
+        <Button onClick={handleReset} stretched={true}>
+          Reset
+        </Button>
+      </Modal>
+    </div>
+  )
+}
+
+export const FilterByTopic = ({
+  topics,
+  setSelectedTopic,
+  selectedTopic,
+}: {
+  topics: string[]
+  setSelectedTopic: (tag: string | null) => void
+  selectedTopic: string | null
+}) => {
+  const [open, setOpen] = useState(false)
+  const [buttonText, setButtonText] = useState('No topic selected')
+  const [buttonMode, setButtonMode] = useState('outline')
+
+  const handleTagSet = (tag: string) => {
+    setSelectedTopic(tag)
+    setButtonText(tag)
+    setButtonMode('filled')
+    setOpen(false)
+  }
+
+  const handleReset = () => {
+    setSelectedTopic(null)
+    setButtonText('No topic selected')
+    setOpen(false)
+    setButtonMode('outline')
+  }
+
+  topics = topics.filter((topic) => topic)
+
+  return (
+    <div>
+      <Button
+        mode={buttonMode as 'outline'}
+        onClick={() => setOpen(true)}
+        className={'text-xs'}
+      >
+        {buttonText}
+      </Button>
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={'Filter by topic'}
+      >
+        <div className="mb-8 flex flex-wrap justify-center gap-2">
+          {topics.map((topic) => (
+            <div style={{ marginTop: 'unset' }} key={topic}>
+              <Button
+                mode={topic === selectedTopic ? 'filled' : 'bezeled'}
+                onClick={() => {
+                  handleTagSet(topic)
+                }}
+              >
+                {topic}
               </Button>
             </div>
           ))}

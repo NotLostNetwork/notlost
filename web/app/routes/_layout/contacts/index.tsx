@@ -7,6 +7,7 @@ import {
   FilterByLatest,
   FilterBySearch,
   FilterByTag,
+  FilterByTopic,
 } from '~/routes/_layout/contacts/-filters'
 import ContactsList from '~/routes/_layout/contacts/-list'
 import ContactsGraph from '~/routes/_layout/contacts/-graph'
@@ -37,6 +38,7 @@ const Index = () => {
   const [filterState, setFilterState] = useState<FilterOptions[]>([])
   const [searchState, setSearchState] = useState('')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
@@ -53,6 +55,12 @@ const Index = () => {
     .filter((node) => {
       if (selectedTag) {
         return node.tags?.some((tag) => tag.title === selectedTag)
+      }
+      return true
+    })
+    .filter((node) => {
+      if (selectedTopic) {
+        return node.topic === selectedTopic
       }
       return true
     })
@@ -77,12 +85,14 @@ const Index = () => {
     new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
   )
 
+  const uniqueTopics = Array.from(new Set(data.flatMap((node) => node.topic!)))
+
   const toggleGraphMode = () => {
     setGraphMode(!graphMode)
   }
 
   return (
-    <div className="py-4 overflow-hidden">
+    <div className="py-4 overflow-hidden no-scrollbar">
       <div
         ref={filtersBlock}
         className="pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
@@ -91,12 +101,24 @@ const Index = () => {
           value={searchState}
           onChange={(value: string) => setSearchState(value)}
         />
-        <div className={'flex space-x-2'}>
+        <div
+          className={
+            'flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4'
+          }
+        >
           <FilterByTag
             tags={uniqueTags}
             setSelectedTag={(tag: string | null) => {
               setSelectedTag(tag)
             }}
+            selectedTag={selectedTag}
+          />
+          <FilterByTopic
+            topics={uniqueTopics!}
+            setSelectedTopic={(topic: string | null) => {
+              setSelectedTopic(topic)
+            }}
+            selectedTopic={selectedTopic}
           />
           <FilterByLatest
             enable={() => {
@@ -114,7 +136,11 @@ const Index = () => {
         </div>
       </div>
       {graphMode ? (
-        <ContactsGraph data={filteredData} toggleGraphMode={toggleGraphMode} />
+        <ContactsGraph
+          data={filteredData}
+          toggleGraphMode={toggleGraphMode}
+          selectTopic={(topic: string) => setSelectedTopic(topic)}
+        />
       ) : (
         <div className="pb-32" style={{ marginTop: filtersBlockHeight - 16 }}>
           <ContactsList

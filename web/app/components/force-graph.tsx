@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
@@ -18,7 +18,13 @@ interface Link {
   target: string
 }
 
-const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
+const ForceGraph = ({
+  nodes,
+  selectTopic,
+}: {
+  nodes: NodeBody[]
+  selectTopic: (topic: string) => void
+}) => {
   const fgRef = React.useRef<ForceGraphMethods>()
 
   const links: Link[] = []
@@ -28,19 +34,36 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
     }
   })
 
+  nodes.forEach((node) => {
+    if (node.type || node.topic === null) {
+      links.push({ source: 'Center', target: node.id })
+    }
+  })
+
   const graphData = {
     nodes,
     links,
   }
 
   useEffect(() => {
-    fgRef?.current?.d3Force('charge')!.distanceMax(80)
+    fgRef?.current?.d3Force('charge')!.distanceMax(300)
     fgRef?.current?.centerAt(0, 0)
-    fgRef?.current?.zoom(3)
+    fgRef?.current?.zoom(1)
+
+    nodes.push({
+      id: 'Center',
+      group: 1,
+      username: 'Center',
+      description: 'string',
+      tags: [],
+      topic: 'string',
+      type: 'topic',
+      createdAt: new Date(),
+    })
   }, [])
   const [imageCache, setImageCache] = useState<ImageCache>({})
 
-  useMemo(() => {
+  useEffect(() => {
     const loadImage = (url: string): Promise<HTMLImageElement> => {
       return new Promise((resolve) => {
         const img = new Image()
@@ -49,26 +72,34 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
       })
     }
 
-    const preloadImages = async () => {
-      const cache: ImageCache = {}
-      for (const node of graphData.nodes) {
+    const loadNodeImage = async (node: NodeBody) => {
+      try {
         const avatarUrl = await TelegramHelper.getProfileAvatar(node.username)
-        console.log('AVATAR URL', avatarUrl)
-        cache[node.id] = await loadImage(avatarUrl)
+        const img = await loadImage(avatarUrl)
+        setImageCache((prevCache) => ({
+          ...prevCache,
+          [node.id]: img,
+        }))
+      } catch (error) {
+        console.error(`Error loading image for node ${node.id}:`, error)
       }
-      setImageCache(cache)
     }
 
-    preloadImages()
-  }, [])
+    graphData.nodes.forEach((node) => {
+      if (!imageCache[node.id]) {
+        loadNodeImage(node)
+      }
+    })
+  }, [graphData.nodes, imageCache])
 
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
+      if (node.id === 'Center') return
       const imgSize = node.size || 10
       const fontSize = Math.min(3, (12 * globalScale) / 8)
       const fontSizeSecond = Math.min(2, (12 * globalScale) / 8)
 
-      let textOpacity = Math.min(globalScale / 4, 1)
+      let textOpacity = Math.min(globalScale / 4, 0.8)
       if (globalScale < 4) {
         textOpacity = globalScale / 10
       }
@@ -128,7 +159,7 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
       } else {
         const img = new Image()
         img.src =
-          'https://www.pngkey.com/png/detail/18-187900_starfield-hourglass-windows-98-hourglass.png'
+          'https://www.shutterstock.com/shutterstock/videos/1093269629/thumb/4.jpg?ip=x480'
         ctx.save()
         ctx.beginPath()
         ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
@@ -141,13 +172,6 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
           imgSize,
           imgSize
         )
-        ctx.save()
-        ctx.beginPath()
-        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
-        ctx.lineWidth = 1
-        ctx.strokeStyle = getCssVariableValue('--tg-theme-accent-text-color')
-        ctx.stroke()
-        ctx.restore()
       }
     },
     [imageCache]
@@ -157,6 +181,7 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
     <div
       style={{
         minHeight: '100vh',
+        width: '90%',
         color: 'white',
       }}
     >
@@ -165,8 +190,6 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
         graphData={graphData}
         nodeAutoColorBy="group"
         nodeCanvasObject={drawNode}
-        dagLevelDistance={-100}
-        warmupTicks={10}
         nodePointerAreaPaint={(node, color, ctx) => {
           const imgSize = 10
           ctx.fillStyle = color
@@ -177,6 +200,11 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
         linkCanvasObject={(link, ctx) => {
           ctx.strokeStyle = getCssVariableValue('--tg-theme-button-color')
           ctx.lineWidth = 0.5
+
+          //@ts-ignore
+          if (link.source.id === 'Center') {
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
+          }
           ctx.beginPath()
           ctx.moveTo(
             (link.source as { x: number; y: number }).x,
@@ -188,7 +216,6 @@ const ForceGraph = ({ nodes }: { nodes: NodeBody[] }) => {
           )
           ctx.stroke()
         }}
-        enableNodeDrag={true}
       />
     </div>
   )

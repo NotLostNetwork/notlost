@@ -7,7 +7,7 @@ import { Button } from '@telegram-apps/telegram-ui'
 import { useMutation } from '@tanstack/react-query'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import TWallpaper from '@twallpaper/react'
-import { createUserApi } from "~/routes/-$api"
+import { createUserApi } from '~/routes/-$api'
 
 function Onboarding() {
   const navigate = useNavigate()

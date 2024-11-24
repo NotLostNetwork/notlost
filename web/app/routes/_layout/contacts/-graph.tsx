@@ -10,9 +10,11 @@ import { NodeBody } from '~/routes/_layout/contacts/index'
 const ContactsGraph = ({
   data,
   toggleGraphMode,
+  selectTopic,
 }: {
   data: NodeBody[]
   toggleGraphMode: () => void
+  selectTopic: (topic: string) => void
 }) => {
   const LazyForceGraph = lazyWithPreload(
     () => import('~/components/force-graph')
@@ -41,7 +43,10 @@ const ContactsGraph = ({
             }}
           >
             <Suspense>
-              <LazyForceGraph nodes={data} />
+              <LazyForceGraph
+                nodes={data}
+                selectTopic={(topic) => selectTopic(topic)}
+              />
             </Suspense>
           </motion.div>
         </AnimatePresence>

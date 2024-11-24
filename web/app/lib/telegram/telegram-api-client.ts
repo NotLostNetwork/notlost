@@ -18,6 +18,7 @@ class TelegramApiClient {
   private avatarsQueue: (() => Promise<void>)[] = []
   private downloadedAvatars = 0
   private isProcessingInAvatarQueue = false
+  private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
   private constructor() {
     this.client = new TelegramClient(this.SESSION, this.API_ID, this.API_HASH, {
@@ -38,13 +39,18 @@ class TelegramApiClient {
   }
 
   async getPhoto(username: string): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
+    if (this.inFlightAvatarPromises.has(username)) {
+      return this.inFlightAvatarPromises.get(username)!
+    }
+
+    const avatarPromise = new Promise<Buffer>((resolve, reject) => {
       const task = async () => {
         try {
           await this.initialize()
 
           if (this.downloadedAvatars % 4 === 0 && this.downloadedAvatars !== 0)
-            await new Promise((resolve) => setTimeout(resolve, 10_000))
+            // TODO: sometime api return api rate limit exceed, catch time to wait before retry, 10 seconds is a default
+            await new Promise((resolve) => setTimeout(resolve, 0))
           this.downloadedAvatars += 1
 
           const result = await this.client.invoke(
@@ -77,6 +83,7 @@ class TelegramApiClient {
         } catch (error) {
           reject(error)
         } finally {
+          this.inFlightAvatarPromises.delete(username)
           this.processQueue()
         }
       }
@@ -86,6 +93,10 @@ class TelegramApiClient {
         this.processQueue()
       }
     })
+
+    this.inFlightAvatarPromises.set(username, avatarPromise)
+
+    return avatarPromise
   }
 
   private async processQueue(): Promise<void> {
