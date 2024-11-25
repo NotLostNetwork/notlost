@@ -4,30 +4,35 @@
 
 body {
   background: var(--tg-theme-bg-color, white);
-  overscroll-behavior: none !important;
+  height: 100%;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+iframe {
+  overscroll-behavior: none; /* Disable overscroll in the iframe container */
 }
 
 /* Resetting telegram ui components specific styles */
 
 /* Input vertical padding */
 .tgui-8ca550c2fc85eff5 {
-  padding-right: 0;
-  padding-left: 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 
 /* Make small button full rounded */
 .tgui-13f23a224303ddaa {
-  border-radius: 50%;
-  padding: 8px;
-  height: 52px;
-  width: 52px;
+  border-radius: 50% !important;
+  padding: 8px !important;
+  height: 52px !important;
+  width: 52px !important;
 }
 
 /* Make plain button text color primary */
 .tgui-48956537c34690db {
-  color: var(--tg-theme-text-color);
-  display: block;
-  height: 100%;
+  color: var(--tg-theme-text-color) !important;
+  display: block !important;
+  height: 100% !important;
 }
 
 .no-scrollbar::-webkit-scrollbar {

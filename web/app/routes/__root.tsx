@@ -12,6 +12,7 @@ import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import { seo } from '~/lib/seo'
 import appCss from '~/styles/app.css?url'
+import '@/styles/app.css'
 import TelegramProvider from '~/lib/telegram/telegram-provider'
 
 export const Route = createRootRouteWithContext<{
@@ -66,9 +67,7 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-      <TelegramProvider>
         <Outlet />
-      </TelegramProvider>
     </RootDocument>
   )
 }

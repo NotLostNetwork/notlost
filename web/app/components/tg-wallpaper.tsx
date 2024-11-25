@@ -1,6 +1,8 @@
 import TWallpaper from '@twallpaper/react'
 import React from 'react'
 import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
+import '@twallpaper/react/css'
+
 
 const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
   const darkThemeColors = ['#2F2F2F', '#2F2F2F', '#2F2F2F', '#2F2F2F']

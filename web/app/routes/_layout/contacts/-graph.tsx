@@ -24,7 +24,7 @@ const ContactsGraph = ({
   return (
     <div>
       <div className="h-screen absolute">
-        <TgWallpaper />
+        <TgWallpaper opacity={0.3}/>
       </div>
       <div>
         <AnimatePresence>

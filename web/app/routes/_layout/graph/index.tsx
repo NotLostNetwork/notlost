@@ -6,7 +6,6 @@ import ForceGraph from '../../../components/force-graph'
 import React, { useRef, useState } from 'react'
 import graphBgDark from '@/assets/tattoos-tg-bg.svg'
 import TWallpaper, { TWallpaperHandlers } from '@twallpaper/react'
-import '@twallpaper/react/css'
 
 export const Route = createFileRoute('/_layout/graph/')({
   component: App,
