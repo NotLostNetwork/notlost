@@ -12,7 +12,7 @@ import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import { seo } from '~/lib/seo'
 import appCss from '~/styles/app.css?url'
-import TelegramProvider from '~/lib/providers/telegram-provider'
+import TelegramProvider from '~/lib/telegram/telegram-provider'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
