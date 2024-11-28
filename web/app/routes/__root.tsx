@@ -67,7 +67,7 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-        <Outlet />
+      <Outlet />
     </RootDocument>
   )
 }

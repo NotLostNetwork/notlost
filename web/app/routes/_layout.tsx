@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 import BottomBar from '~/components/bottom-bar'
-import TelegramProvider from "~/lib/telegram/telegram-provider"
+import TelegramProvider from '~/lib/telegram/telegram-provider'
 import '@/styles/app.css'
 
 function LayoutComponent() {
