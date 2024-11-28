@@ -178,46 +178,38 @@ const ForceGraph = ({
   )
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '90%',
-        color: 'white',
+    <ForceGraph2D
+      ref={fgRef}
+      graphData={graphData}
+      nodeAutoColorBy="group"
+      nodeCanvasObject={drawNode}
+      nodePointerAreaPaint={(node, color, ctx) => {
+        const imgSize = 10
+        ctx.fillStyle = color
+        ctx.beginPath()
+        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
+        ctx.fill()
       }}
-    >
-      <ForceGraph2D
-        ref={fgRef}
-        graphData={graphData}
-        nodeAutoColorBy="group"
-        nodeCanvasObject={drawNode}
-        nodePointerAreaPaint={(node, color, ctx) => {
-          const imgSize = 10
-          ctx.fillStyle = color
-          ctx.beginPath()
-          ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
-          ctx.fill()
-        }}
-        linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = getCssVariableValue('--tg-theme-button-color')
-          ctx.lineWidth = 0.5
+      linkCanvasObject={(link, ctx) => {
+        ctx.strokeStyle = getCssVariableValue('--tg-theme-button-color')
+        ctx.lineWidth = 0.5
 
-          //@ts-ignore
-          if (link.source.id === 'Center') {
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
-          }
-          ctx.beginPath()
-          ctx.moveTo(
-            (link.source as { x: number; y: number }).x,
-            (link.source as { x: number; y: number }).y
-          )
-          ctx.lineTo(
-            (link.target as { x: number; y: number }).x,
-            (link.target as { x: number; y: number }).y
-          )
-          ctx.stroke()
-        }}
-      />
-    </div>
+        //@ts-ignore
+        if (link.source.id === 'Center') {
+          ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
+        }
+        ctx.beginPath()
+        ctx.moveTo(
+          (link.source as { x: number; y: number }).x,
+          (link.source as { x: number; y: number }).y
+        )
+        ctx.lineTo(
+          (link.target as { x: number; y: number }).x,
+          (link.target as { x: number; y: number }).y
+        )
+        ctx.stroke()
+      }}
+    />
   )
 }
 
