@@ -5,7 +5,8 @@ import { GraphIcon } from '~/assets/icons/iconsAsComponent/graph-icon'
 import TgWallpaper from '~/components/tg-wallpaper'
 import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
 import lazyWithPreload from 'react-lazy-with-preload'
-import { NodeBody } from '~/routes/_layout/contacts/index'
+import { NodeBody } from '..'
+
 
 const ContactsGraph = ({
   data,

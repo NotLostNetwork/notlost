@@ -3,6 +3,7 @@ import { get } from 'ronin'
 
 export const getContactsForUserApi = createServerFn({ method: 'GET' })
   .validator((input: { telegramId: string }) => input)
+  //@ts-ignore
   .handler(async ({ data }) => {
     const { telegramId } = data
     const user = await get.user.with({

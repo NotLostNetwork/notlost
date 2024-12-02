@@ -6,7 +6,7 @@ import ForceGraph2D, {
   NodeObject,
 } from 'react-force-graph-2d'
 import TelegramHelper from '~/lib/telegram/telegram-helper'
-import { NodeBody } from 'app/routes/_layout/contacts'
+import { NodeBody } from '~/routes/_bottom-bar/_bottom-bar.contacts'
 import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
 
 type ImageCache = {

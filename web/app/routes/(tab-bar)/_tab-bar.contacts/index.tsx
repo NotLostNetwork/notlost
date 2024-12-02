@@ -8,9 +8,9 @@ import {
   FilterBySearch,
   FilterByTag,
   FilterByTopic,
-} from '~/routes/_layout/contacts/-filters'
-import ContactsList from '~/routes/_layout/contacts/-list'
-import ContactsGraph from '~/routes/_layout/contacts/-graph'
+} from './(components)/-filters'
+import ContactsGraph from './(components)/-graph'
+import ContactsList from './(components)/-list'
 
 export interface NodeBody {
   id: string
@@ -82,7 +82,7 @@ const Index = () => {
     })
 
   const uniqueTags = Array.from(
-    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
+    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
   )
 
   const uniqueTopics = Array.from(new Set(data.flatMap((node) => node.topic!)))
@@ -128,8 +128,8 @@ const Index = () => {
             disable={() => {
               setFilterState(
                 filterState.filter(
-                  (option) => option !== FilterOptions.LAST_ADDED
-                )
+                  (option) => option !== FilterOptions.LAST_ADDED,
+                ),
               )
             }}
           />
@@ -154,7 +154,7 @@ const Index = () => {
   )
 }
 
-export const Route = createFileRoute('/_layout/contacts/')({
+export const Route = createFileRoute('/(tab-bar)/_tab-bar/contacts/')({
   component: Index,
   staleTime: Infinity,
 })

@@ -8,19 +8,25 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as OnboardingIndexImport } from './routes/onboarding/index'
-import { Route as LayoutGraphIndexImport } from './routes/_layout/graph/index'
-import { Route as LayoutContactsIndexImport } from './routes/_layout/contacts/index'
+import { Route as tabBarTabBarImport } from './routes/(tab-bar)/_tab-bar'
+import { Route as tabBarTabBarGraphIndexImport } from './routes/(tab-bar)/_tab-bar.graph/index'
+import { Route as tabBarTabBarContactsIndexImport } from './routes/(tab-bar)/_tab-bar.contacts/index'
+
+// Create Virtual Routes
+
+const tabBarImport = createFileRoute('/(tab-bar)')()
 
 // Create/Update Routes
 
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
+const tabBarRoute = tabBarImport.update({
+  id: '/(tab-bar)',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -36,16 +42,21 @@ const OnboardingIndexRoute = OnboardingIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutGraphIndexRoute = LayoutGraphIndexImport.update({
-  id: '/graph/',
-  path: '/graph/',
-  getParentRoute: () => LayoutRoute,
+const tabBarTabBarRoute = tabBarTabBarImport.update({
+  id: '/_tab-bar',
+  getParentRoute: () => tabBarRoute,
 } as any)
 
-const LayoutContactsIndexRoute = LayoutContactsIndexImport.update({
+const tabBarTabBarGraphIndexRoute = tabBarTabBarGraphIndexImport.update({
+  id: '/graph/',
+  path: '/graph/',
+  getParentRoute: () => tabBarTabBarRoute,
+} as any)
+
+const tabBarTabBarContactsIndexRoute = tabBarTabBarContactsIndexImport.update({
   id: '/contacts/',
   path: '/contacts/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => tabBarTabBarRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -59,12 +70,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutImport
+    '/(tab-bar)': {
+      id: '/(tab-bar)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof tabBarImport
       parentRoute: typeof rootRoute
+    }
+    '/(tab-bar)/_tab-bar': {
+      id: '/(tab-bar)/_tab-bar'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof tabBarTabBarImport
+      parentRoute: typeof tabBarRoute
     }
     '/onboarding/': {
       id: '/onboarding/'
@@ -73,87 +91,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/contacts/': {
-      id: '/_layout/contacts/'
+    '/(tab-bar)/_tab-bar/contacts/': {
+      id: '/(tab-bar)/_tab-bar/contacts/'
       path: '/contacts'
       fullPath: '/contacts'
-      preLoaderRoute: typeof LayoutContactsIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof tabBarTabBarContactsIndexImport
+      parentRoute: typeof tabBarTabBarImport
     }
-    '/_layout/graph/': {
-      id: '/_layout/graph/'
+    '/(tab-bar)/_tab-bar/graph/': {
+      id: '/(tab-bar)/_tab-bar/graph/'
       path: '/graph'
       fullPath: '/graph'
-      preLoaderRoute: typeof LayoutGraphIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof tabBarTabBarGraphIndexImport
+      parentRoute: typeof tabBarTabBarImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface LayoutRouteChildren {
-  LayoutContactsIndexRoute: typeof LayoutContactsIndexRoute
-  LayoutGraphIndexRoute: typeof LayoutGraphIndexRoute
+interface tabBarTabBarRouteChildren {
+  tabBarTabBarContactsIndexRoute: typeof tabBarTabBarContactsIndexRoute
+  tabBarTabBarGraphIndexRoute: typeof tabBarTabBarGraphIndexRoute
 }
 
-const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutContactsIndexRoute: LayoutContactsIndexRoute,
-  LayoutGraphIndexRoute: LayoutGraphIndexRoute,
+const tabBarTabBarRouteChildren: tabBarTabBarRouteChildren = {
+  tabBarTabBarContactsIndexRoute: tabBarTabBarContactsIndexRoute,
+  tabBarTabBarGraphIndexRoute: tabBarTabBarGraphIndexRoute,
 }
 
-const LayoutRouteWithChildren =
-  LayoutRoute._addFileChildren(LayoutRouteChildren)
+const tabBarTabBarRouteWithChildren = tabBarTabBarRoute._addFileChildren(
+  tabBarTabBarRouteChildren,
+)
+
+interface tabBarRouteChildren {
+  tabBarTabBarRoute: typeof tabBarTabBarRouteWithChildren
+}
+
+const tabBarRouteChildren: tabBarRouteChildren = {
+  tabBarTabBarRoute: tabBarTabBarRouteWithChildren,
+}
+
+const tabBarRouteWithChildren =
+  tabBarRoute._addFileChildren(tabBarRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteWithChildren
+  '/': typeof tabBarTabBarRouteWithChildren
   '/onboarding': typeof OnboardingIndexRoute
-  '/contacts': typeof LayoutContactsIndexRoute
-  '/graph': typeof LayoutGraphIndexRoute
+  '/contacts': typeof tabBarTabBarContactsIndexRoute
+  '/graph': typeof tabBarTabBarGraphIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteWithChildren
+  '/': typeof tabBarTabBarRouteWithChildren
   '/onboarding': typeof OnboardingIndexRoute
-  '/contacts': typeof LayoutContactsIndexRoute
-  '/graph': typeof LayoutGraphIndexRoute
+  '/contacts': typeof tabBarTabBarContactsIndexRoute
+  '/graph': typeof tabBarTabBarGraphIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_layout': typeof LayoutRouteWithChildren
+  '/(tab-bar)': typeof tabBarRouteWithChildren
+  '/(tab-bar)/_tab-bar': typeof tabBarTabBarRouteWithChildren
   '/onboarding/': typeof OnboardingIndexRoute
-  '/_layout/contacts/': typeof LayoutContactsIndexRoute
-  '/_layout/graph/': typeof LayoutGraphIndexRoute
+  '/(tab-bar)/_tab-bar/contacts/': typeof tabBarTabBarContactsIndexRoute
+  '/(tab-bar)/_tab-bar/graph/': typeof tabBarTabBarGraphIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/onboarding' | '/contacts' | '/graph'
+  fullPaths: '/' | '/onboarding' | '/contacts' | '/graph'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/onboarding' | '/contacts' | '/graph'
+  to: '/' | '/onboarding' | '/contacts' | '/graph'
   id:
     | '__root__'
     | '/'
-    | '/_layout'
+    | '/(tab-bar)'
+    | '/(tab-bar)/_tab-bar'
     | '/onboarding/'
-    | '/_layout/contacts/'
-    | '/_layout/graph/'
+    | '/(tab-bar)/_tab-bar/contacts/'
+    | '/(tab-bar)/_tab-bar/graph/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRouteWithChildren
+  tabBarRoute: typeof tabBarRouteWithChildren
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRouteWithChildren,
+  tabBarRoute: tabBarRouteWithChildren,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
 
@@ -168,30 +198,37 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout",
+        "/(tab-bar)",
         "/onboarding/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/_layout": {
-      "filePath": "_layout.tsx",
+    "/(tab-bar)": {
+      "filePath": "(tab-bar)",
       "children": [
-        "/_layout/contacts/",
-        "/_layout/graph/"
+        "/(tab-bar)/_tab-bar"
+      ]
+    },
+    "/(tab-bar)/_tab-bar": {
+      "filePath": "(tab-bar)/_tab-bar.tsx",
+      "parent": "/(tab-bar)",
+      "children": [
+        "/(tab-bar)/_tab-bar/contacts/",
+        "/(tab-bar)/_tab-bar/graph/"
       ]
     },
     "/onboarding/": {
       "filePath": "onboarding/index.tsx"
     },
-    "/_layout/contacts/": {
-      "filePath": "_layout/contacts/index.tsx",
-      "parent": "/_layout"
+    "/(tab-bar)/_tab-bar/contacts/": {
+      "filePath": "(tab-bar)/_tab-bar.contacts/index.tsx",
+      "parent": "/(tab-bar)/_tab-bar"
     },
-    "/_layout/graph/": {
-      "filePath": "_layout/graph/index.tsx",
-      "parent": "/_layout"
+    "/(tab-bar)/_tab-bar/graph/": {
+      "filePath": "(tab-bar)/_tab-bar.graph/index.tsx",
+      "parent": "/(tab-bar)/_tab-bar"
     }
   }
 }
