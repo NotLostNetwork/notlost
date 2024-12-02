@@ -1,16 +1,15 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
-import mockData from '@/lib/utils/graph-demo-data.json'
-import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
 import {
   FilterByLatest,
   FilterBySearch,
   FilterByTag,
   FilterByTopic,
-} from '~/routes/_layout/contacts/-filters'
-import ContactsList from '~/routes/_layout/contacts/-list'
-import ContactsGraph from '~/routes/_layout/contacts/-graph'
+} from './components/filters'
+import ContactsGraph from './components/graph'
+import ContactsList from './components/list'
+import mockData from '@/shared/lib/utils/graph-demo-data.json'
 
 export interface NodeBody {
   id: string
@@ -32,7 +31,7 @@ enum FilterOptions {
   LAST_ADDED,
 }
 
-const Index = () => {
+const ContactsPage = () => {
   const [graphMode, setGraphMode] = useState(false)
 
   const [filterState, setFilterState] = useState<FilterOptions[]>([])
@@ -82,7 +81,7 @@ const Index = () => {
     })
 
   const uniqueTags = Array.from(
-    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
+    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
   )
 
   const uniqueTopics = Array.from(new Set(data.flatMap((node) => node.topic!)))
@@ -128,8 +127,8 @@ const Index = () => {
             disable={() => {
               setFilterState(
                 filterState.filter(
-                  (option) => option !== FilterOptions.LAST_ADDED
-                )
+                  (option) => option !== FilterOptions.LAST_ADDED,
+                ),
               )
             }}
           />
@@ -154,7 +153,4 @@ const Index = () => {
   )
 }
 
-export const Route = createFileRoute('/_layout/contacts/')({
-  component: Index,
-  staleTime: Infinity,
-})
+export default ContactsPage

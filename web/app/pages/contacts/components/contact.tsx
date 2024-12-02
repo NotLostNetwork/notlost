@@ -1,8 +1,9 @@
-import { NodeBody } from '~/routes/_layout/contacts/index'
+
 import { Button } from '@telegram-apps/telegram-ui'
 import { memo, useEffect, useState } from 'react'
-import TelegramHelper from '~/lib/telegram/telegram-helper'
+import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
 import { AnimatePresence, motion } from 'framer-motion'
+import { NodeBody } from '../page'
 
 const Contact = ({ node }: { node: NodeBody }) => {
   const [avatarUrl, setAvatarUrl] = useState('')

@@ -1,7 +1,7 @@
-import Modal from '@/components/modal'
+import Modal from '~/shared/ui/modal'
 import { useState } from 'react'
 import { Button, Input } from '@telegram-apps/telegram-ui'
-import searchIcon from '@/assets/icons/search-icon.svg'
+import searchIcon from '~/shared/assets/icons/search-icon.svg'
 
 export const FilterBySearch = ({
   value,

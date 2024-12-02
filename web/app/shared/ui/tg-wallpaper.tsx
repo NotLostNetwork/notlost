@@ -1,6 +1,6 @@
 import TWallpaper from '@twallpaper/react'
 import React from 'react'
-import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
+import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 import '@twallpaper/react/css'
 
 const TgWallpaper = ({ opacity = 1, withAccent = false }) => {

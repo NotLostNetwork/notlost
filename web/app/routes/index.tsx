@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import { useEffect } from 'react'
-import { getUserApi } from '~/routes/-$api'
+import { getUserApi } from '~/entities/user/api'
 
 function RouteComponent() {
   const navigate = useNavigate()

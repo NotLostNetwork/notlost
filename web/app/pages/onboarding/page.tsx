@@ -1,15 +1,12 @@
-'use client'
+import { useMutation } from "@tanstack/react-query"
+import { useNavigate } from "@tanstack/react-router"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
+import { Button } from "@telegram-apps/telegram-ui"
+import TWallpaper from "@twallpaper/react"
+import { createUserApi } from "~/entities/user/api"
+import utyaCool from '@/shared/assets/utya-cool.gif'
 
-import * as React from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import utyaCool from '~/assets/utya-cool.gif'
-import { Button } from '@telegram-apps/telegram-ui'
-import { useMutation } from '@tanstack/react-query'
-import { useLaunchParams } from '@telegram-apps/sdk-react'
-import TWallpaper from '@twallpaper/react'
-import { createUserApi } from '~/routes/-$api'
-
-function Onboarding() {
+function OnboardingPage() {
   const navigate = useNavigate()
 
   const lp = useLaunchParams()
@@ -72,7 +69,4 @@ function Onboarding() {
   )
 }
 
-export const Route = createFileRoute('/onboarding/')({
-  component: Onboarding,
-  staleTime: Infinity,
-})
+export default OnboardingPage

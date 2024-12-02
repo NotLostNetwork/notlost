@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@telegram-apps/telegram-ui'
-import personIcon from '@/assets/icons/person-icon.svg'
-import connectionIcon from '@/assets/icons/connection-icon.svg'
-import PencilIcon from '@/assets/icons/iconsAsComponent/pencil-icon'
+import personIcon from '~/shared/assets/icons/person-icon.svg'
+import connectionIcon from '~/shared/assets/icons/connection-icon.svg'
+import PencilIcon from '~/shared/assets/icons/iconsAsComponent/pencil-icon'
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)

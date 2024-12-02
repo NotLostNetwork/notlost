@@ -8,19 +8,26 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LayoutImport } from './routes/_layout'
+import { Route as PagesImport } from './routes/_pages'
 import { Route as IndexImport } from './routes/index'
-import { Route as OnboardingIndexImport } from './routes/onboarding/index'
-import { Route as LayoutGraphIndexImport } from './routes/_layout/graph/index'
-import { Route as LayoutContactsIndexImport } from './routes/_layout/contacts/index'
+import { Route as PagesOnboardingImport } from './routes/_pages/onboarding'
+import { Route as PagestabBarTabBarImport } from './routes/_pages/(tab-bar)/_tab-bar'
+import { Route as PagestabBarTabBarGraphImport } from './routes/_pages/(tab-bar)/_tab-bar.graph'
+import { Route as PagestabBarTabBarContactsImport } from './routes/_pages/(tab-bar)/_tab-bar.contacts'
+
+// Create Virtual Routes
+
+const PagestabBarImport = createFileRoute('/_pages/(tab-bar)')()
 
 // Create/Update Routes
 
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
+const PagesRoute = PagesImport.update({
+  id: '/_pages',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -30,22 +37,32 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const OnboardingIndexRoute = OnboardingIndexImport.update({
-  id: '/onboarding/',
-  path: '/onboarding/',
-  getParentRoute: () => rootRoute,
+const PagestabBarRoute = PagestabBarImport.update({
+  id: '/(tab-bar)',
+  getParentRoute: () => PagesRoute,
 } as any)
 
-const LayoutGraphIndexRoute = LayoutGraphIndexImport.update({
-  id: '/graph/',
-  path: '/graph/',
-  getParentRoute: () => LayoutRoute,
+const PagesOnboardingRoute = PagesOnboardingImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => PagesRoute,
 } as any)
 
-const LayoutContactsIndexRoute = LayoutContactsIndexImport.update({
-  id: '/contacts/',
-  path: '/contacts/',
-  getParentRoute: () => LayoutRoute,
+const PagestabBarTabBarRoute = PagestabBarTabBarImport.update({
+  id: '/_tab-bar',
+  getParentRoute: () => PagestabBarRoute,
+} as any)
+
+const PagestabBarTabBarGraphRoute = PagestabBarTabBarGraphImport.update({
+  id: '/graph',
+  path: '/graph',
+  getParentRoute: () => PagestabBarTabBarRoute,
+} as any)
+
+const PagestabBarTabBarContactsRoute = PagestabBarTabBarContactsImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => PagestabBarTabBarRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -59,102 +76,141 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/_layout': {
-      id: '/_layout'
+    '/_pages': {
+      id: '/_pages'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof LayoutImport
+      preLoaderRoute: typeof PagesImport
       parentRoute: typeof rootRoute
     }
-    '/onboarding/': {
-      id: '/onboarding/'
+    '/_pages/onboarding': {
+      id: '/_pages/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PagesOnboardingImport
+      parentRoute: typeof PagesImport
     }
-    '/_layout/contacts/': {
-      id: '/_layout/contacts/'
+    '/_pages/(tab-bar)': {
+      id: '/_pages/(tab-bar)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PagestabBarImport
+      parentRoute: typeof PagesImport
+    }
+    '/_pages/(tab-bar)/_tab-bar': {
+      id: '/_pages/(tab-bar)/_tab-bar'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PagestabBarTabBarImport
+      parentRoute: typeof PagestabBarRoute
+    }
+    '/_pages/(tab-bar)/_tab-bar/contacts': {
+      id: '/_pages/(tab-bar)/_tab-bar/contacts'
       path: '/contacts'
       fullPath: '/contacts'
-      preLoaderRoute: typeof LayoutContactsIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof PagestabBarTabBarContactsImport
+      parentRoute: typeof PagestabBarTabBarImport
     }
-    '/_layout/graph/': {
-      id: '/_layout/graph/'
+    '/_pages/(tab-bar)/_tab-bar/graph': {
+      id: '/_pages/(tab-bar)/_tab-bar/graph'
       path: '/graph'
       fullPath: '/graph'
-      preLoaderRoute: typeof LayoutGraphIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof PagestabBarTabBarGraphImport
+      parentRoute: typeof PagestabBarTabBarImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface LayoutRouteChildren {
-  LayoutContactsIndexRoute: typeof LayoutContactsIndexRoute
-  LayoutGraphIndexRoute: typeof LayoutGraphIndexRoute
+interface PagestabBarTabBarRouteChildren {
+  PagestabBarTabBarContactsRoute: typeof PagestabBarTabBarContactsRoute
+  PagestabBarTabBarGraphRoute: typeof PagestabBarTabBarGraphRoute
 }
 
-const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutContactsIndexRoute: LayoutContactsIndexRoute,
-  LayoutGraphIndexRoute: LayoutGraphIndexRoute,
+const PagestabBarTabBarRouteChildren: PagestabBarTabBarRouteChildren = {
+  PagestabBarTabBarContactsRoute: PagestabBarTabBarContactsRoute,
+  PagestabBarTabBarGraphRoute: PagestabBarTabBarGraphRoute,
 }
 
-const LayoutRouteWithChildren =
-  LayoutRoute._addFileChildren(LayoutRouteChildren)
+const PagestabBarTabBarRouteWithChildren =
+  PagestabBarTabBarRoute._addFileChildren(PagestabBarTabBarRouteChildren)
+
+interface PagestabBarRouteChildren {
+  PagestabBarTabBarRoute: typeof PagestabBarTabBarRouteWithChildren
+}
+
+const PagestabBarRouteChildren: PagestabBarRouteChildren = {
+  PagestabBarTabBarRoute: PagestabBarTabBarRouteWithChildren,
+}
+
+const PagestabBarRouteWithChildren = PagestabBarRoute._addFileChildren(
+  PagestabBarRouteChildren,
+)
+
+interface PagesRouteChildren {
+  PagesOnboardingRoute: typeof PagesOnboardingRoute
+  PagestabBarRoute: typeof PagestabBarRouteWithChildren
+}
+
+const PagesRouteChildren: PagesRouteChildren = {
+  PagesOnboardingRoute: PagesOnboardingRoute,
+  PagestabBarRoute: PagestabBarRouteWithChildren,
+}
+
+const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteWithChildren
-  '/onboarding': typeof OnboardingIndexRoute
-  '/contacts': typeof LayoutContactsIndexRoute
-  '/graph': typeof LayoutGraphIndexRoute
+  '/': typeof PagestabBarTabBarRouteWithChildren
+  '': typeof PagesRouteWithChildren
+  '/onboarding': typeof PagesOnboardingRoute
+  '/contacts': typeof PagestabBarTabBarContactsRoute
+  '/graph': typeof PagestabBarTabBarGraphRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteWithChildren
-  '/onboarding': typeof OnboardingIndexRoute
-  '/contacts': typeof LayoutContactsIndexRoute
-  '/graph': typeof LayoutGraphIndexRoute
+  '/': typeof PagestabBarTabBarRouteWithChildren
+  '/onboarding': typeof PagesOnboardingRoute
+  '/contacts': typeof PagestabBarTabBarContactsRoute
+  '/graph': typeof PagestabBarTabBarGraphRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_layout': typeof LayoutRouteWithChildren
-  '/onboarding/': typeof OnboardingIndexRoute
-  '/_layout/contacts/': typeof LayoutContactsIndexRoute
-  '/_layout/graph/': typeof LayoutGraphIndexRoute
+  '/_pages': typeof PagesRouteWithChildren
+  '/_pages/onboarding': typeof PagesOnboardingRoute
+  '/_pages/(tab-bar)': typeof PagestabBarRouteWithChildren
+  '/_pages/(tab-bar)/_tab-bar': typeof PagestabBarTabBarRouteWithChildren
+  '/_pages/(tab-bar)/_tab-bar/contacts': typeof PagestabBarTabBarContactsRoute
+  '/_pages/(tab-bar)/_tab-bar/graph': typeof PagestabBarTabBarGraphRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '' | '/onboarding' | '/contacts' | '/graph'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/onboarding' | '/contacts' | '/graph'
+  to: '/' | '/onboarding' | '/contacts' | '/graph'
   id:
     | '__root__'
     | '/'
-    | '/_layout'
-    | '/onboarding/'
-    | '/_layout/contacts/'
-    | '/_layout/graph/'
+    | '/_pages'
+    | '/_pages/onboarding'
+    | '/_pages/(tab-bar)'
+    | '/_pages/(tab-bar)/_tab-bar'
+    | '/_pages/(tab-bar)/_tab-bar/contacts'
+    | '/_pages/(tab-bar)/_tab-bar/graph'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRouteWithChildren
-  OnboardingIndexRoute: typeof OnboardingIndexRoute
+  PagesRoute: typeof PagesRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRouteWithChildren,
-  OnboardingIndexRoute: OnboardingIndexRoute,
+  PagesRoute: PagesRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -168,30 +224,45 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout",
-        "/onboarding/"
+        "/_pages"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/_layout": {
-      "filePath": "_layout.tsx",
+    "/_pages": {
+      "filePath": "_pages.tsx",
       "children": [
-        "/_layout/contacts/",
-        "/_layout/graph/"
+        "/_pages/onboarding",
+        "/_pages/(tab-bar)"
       ]
     },
-    "/onboarding/": {
-      "filePath": "onboarding/index.tsx"
+    "/_pages/onboarding": {
+      "filePath": "_pages/onboarding.tsx",
+      "parent": "/_pages"
     },
-    "/_layout/contacts/": {
-      "filePath": "_layout/contacts/index.tsx",
-      "parent": "/_layout"
+    "/_pages/(tab-bar)": {
+      "filePath": "_pages/(tab-bar)",
+      "parent": "/_pages",
+      "children": [
+        "/_pages/(tab-bar)/_tab-bar"
+      ]
     },
-    "/_layout/graph/": {
-      "filePath": "_layout/graph/index.tsx",
-      "parent": "/_layout"
+    "/_pages/(tab-bar)/_tab-bar": {
+      "filePath": "_pages/(tab-bar)/_tab-bar.tsx",
+      "parent": "/_pages/(tab-bar)",
+      "children": [
+        "/_pages/(tab-bar)/_tab-bar/contacts",
+        "/_pages/(tab-bar)/_tab-bar/graph"
+      ]
+    },
+    "/_pages/(tab-bar)/_tab-bar/contacts": {
+      "filePath": "_pages/(tab-bar)/_tab-bar.contacts.tsx",
+      "parent": "/_pages/(tab-bar)/_tab-bar"
+    },
+    "/_pages/(tab-bar)/_tab-bar/graph": {
+      "filePath": "_pages/(tab-bar)/_tab-bar.graph.tsx",
+      "parent": "/_pages/(tab-bar)/_tab-bar"
     }
   }
 }

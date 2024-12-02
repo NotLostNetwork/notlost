@@ -4,10 +4,9 @@ import '@telegram-apps/telegram-ui/dist/styles.css'
 import { init } from './init'
 
 import '@telegram-apps/telegram-ui/dist/styles.css'
-import '@/styles/app.css'
 
 // Mock the environment in case, we are outside Telegram.
-import './mock-env.ts'
+import './mock-env'
 import {
   initData,
   postEvent,

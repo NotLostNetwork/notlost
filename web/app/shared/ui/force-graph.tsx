@@ -5,9 +5,10 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d'
-import TelegramHelper from '~/lib/telegram/telegram-helper'
-import { NodeBody } from 'app/routes/_layout/contacts'
-import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
+import { NodeBody } from '~/pages/contacts/page'
+import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
+
+import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 
 type ImageCache = {
   [key: string]: HTMLImageElement
