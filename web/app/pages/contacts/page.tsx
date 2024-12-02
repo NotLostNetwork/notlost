@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   FilterByLatest,
   FilterBySearch,
-  FilterByTag,
-  FilterByTopic,
+  SingleSelectFilter,
 } from './components/filters'
 import ContactsGraph from './components/graph'
 import ContactsList from './components/list'
@@ -105,19 +104,23 @@ const ContactsPage = () => {
             'flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4'
           }
         >
-          <FilterByTag
-            tags={uniqueTags}
-            setSelectedTag={(tag: string | null) => {
+          <SingleSelectFilter
+            items={uniqueTags}
+            setSelected={(tag: string | null) => {
               setSelectedTag(tag)
             }}
-            selectedTag={selectedTag}
+            selected={selectedTag}
+            placeholder='No tag selected'
+            modalTitle='Filter by tag'
           />
-          <FilterByTopic
-            topics={uniqueTopics!}
-            setSelectedTopic={(topic: string | null) => {
+          <SingleSelectFilter
+            items={uniqueTopics!}
+            setSelected={(topic: string | null) => {
               setSelectedTopic(topic)
             }}
-            selectedTopic={selectedTopic}
+            selected={selectedTopic}
+            placeholder='No topic selected'
+            modalTitle='Filter by topic'
           />
           <FilterByLatest
             enable={() => {

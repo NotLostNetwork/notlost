@@ -22,32 +22,38 @@ export const FilterBySearch = ({
   )
 }
 
-export const FilterByTag = ({
-  tags,
-  setSelectedTag,
-  selectedTag,
+export const SingleSelectFilter = ({
+  items,
+  setSelected,
+  selected,
+  placeholder,
+  modalTitle
 }: {
-  tags: string[]
-  setSelectedTag: (tag: string | null) => void
-  selectedTag: string | null
+  items: string[]
+  setSelected: (tag: string | null) => void
+  selected: string | null,
+  placeholder: string,
+  modalTitle: string,
 }) => {
   const [open, setOpen] = useState(false)
-  const [buttonText, setButtonText] = useState('No tag selected')
+  const [buttonText, setButtonText] = useState(placeholder)
   const [buttonMode, setButtonMode] = useState('outline')
 
-  const handleTagSet = (tag: string) => {
-    setSelectedTag(tag)
-    setButtonText(tag)
+  const handleSet = (item: string) => {
+    setSelected(item)
+    setButtonText(item)
     setButtonMode('filled')
     setOpen(false)
   }
 
   const handleReset = () => {
-    setSelectedTag(null)
-    setButtonText('No tag selected')
+    setSelected(null)
+    setButtonText(placeholder)
     setOpen(false)
     setButtonMode('outline')
   }
+
+  items = items.filter((item) => item)
 
   return (
     <div>
@@ -61,83 +67,18 @@ export const FilterByTag = ({
       <Modal
         isOpen={open}
         onClose={() => setOpen(false)}
-        title={'Filter by tag'}
+        title={modalTitle}
       >
         <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {tags.map((tag) => (
-            <div style={{ marginTop: 'unset' }} key={tag}>
+          {items.map((item) => (
+            <div style={{ marginTop: 'unset' }} key={item}>
               <Button
-                mode={tag === selectedTag ? 'filled' : 'bezeled'}
+                mode={item === selected ? 'filled' : 'bezeled'}
                 onClick={() => {
-                  handleTagSet(tag)
+                  handleSet(item)
                 }}
               >
-                {tag}
-              </Button>
-            </div>
-          ))}
-        </div>
-        <Button onClick={handleReset} stretched={true}>
-          Reset
-        </Button>
-      </Modal>
-    </div>
-  )
-}
-
-export const FilterByTopic = ({
-  topics,
-  setSelectedTopic,
-  selectedTopic,
-}: {
-  topics: string[]
-  setSelectedTopic: (tag: string | null) => void
-  selectedTopic: string | null
-}) => {
-  const [open, setOpen] = useState(false)
-  const [buttonText, setButtonText] = useState('No topic selected')
-  const [buttonMode, setButtonMode] = useState('outline')
-
-  const handleTagSet = (tag: string) => {
-    setSelectedTopic(tag)
-    setButtonText(tag)
-    setButtonMode('filled')
-    setOpen(false)
-  }
-
-  const handleReset = () => {
-    setSelectedTopic(null)
-    setButtonText('No topic selected')
-    setOpen(false)
-    setButtonMode('outline')
-  }
-
-  topics = topics.filter((topic) => topic)
-
-  return (
-    <div>
-      <Button
-        mode={buttonMode as 'outline'}
-        onClick={() => setOpen(true)}
-        className={'text-xs'}
-      >
-        {buttonText}
-      </Button>
-      <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        title={'Filter by topic'}
-      >
-        <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {topics.map((topic) => (
-            <div style={{ marginTop: 'unset' }} key={topic}>
-              <Button
-                mode={topic === selectedTopic ? 'filled' : 'bezeled'}
-                onClick={() => {
-                  handleTagSet(topic)
-                }}
-              >
-                {topic}
+                {item}
               </Button>
             </div>
           ))}
