@@ -11,9 +11,7 @@ import * as React from 'react'
 import { DefaultCatchBoundary } from '~/shared/ui/error-pages/DefaultCatchBoundary'
 import { NotFound } from '~/shared/ui/error-pages/NotFound'
 import { seo } from '~/shared/lib/seo'
-import appCss from '~/styles/app.css?url'
-import '@/styles/app.css'
-import TelegramProvider from '~/shared/lib/telegram/telegram-provider'
+import appCss from '~/shared/styles/app.css?url'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
