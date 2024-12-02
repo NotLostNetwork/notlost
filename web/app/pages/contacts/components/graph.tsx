@@ -5,7 +5,7 @@ import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
 import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 import lazyWithPreload from 'react-lazy-with-preload'
-import { NodeBody } from '..'
+import { NodeBody } from '../page'
 
 
 

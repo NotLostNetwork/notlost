@@ -5,7 +5,7 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d'
-import { NodeBody } from '~/pages/contacts'
+import { NodeBody } from '~/pages/contacts/page'
 import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
 
 import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'

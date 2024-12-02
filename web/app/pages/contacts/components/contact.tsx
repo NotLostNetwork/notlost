@@ -3,7 +3,7 @@ import { Button } from '@telegram-apps/telegram-ui'
 import { memo, useEffect, useState } from 'react'
 import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
 import { AnimatePresence, motion } from 'framer-motion'
-import { NodeBody } from '..'
+import { NodeBody } from '../page'
 
 const Contact = ({ node }: { node: NodeBody }) => {
   const [avatarUrl, setAvatarUrl] = useState('')

@@ -9,7 +9,7 @@ import React from 'react'
 import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import Contact from './contact'
 import { Pencil } from './pencil'
-import { NodeBody } from '..'
+import { NodeBody } from '../page'
 
 
 const ContactsList = ({

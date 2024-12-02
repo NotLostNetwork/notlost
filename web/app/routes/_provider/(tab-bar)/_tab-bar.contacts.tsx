@@ -1,10 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import ContactsPage from '~/pages/contacts'
-
-const Index = () => {
-  return <ContactsPage />
-}
+import ContactsPage from '~/pages/contacts/page'
 
 export const Route = createFileRoute('/_provider/(tab-bar)/_tab-bar/contacts')({
-  component: Index,
+  component: ContactsPage,
 })
