@@ -1,15 +1,16 @@
 import { AnimatePresence, motion } from 'framer-motion'
 
-import utyaLoading from '~/assets/utya-loading.gif'
+import utyaLoading from '~/shared/assets/utya-loading.gif'
 
 import { Button } from '@telegram-apps/telegram-ui'
-import { GraphIcon } from '~/assets/icons/iconsAsComponent/graph-icon'
+import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
 import React from 'react'
 
-import TgWallpaper from '~/components/tg-wallpaper'
+import TgWallpaper from '~/shared/ui/tg-wallpaper'
+import Contact from './contact'
+import { Pencil } from './pencil'
 import { NodeBody } from '..'
-import Contact from './-contact'
-import { Pencil } from './-pencil'
+
 
 const ContactsList = ({
   filtersBlockHeight,

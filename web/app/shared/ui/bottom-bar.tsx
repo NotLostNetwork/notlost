@@ -1,10 +1,10 @@
 'use client'
 
 import { Link } from '@tanstack/react-router'
-import { SearchIcon } from '@/assets/icons/iconsAsComponent/search-icon'
-import { GraphIcon } from '@/assets/icons/iconsAsComponent/graph-icon'
+import { SearchIcon } from '~/shared/assets/icons/iconsAsComponent/search-icon'
+import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
 import React from 'react'
-import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
+import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 
 export default function BottomBar() {
   return (

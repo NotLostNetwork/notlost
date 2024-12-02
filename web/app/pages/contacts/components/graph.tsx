@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { Suspense } from 'react'
 import { Button } from '@telegram-apps/telegram-ui'
-import { GraphIcon } from '~/assets/icons/iconsAsComponent/graph-icon'
-import TgWallpaper from '~/components/tg-wallpaper'
-import { getCssVariableValue } from '~/lib/utils/funcs/get-css-variable-value'
+import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
+import TgWallpaper from '~/shared/ui/tg-wallpaper'
+import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 import lazyWithPreload from 'react-lazy-with-preload'
 import { NodeBody } from '..'
+
 
 
 const ContactsGraph = ({
@@ -18,7 +19,7 @@ const ContactsGraph = ({
   selectTopic: (topic: string) => void
 }) => {
   const LazyForceGraph = lazyWithPreload(
-    () => import('~/components/force-graph')
+    () => import('~/shared/ui/force-graph')
   )
   LazyForceGraph.preload()
 

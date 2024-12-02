@@ -2,12 +2,12 @@
 
 import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import utyaCool from '~/assets/utya-cool.gif'
+import utyaCool from '~/shared/assets/utya-cool.gif'
 import { Button } from '@telegram-apps/telegram-ui'
 import { useMutation } from '@tanstack/react-query'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import TWallpaper from '@twallpaper/react'
-import { createUserApi } from '~/routes/-api'
+import { createUserApi } from '~/entities/user/api'
 
 function Onboarding() {
   const navigate = useNavigate()
@@ -72,7 +72,7 @@ function Onboarding() {
   )
 }
 
-export const Route = createFileRoute('/onboarding/')({
+export const Route = createFileRoute('/_provider/onboarding')({
   component: Onboarding,
   staleTime: Infinity,
 })

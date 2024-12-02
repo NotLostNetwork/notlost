@@ -8,12 +8,12 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
-import { seo } from '~/lib/seo'
+import { DefaultCatchBoundary } from '~/shared/ui/error-pages/DefaultCatchBoundary'
+import { NotFound } from '~/shared/ui/error-pages/NotFound'
+import { seo } from '~/shared/lib/seo'
 import appCss from '~/styles/app.css?url'
 import '@/styles/app.css'
-import TelegramProvider from '~/lib/telegram/telegram-provider'
+import TelegramProvider from '~/shared/lib/telegram/telegram-provider'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient

@@ -2,12 +2,11 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 import '@/styles/app.css'
-import ForceGraph from '../../../components/force-graph'
 import React, { useRef, useState } from 'react'
 import graphBgDark from '@/assets/tattoos-tg-bg.svg'
 import TWallpaper, { TWallpaperHandlers } from '@twallpaper/react'
 
-export const Route = createFileRoute('/(tab-bar)/_tab-bar/graph/')({
+export const Route = createFileRoute('/_provider/(tab-bar)/_tab-bar/graph')({
   component: App,
 })
 

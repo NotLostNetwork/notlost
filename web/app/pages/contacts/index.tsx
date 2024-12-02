@@ -1,16 +1,15 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
-import mockData from '@/lib/utils/graph-demo-data.json'
-import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
 import {
   FilterByLatest,
   FilterBySearch,
   FilterByTag,
   FilterByTopic,
-} from './(components)/-filters'
-import ContactsGraph from './(components)/-graph'
-import ContactsList from './(components)/-list'
+} from './components/filters'
+import ContactsGraph from './components/graph'
+import ContactsList from './components/list'
+import mockData from '@/shared/lib/utils/graph-demo-data.json'
 
 export interface NodeBody {
   id: string
@@ -32,7 +31,7 @@ enum FilterOptions {
   LAST_ADDED,
 }
 
-const Index = () => {
+const ContactsPage = () => {
   const [graphMode, setGraphMode] = useState(false)
 
   const [filterState, setFilterState] = useState<FilterOptions[]>([])
@@ -154,7 +153,4 @@ const Index = () => {
   )
 }
 
-export const Route = createFileRoute('/(tab-bar)/_tab-bar/contacts/')({
-  component: Index,
-  staleTime: Infinity,
-})
+export default ContactsPage
