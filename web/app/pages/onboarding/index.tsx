@@ -1,10 +1,11 @@
-import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "@tanstack/react-router"
-import { useLaunchParams } from "@telegram-apps/sdk-react"
-import { Button } from "@telegram-apps/telegram-ui"
-import TWallpaper from "@twallpaper/react"
-import { createUserApi } from "~/entities/user/api"
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
+import { useLaunchParams } from '@telegram-apps/sdk-react'
+import { Button } from '@telegram-apps/telegram-ui'
+import TWallpaper from '@twallpaper/react'
+import { createUserApi } from '~/entities/user/api'
 import utyaCool from '@/shared/assets/utya-cool.gif'
+import TgWallpaper from '~/shared/ui/tg-wallpaper'
 
 function OnboardingPage() {
   const navigate = useNavigate()
@@ -34,23 +35,7 @@ function OnboardingPage() {
   return (
     <div className="h-screen p-4 relative flex flex-col">
       <div className="h-screen absolute">
-        <TWallpaper
-          options={{
-            fps: 120,
-            tails: 90,
-            animate: true,
-            scrollAnimate: true,
-            colors: ['#2F2F2F', '#5288c1', '#2F2F2F', '#5288c1'],
-            pattern: {
-              image: 'https://twallpaper.js.org/patterns/paris.svg',
-              background: '#212121',
-              blur: 0,
-              size: '420px',
-              opacity: 0.5,
-              mask: true,
-            },
-          }}
-        />
+        <TgWallpaper/>
       </div>
       <div className="flex flex-col items-center justify-center flex-1">
         <img src={utyaCool} alt={'Utya sticker'} height={180} width={180} />

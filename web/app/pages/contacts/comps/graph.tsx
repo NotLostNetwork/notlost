@@ -5,16 +5,14 @@ import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
 import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
 import lazyWithPreload from 'react-lazy-with-preload'
-import { NodeBody } from '../page'
-
-
+import { UserContact } from '~/entities/user/user-contact/interface'
 
 const ContactsGraph = ({
   data,
   toggleGraphMode,
   selectTopic,
 }: {
-  data: NodeBody[]
+  data: UserContact[]
   toggleGraphMode: () => void
   selectTopic: (topic: string) => void
 }) => {
@@ -24,19 +22,19 @@ const ContactsGraph = ({
   LazyForceGraph.preload()
 
   return (
-    <div className='-mt-8 pt-4 h-screen'>
+    <div className="-mt-8 pt-4 h-screen">
       <div className="h-screen absolute">
-        <TgWallpaper opacity={0.3}/>
+        <TgWallpaper opacity={0.3} />
       </div>
       <div>
         <AnimatePresence>
           <motion.div
-            initial={{opacity: 0, y: 10}}
+            initial={{ opacity: 0, y: 10 }}
             animate={{
               opacity: 1,
               y: 0,
             }}
-            exit={{opacity: 0, scale: 0.9}}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{
               type: 'spring',
               damping: 50,
@@ -57,16 +55,17 @@ const ContactsGraph = ({
             size={'s'}
             mode={'outline'}
             className={'rounded-full'}
-            style={{borderRadius: '50% !important'}}
+            style={{ borderRadius: '50% !important' }}
             onClick={toggleGraphMode}
           >
             <div className="h-6 w-6">
-              <GraphIcon color={getCssVariableValue('--tg-theme-button-color')}/>
+              <GraphIcon
+                color={getCssVariableValue('--tg-theme-button-color')}
+              />
             </div>
           </Button>
         </div>
       </div>
-
     </div>
   )
 }

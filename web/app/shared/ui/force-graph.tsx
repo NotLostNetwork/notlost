@@ -5,7 +5,7 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d'
-import { NodeBody } from '~/pages/contacts/page'
+import { UserContact } from '~/entities/user/user-contact/interface'
 import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
 
 import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
@@ -23,7 +23,7 @@ const ForceGraph = ({
   nodes,
   selectTopic,
 }: {
-  nodes: NodeBody[]
+  nodes: UserContact[]
   selectTopic: (topic: string) => void
 }) => {
   const fgRef = React.useRef<ForceGraphMethods>()
@@ -73,7 +73,7 @@ const ForceGraph = ({
       })
     }
 
-    const loadNodeImage = async (node: NodeBody) => {
+    const loadNodeImage = async (node: UserContact) => {
       try {
         const avatarUrl = await TelegramHelper.getProfileAvatar(node.username)
         const img = await loadImage(avatarUrl)

@@ -31,6 +31,7 @@ export const Pencil = () => {
 
   return (
     <div className="fixed bottom-20 right-6">
+      <div className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}></div>
       <div
         ref={tooltipRef}
         className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? 'opacity-100' : 'opacity-0'} shadow-lg space-y-2`}

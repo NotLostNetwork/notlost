@@ -13,7 +13,7 @@ module.exports = {
         link: 'var(--tg-theme-link-color)',
         accent: 'var(--tg-theme-accent-text-color)',
         subtitle: 'var(--tg-theme-subtitle-text-color)',
-      }, 
+      },
       backgroundColor: {
         primary: 'var(--tg-theme-bg-color)',
         secondary: 'var(--tg-theme-secondary-bg-color)',

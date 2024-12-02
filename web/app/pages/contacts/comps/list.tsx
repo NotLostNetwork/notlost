@@ -9,8 +9,7 @@ import React from 'react'
 import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import Contact from './contact'
 import { Pencil } from './pencil'
-import { NodeBody } from '../page'
-
+import { UserContact } from '~/entities/user/user-contact/interface'
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -18,7 +17,7 @@ const ContactsList = ({
   toggleGraphMode,
 }: {
   filtersBlockHeight: number
-  data: NodeBody[]
+  data: UserContact[]
   toggleGraphMode: () => void
 }) => {
   let animationDelay = -0.05

@@ -1,5 +1,5 @@
-import TWallpaper, { TWallpaperHandlers } from "@twallpaper/react"
-import { useRef } from "react"
+import TWallpaper, { TWallpaperHandlers } from '@twallpaper/react'
+import { useRef } from 'react'
 
 export default function GraphPage() {
   const ref = useRef<TWallpaperHandlers>(null)

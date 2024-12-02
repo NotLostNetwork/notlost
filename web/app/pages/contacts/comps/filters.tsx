@@ -1,7 +1,7 @@
 import Modal from '~/shared/ui/modal'
 import { useState } from 'react'
 import { Button, Input } from '@telegram-apps/telegram-ui'
-import searchIcon from '~/shared/assets/icons/search-icon.svg'
+import searchIcon from '~/shared/assets/icons/search.svg'
 
 export const FilterBySearch = ({
   value,
@@ -12,9 +12,10 @@ export const FilterBySearch = ({
 }) => {
   return (
     <Input
-      header="Search"
-      placeholder="Johny Depp"
+      className='bg-divider p-0 text-white'
+      style={{color: 'white'}}
       type="text"
+      placeholder='Search'
       value={value}
       onChange={(e) => onChange(e.target.value)}
       after={<img className="h-6 w-6" src={searchIcon} alt="" />}
@@ -27,13 +28,13 @@ export const SingleSelectFilter = ({
   setSelected,
   selected,
   placeholder,
-  modalTitle
+  modalTitle,
 }: {
   items: string[]
   setSelected: (tag: string | null) => void
-  selected: string | null,
-  placeholder: string,
-  modalTitle: string,
+  selected: string | null
+  placeholder: string
+  modalTitle: string
 }) => {
   const [open, setOpen] = useState(false)
   const [buttonText, setButtonText] = useState(placeholder)
@@ -64,11 +65,7 @@ export const SingleSelectFilter = ({
       >
         {buttonText}
       </Button>
-      <Modal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        title={modalTitle}
-      >
+      <Modal isOpen={open} onClose={() => setOpen(false)} title={modalTitle}>
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {items.map((item) => (
             <div style={{ marginTop: 'unset' }} key={item}>
