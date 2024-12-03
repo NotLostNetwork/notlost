@@ -36,7 +36,7 @@
     "vinxi": "0.4.3"
   },
   "devDependencies": {
-    "@ronin/notlost": "^0.0.0-3463520556920",
+    "@ronin/notlost": "^0.0.0-3465889796700",
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
