@@ -1,3 +1,3 @@
-# NotLost Network
+# [notlost.network](https://notlost.network)
 
-> Enhance your telegram experience
+> Find your contacts
