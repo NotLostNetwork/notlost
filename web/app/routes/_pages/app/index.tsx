@@ -33,7 +33,7 @@ function RouteComponent() {
       if (!user) {
         navigate({ to: '/onboarding' })
       } else {
-        navigate({ to: '/contacts' })
+        navigate({ to: '/app/contacts' })
       }
     }
 
@@ -45,6 +45,6 @@ function RouteComponent() {
   return <></>
 }
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/_pages/app/')({
   component: RouteComponent,
 })
