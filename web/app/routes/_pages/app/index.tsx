@@ -3,6 +3,8 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import { useEffect } from 'react'
 import { getUserApi } from '~/entities/user/api'
+import { Route as OnboardingRoute } from './onboarding'
+import { Route as ContactsRoute } from './_tab-bar/contacts'
 
 function RouteComponent() {
   const navigate = useNavigate()
@@ -31,9 +33,9 @@ function RouteComponent() {
   useEffect(() => {
     if (isSuccess) {
       if (!user) {
-        navigate({ to: '/onboarding' })
+        navigate({ to: OnboardingRoute.to })
       } else {
-        navigate({ to: '/app/contacts' })
+        navigate({ to: ContactsRoute.to })
       }
     }
 

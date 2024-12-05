@@ -1,18 +1,18 @@
-'use client'
-
 import { Link } from '@tanstack/react-router'
 import { SearchIcon } from '~/shared/assets/icons/iconsAsComponent/search-icon'
 import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
 import React from 'react'
 import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
+import { Route as GraphRoute} from '~/routes/_pages/app/_tab-bar/graph'
+import { Route as ContactsRoute} from '~/routes/_pages/app/_tab-bar/contacts'
 
 export default function BottomBar() {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 py-2">
         <div className="flex justify-around items-center">
-          <BottomBarLink to="/graph" title="Graph" Icon={GraphIcon} />
-          <BottomBarLink to="/contacts" title="Contacts" Icon={SearchIcon} />
+          <BottomBarLink to={GraphRoute.to} title="Graph" Icon={GraphIcon} />
+          <BottomBarLink to={ContactsRoute.to} title="Contacts" Icon={SearchIcon} />
         </div>
       </div>
     </div>
