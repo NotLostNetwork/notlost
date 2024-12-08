@@ -1,6 +1,6 @@
 import { Button } from '@telegram-apps/telegram-ui'
 import { memo, useEffect, useState } from 'react'
-import TelegramHelper from '~/shared/lib/telegram/telegram-helper'
+import TelegramHelper from '~/shared/lib/telegram/api/telegram-helper'
 import { AnimatePresence, motion } from 'framer-motion'
 import { UserContact } from '~/entities/user/user-contact/interface'
 

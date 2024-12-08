@@ -1,5 +1,6 @@
-import { getCachedAvatar, setCachedAvatar } from '~/shared/lib/utils/local-db'
-import TelegramApiClient from '~/shared/lib/telegram/telegram-api-client'
+import { $getTelegramPhoto } from "~/actions/telegram"
+import { getCachedAvatar, setCachedAvatar } from "../../utils/local-db"
+
 
 class TelegramHelper {
   private sessionAvatarBlobs = new Map<string, string>()
@@ -17,9 +18,8 @@ class TelegramHelper {
     if (cachedAvatar) {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
-      const avatarBuffer =
-        await TelegramApiClient.getInstance().getPhoto(username)
-      await setCachedAvatar(username, avatarBuffer)
+      const avatarBufferRes = await $getTelegramPhoto({data: username})
+      await setCachedAvatar(username, avatarBufferRes.data)
 
       const avatarBlob = await getCachedAvatar(username)
       avatarBlobUrl = URL.createObjectURL(avatarBlob!)

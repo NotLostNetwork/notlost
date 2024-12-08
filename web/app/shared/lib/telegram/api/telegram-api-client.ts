@@ -1,5 +1,3 @@
-'use client'
-
 import { Api, TelegramClient } from 'telegram'
 import { StringSession } from 'telegram/sessions'
 import bigInt from 'big-integer'
@@ -11,17 +9,17 @@ class TelegramApiClient {
 
   private client: TelegramClient
 
-  private SESSION = new StringSession(import.meta.env.VITE_TELEGRAM_SESSION)
-  private API_ID = Number(import.meta.env.VITE_TELEGRAM_API_ID)
-  private API_HASH = import.meta.env.VITE_TELEGRAM_API_HASH
-
   private avatarsQueue: (() => Promise<void>)[] = []
   private downloadedAvatars = 0
   private isProcessingInAvatarQueue = false
   private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
-  private constructor() {
-    this.client = new TelegramClient(this.SESSION, this.API_ID, this.API_HASH, {
+  private constructor(
+    session: StringSession,
+    api_id: number,
+    api_hash: string
+  ) {
+    this.client = new TelegramClient(session, api_id, api_hash, {
       connectionRetries: 5,
     })
   }
@@ -112,9 +110,17 @@ class TelegramApiClient {
     }
   }
 
-  public static getInstance() {
+  public static getInstance(
+    session: StringSession,
+    api_id: number,
+    api_hash: string
+  ) {
     if (!TelegramApiClient.instance) {
-      TelegramApiClient.instance = new TelegramApiClient()
+      TelegramApiClient.instance = new TelegramApiClient(
+        session,
+        api_id,
+        api_hash
+      )
     }
     return TelegramApiClient.instance
   }

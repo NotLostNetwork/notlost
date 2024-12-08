@@ -3,9 +3,9 @@ import {
   FilterByLatest,
   FilterBySearch,
   SingleSelectFilter,
-} from './comps/filters'
-import ContactsGraph from './comps/graph'
-import ContactsList from './comps/list'
+} from './components/filters'
+import ContactsGraph from './components/graph'
+import ContactsList from './components/list'
 import mockData from '@/shared/lib/utils/graph-demo-data.json'
 import { Filter, useContactsState } from './model/state'
 import { UserContact } from '~/entities/user/user-contact/interface'
