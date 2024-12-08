@@ -11,7 +11,7 @@ const Contact = ({ node }: { node: UserContact }) => {
     TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
       setAvatarUrl(avatarBlobUrl)
     })
-  }, [])
+  }, [node])
 
   return (
     <AnimatePresence>

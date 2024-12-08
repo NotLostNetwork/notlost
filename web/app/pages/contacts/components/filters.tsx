@@ -1,4 +1,4 @@
-import Modal from '~/shared/ui/modal'
+import BottomModal from '~/shared/ui/modals/bottom-modal'
 import { useState } from 'react'
 import { Button, Input } from '@telegram-apps/telegram-ui'
 import searchIcon from '~/shared/assets/icons/search.svg'
@@ -11,15 +11,18 @@ export const FilterBySearch = ({
   onChange: (value: string) => void
 }) => {
   return (
-    <Input
-      className='bg-divider p-0 text-white'
-      style={{color: 'white'}}
-      type="text"
-      placeholder='Search'
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      after={<img className="h-6 w-6" src={searchIcon} alt="" />}
-    />
+    <div className='pt-5 pb-4'>
+      <Input
+        className="bg-divider text-white"
+        style={{ color: 'white' }}
+        type="text"
+        placeholder="Search"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        after={<img className="h-6 w-6" src={searchIcon} alt="" />}
+      />
+    </div>
+    
   )
 }
 
@@ -65,7 +68,11 @@ export const SingleSelectFilter = ({
       >
         {buttonText}
       </Button>
-      <Modal isOpen={open} onClose={() => setOpen(false)} title={modalTitle}>
+      <BottomModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={modalTitle}
+      >
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {items.map((item) => (
             <div style={{ marginTop: 'unset' }} key={item}>
@@ -83,7 +90,7 @@ export const SingleSelectFilter = ({
         <Button onClick={handleReset} stretched={true}>
           Reset
         </Button>
-      </Modal>
+      </BottomModal>
     </div>
   )
 }

@@ -97,6 +97,16 @@ class TelegramApiClient {
     return avatarPromise
   }
 
+  async getUserByUsername(username: string) {
+    await this.initialize()
+    const result = await this.client.invoke(
+      new Api.users.GetUsers({
+        id: [username],
+      })
+    );
+    return result
+  }
+
   private async processQueue(): Promise<void> {
     if (this.avatarsQueue.length === 0) {
       this.isProcessingInAvatarQueue = false
@@ -109,6 +119,8 @@ class TelegramApiClient {
       await nextTask()
     }
   }
+
+   
 
   public static getInstance(
     session: StringSession,

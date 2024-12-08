@@ -9,13 +9,16 @@ import ContactsList from './components/list'
 import mockData from '@/shared/lib/utils/graph-demo-data.json'
 import { Filter, useContactsState } from './model/state'
 import { UserContact } from '~/entities/user/user-contact/interface'
+import Modal from '~/shared/ui/modals/modal'
+import { Button } from '@telegram-apps/telegram-ui'
+import { $getTelegramUser } from '~/actions/telegram'
 
 const ContactsPage = () => {
   const data = [...mockData.nodes] as UserContact[]
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
-  
+
   const {
     filteredData,
     graphMode,
@@ -30,10 +33,13 @@ const ContactsPage = () => {
     if (filtersBlock.current) {
       setFiltersBlockHeight(filtersBlock.current.offsetHeight)
     }
+    $getTelegramUser({ data: 'shestaya_liniy' })
+
   }, [])
 
+
   return (
-    <div className="py-4 overflow-hidden no-scrollbar">
+    <div className="py-4 overflow-hidden no-scrollbar relative  ">
       <div
         ref={filtersBlock}
         className="pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"

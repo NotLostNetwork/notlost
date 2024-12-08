@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '@telegram-apps/telegram-ui'
+import { Button, Input } from '@telegram-apps/telegram-ui'
 import personIcon from '~/shared/assets/icons/person-icon.svg'
 import connectionIcon from '~/shared/assets/icons/connection-icon.svg'
 import PencilIcon from '~/shared/assets/icons/iconsAsComponent/pencil-icon'
+import Modal from '~/shared/ui/modals/modal'
+import CreateContactModal from './create-contact-modal'
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
+  const [showCreateContactModal, setShowCreateContactModal] = useState(false)
   const tooltipRef = useRef<HTMLDivElement>(null)
 
   const toggleShowToolTip = () => {
@@ -30,34 +33,45 @@ export const Pencil = () => {
   }, [])
 
   return (
-    <div className="fixed bottom-20 right-6">
-      <div className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}></div>
-      <div
-        ref={tooltipRef}
-        className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'} shadow-lg space-y-2`}
-      >
-        <ToolTipItem
-          icon={personIcon}
-          title={'New contact'}
-          action={() => {}}
-        />
-        <div className="h-[2px] bg-divider"></div>
-        <ToolTipItem
-          icon={connectionIcon}
-          title={`New topic`}
-          action={() => {}}
-        />
-      </div>
-      <Button
-        size={'s'}
-        className={'rounded-full'}
-        style={{ borderRadius: '50% !important' }}
-        onClick={toggleShowToolTip}
-      >
-        <div className="h-6 w-6">
-          <PencilIcon color={'#fff'} />
+    <div>
+      <div className="fixed bottom-20 right-6">
+        <div
+          className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        ></div>
+        <div
+          ref={tooltipRef}
+          className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'} shadow-lg space-y-2`}
+        >
+          <ToolTipItem
+            icon={personIcon}
+            title={'New contact'}
+            action={() => {
+              setShowCreateContactModal(true)
+              setShowToolTip(false)
+            }}
+          />
+          <div className="h-[2px] bg-divider"></div>
+          <ToolTipItem
+            icon={connectionIcon}
+            title={`New topic`}
+            action={() => {}}
+          />
         </div>
-      </Button>
+        <Button
+          size={'s'}
+          className={'rounded-full'}
+          style={{ borderRadius: '50% !important' }}
+          onClick={toggleShowToolTip}
+        >
+          <div className="h-6 w-6">
+            <PencilIcon color={'#fff'} />
+          </div>
+        </Button>
+      </div>
+      <CreateContactModal isOpen={showCreateContactModal} onClose={() => {
+        setShowToolTip(false)
+        setShowCreateContactModal(false)
+      }}/>
     </div>
   )
 }

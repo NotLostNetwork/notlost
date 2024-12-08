@@ -10,6 +10,7 @@ import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import Contact from './contact'
 import { Pencil } from './pencil'
 import { UserContact } from '~/entities/user/user-contact/interface'
+import Modal from '~/shared/ui/modals/modal'
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -65,7 +66,6 @@ const ContactsList = ({
           </div>
         </div>
       )}
-
       <Pencil />
       <div className="fixed bottom-20 left-6">
         <Button
