@@ -77,6 +77,7 @@ const ContactsPage = () => {
             }}
           />
         </div>
+        <div className='text-blue-500 font-semibold text-center mr-4 mt-2'>NotLost Alpha</div>
       </div>
       {graphMode ? (
         <ContactsGraph
