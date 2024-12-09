@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev --experimental-https",
+    "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
     "ts": "bun --watch scripts/run.ts",
