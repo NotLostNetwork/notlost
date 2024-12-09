@@ -22,14 +22,15 @@ const CreateContactModal = ({
   const [descriptionValue, setDescriptionValue] = useState('')
   const [topicValue, setTopicValue] = useState('')
 
+  const [telegramUserSearch, setTelegramUserSearch] = useState<TelegramUser | null>(null)
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
 
   useEffect(() => {
-    setTelegramUser(null)
+    setTelegramUserSearch(null)
     $getTelegramUser({ data: telegramUserValue.replace(/@/g, '') }).then(
       (res) => {
         if (res[0]) {
-          setTelegramUser(res[0] as TelegramUser)
+          setTelegramUserSearch(res[0] as TelegramUser)
         }
       }
     )
@@ -39,7 +40,7 @@ const CreateContactModal = ({
     <Modal isOpen={isOpen} onClose={onClose} title={'New contact'}>
       <div className="space-y-2">
         <div
-          className={`transition-all duration-1000 ease-in-out mb-6 overflow-hidden -ml-4 -mr-4 ${
+          className={`transition-all duration-500 ease-in-out mb-6 overflow-hidden -ml-4 -mr-4 ${
             telegramUser ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
@@ -59,64 +60,89 @@ const CreateContactModal = ({
             />
           )}
         </div>
-
-        <Input
-          onFocus={() => setTelegramUserInputFocused(true)}
-          onBlur={() => setTelegramUserInputFocused(false)}
-          className=" p-0 text-white bg-gray-800"
-          style={{ color: 'white' }}
-          status={
-            telegramUserValue.length > 0 && !telegramUser ? 'error' :
-            telegramUserInputFocused ? 'focused' :
-            'default'
-          }
-          type="text"
-          header="Telegram username"
-          placeholder="durov"
-          value={telegramUserValue}
-          before={<div className="text-gray-500">@</div>}
-          after={
-            <AnimatePresence mode="wait">
-              {telegramUserValue ? (
-                <Tappable
-                  key="cancel"
-                  Component="div"
-                  style={{
-                    display: 'flex',
-                    opacity: telegramUserInputFocused ? '1' : '0',
-                  }}
-                  onClick={() => setTelegramValue('')}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                    transition={{ duration: 0.15, ease: 'easeInOut' }}
+        <div className='relative z-10'>
+          <Input
+            onFocus={() => setTelegramUserInputFocused(true)}
+            onBlur={() => setTelegramUserInputFocused(false)}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: 'white' }}
+            status={
+              telegramUserValue.length > 0 && (!telegramUserSearch && !telegramUser) ? 'error' :
+              telegramUserInputFocused ? 'focused' :
+              'default'
+            }
+            type="text"
+            header="Telegram username"
+            placeholder="durov"
+            value={telegramUserValue}
+            before={<div className="text-gray-500">@</div>}
+            after={
+              <AnimatePresence mode="wait">
+                {telegramUserValue ? (
+                  <Tappable
+                    key="cancel"
+                    Component="div"
+                    style={{
+                      display: 'flex',
+                      opacity: telegramUserInputFocused ? '1' : '0',
+                    }}
+                    onClick={() => {
+                      setTelegramValue('')
+                      setTelegramUser(null)
+                    }}
                   >
-                    <Icon16Cancel />
-                  </motion.div>
-                </Tappable>
-              ) : (
-                <Tappable
-                  key="qr"
-                  Component="div"
-                  style={{ display: 'flex' }}
-                  onClick={() => setTelegramValue('')}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                    transition={{ duration: 0.15, ease: 'easeInOut' }}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      transition={{ duration: 0.15, ease: 'easeInOut' }}
+                    >
+                      <Icon16Cancel />
+                    </motion.div>
+                  </Tappable>
+                ) : (
+                  <Tappable
+                    key="qr"
+                    Component="div"
+                    style={{ display: 'flex' }}
+                    onClick={() => setTelegramValue('')}
                   >
-                    <Icon24QR />
-                  </motion.div>
-                </Tappable>
-              )}
-            </AnimatePresence>
-          }
-          onChange={(e) => setTelegramValue(e.target.value)}
-        />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                      transition={{ duration: 0.15, ease: 'easeInOut' }}
+                    >
+                      <Icon24QR />
+                    </motion.div>
+                  </Tappable>
+                )}
+              </AnimatePresence>
+            }
+            onChange={(e) => setTelegramValue(e.target.value)}
+          />
+          <div className='absolute -bottom-2  translate-y-full w-full z-20 backdrop-blur-xl rounded-xl border-primary border-2' onClick={() => {
+            setTelegramUser(telegramUserSearch)
+            setTelegramUserSearch(null)
+            }}>
+          {telegramUserSearch && (
+            <Contact
+              node={{
+                username: telegramUserSearch.username!,
+                id: telegramUserSearch.firstName,
+                group: 1,
+                tags: tagsValue
+                  .split(' ')
+                  .filter((tag) => tag.trim())
+                  .map((tag) => ({ title: tag })),
+                topic: topicValue,
+                createdAt: new Date(),
+              }}
+            />
+          )}
+          </div>
+        </div>
+        
 
         {!telegramUser && (
           <div>
