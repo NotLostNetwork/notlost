@@ -4,7 +4,7 @@ import { IDBCache } from '@instructure/idb-cache'
 import { Buffer } from 'buffer'
 
 const LocalDB = new IDBCache({
-  cacheKey: import.meta.env.LOCAL_DB_CACHE_KEY,
+  cacheKey: import.meta.env.VITE_LOCAL_DB_CACHE_KEY,
   cacheBuster: 'unique-cache-buster', // Doubles as salt
   // debug?: boolean,
   // chunkSize?: number;
@@ -17,16 +17,21 @@ const LocalDB = new IDBCache({
 export const getCachedAvatar = async (
   username: string
 ): Promise<Blob | null> => {
-  const base64Avatar = await LocalDB.getItem(`telegramAvatar${username}`)
-  if (base64Avatar) {
-    return base64ToBlob(base64Avatar, 'image/jpeg')
+  try {
+    const base64Avatar = await LocalDB.getItem(`telegramAvatar${username}`)
+    if (base64Avatar) {
+      return base64ToBlob(base64Avatar, 'image/jpeg')
+    }
+  } catch (e) {
+    // error happen of corrupted data was saved, so need to remove all that data
+    await destroyLocalDB()
   }
-
+  
   return null
 }
 
-export const destroyLocalDB = () => {
-  LocalDB.destroy()
+export const destroyLocalDB = async () => {
+  await LocalDB.clear()
 }
 
 export const removeItem = async (username: string): Promise<void> => {
@@ -56,3 +61,4 @@ function arrayBufferToBase64(buffer: Buffer): string {
   }
   return window.btoa(binary)
 }
+ 
