@@ -1,10 +1,12 @@
-import { Button, Input } from '@telegram-apps/telegram-ui'
+import { Button, Input, Tappable } from '@telegram-apps/telegram-ui'
 import { useEffect, useState } from 'react'
 import { $getTelegramUser } from '~/actions/telegram'
 import Modal from '~/shared/ui/modals/modal'
 import Contact from './contact'
 import { User as TelegramUser } from '@telegram-apps/sdk-react'
-import qrIcon from '@/shared/assets/icons/qr-code.svg'
+import { Icon24QR } from '@telegram-apps/telegram-ui/dist/icons/24/qr'
+import { Icon16Cancel } from '@telegram-apps/telegram-ui/dist/icons/16/cancel'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const CreateContactModal = ({
   isOpen,
@@ -14,12 +16,13 @@ const CreateContactModal = ({
   onClose: () => void
 }) => {
   const [telegramUserValue, setTelegramValue] = useState('')
+  const [telegramUserInputFocused, setTelegramUserInputFocused] =
+    useState(false)
   const [tagsValue, setTagsValue] = useState('')
   const [descriptionValue, setDescriptionValue] = useState('')
   const [topicValue, setTopicValue] = useState('')
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
-  const [showTelegramUserResult, setShowTelegramUserResult] = useState(false)
 
   useEffect(() => {
     setTelegramUser(null)
@@ -36,7 +39,7 @@ const CreateContactModal = ({
     <Modal isOpen={isOpen} onClose={onClose} title={'New contact'}>
       <div className="space-y-2">
         <div
-          className={`transition-all duration-500 ease-in-out mb-6 overflow-hidden -ml-4 -mr-4 ${
+          className={`transition-all duration-1000 ease-in-out mb-6 overflow-hidden -ml-4 -mr-4 ${
             telegramUser ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
@@ -58,29 +61,68 @@ const CreateContactModal = ({
         </div>
 
         <Input
-          onFocus={() => setShowTelegramUserResult(true)}
-          onBlur={() => setShowTelegramUserResult(false)}
+          onFocus={() => setTelegramUserInputFocused(true)}
+          onBlur={() => setTelegramUserInputFocused(false)}
           className=" p-0 text-white bg-gray-800"
           style={{ color: 'white' }}
+          status={
+            telegramUserValue.length > 0 && !telegramUser ? 'error' :
+            telegramUserInputFocused ? 'focused' :
+            'default'
+          }
           type="text"
           header="Telegram username"
-          placeholder="@durov"
+          placeholder="durov"
           value={telegramUserValue}
+          before={<div className="text-gray-500">@</div>}
+          after={
+            <AnimatePresence mode="wait">
+              {telegramUserValue ? (
+                <Tappable
+                  key="cancel"
+                  Component="div"
+                  style={{
+                    display: 'flex',
+                    opacity: telegramUserInputFocused ? '1' : '0',
+                  }}
+                  onClick={() => setTelegramValue('')}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                    transition={{ duration: 0.15, ease: 'easeInOut' }}
+                  >
+                    <Icon16Cancel />
+                  </motion.div>
+                </Tappable>
+              ) : (
+                <Tappable
+                  key="qr"
+                  Component="div"
+                  style={{ display: 'flex' }}
+                  onClick={() => setTelegramValue('')}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                    transition={{ duration: 0.15, ease: 'easeInOut' }}
+                  >
+                    <Icon24QR />
+                  </motion.div>
+                </Tappable>
+              )}
+            </AnimatePresence>
+          }
           onChange={(e) => setTelegramValue(e.target.value)}
         />
 
         {!telegramUser && (
           <div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-2.5">
               <Button mode={'gray'} disabled={true} stretched={true}>
                 Add from my contacts
-              </Button>
-              <Button width={'3px'} className="w-12 relative">
-                <img
-                  src={qrIcon}
-                  className="h-10 w-[36px] absolute top-[1px] left-1"
-                  alt=""
-                />
               </Button>
             </div>
           </div>
