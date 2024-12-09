@@ -14,7 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PagesImport } from './routes/_pages'
-import { Route as PagesIndexImport } from './routes/_pages/index'
+import { Route as IndexImport } from './routes/index'
 import { Route as PagesAppIndexImport } from './routes/_pages/app/index'
 import { Route as PagesAppOnboardingImport } from './routes/_pages/app/onboarding'
 import { Route as PagesAppTabBarImport } from './routes/_pages/app/_tab-bar'
@@ -32,15 +32,15 @@ const PagesRoute = PagesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PagesAppRoute = PagesAppImport.update({
   id: '/app',
   path: '/app',
-  getParentRoute: () => PagesRoute,
-} as any)
-
-const PagesIndexRoute = PagesIndexImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => PagesRoute,
 } as any)
 
@@ -77,19 +77,19 @@ const PagesAppTabBarContactsRoute = PagesAppTabBarContactsImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_pages': {
       id: '/_pages'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PagesImport
       parentRoute: typeof rootRoute
-    }
-    '/_pages/': {
-      id: '/_pages/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof PagesIndexImport
-      parentRoute: typeof PagesImport
     }
     '/_pages/app': {
       id: '/_pages/app'
@@ -169,20 +169,18 @@ const PagesAppRouteWithChildren = PagesAppRoute._addFileChildren(
 )
 
 interface PagesRouteChildren {
-  PagesIndexRoute: typeof PagesIndexRoute
   PagesAppRoute: typeof PagesAppRouteWithChildren
 }
 
 const PagesRouteChildren: PagesRouteChildren = {
-  PagesIndexRoute: PagesIndexRoute,
   PagesAppRoute: PagesAppRouteWithChildren,
 }
 
 const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof PagesRouteWithChildren
-  '/': typeof PagesIndexRoute
   '/app': typeof PagesAppTabBarRouteWithChildren
   '/app/onboarding': typeof PagesAppOnboardingRoute
   '/app/': typeof PagesAppIndexRoute
@@ -191,7 +189,8 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/': typeof PagesIndexRoute
+  '/': typeof IndexRoute
+  '': typeof PagesRouteWithChildren
   '/app': typeof PagesAppIndexRoute
   '/app/onboarding': typeof PagesAppOnboardingRoute
   '/app/contacts': typeof PagesAppTabBarContactsRoute
@@ -200,8 +199,8 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_pages': typeof PagesRouteWithChildren
-  '/_pages/': typeof PagesIndexRoute
   '/_pages/app': typeof PagesAppRouteWithChildren
   '/_pages/app/_tab-bar': typeof PagesAppTabBarRouteWithChildren
   '/_pages/app/onboarding': typeof PagesAppOnboardingRoute
@@ -213,19 +212,19 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | ''
     | '/'
+    | ''
     | '/app'
     | '/app/onboarding'
     | '/app/'
     | '/app/contacts'
     | '/app/graph'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/onboarding' | '/app/contacts' | '/app/graph'
+  to: '/' | '' | '/app' | '/app/onboarding' | '/app/contacts' | '/app/graph'
   id:
     | '__root__'
+    | '/'
     | '/_pages'
-    | '/_pages/'
     | '/_pages/app'
     | '/_pages/app/_tab-bar'
     | '/_pages/app/onboarding'
@@ -236,10 +235,12 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   PagesRoute: typeof PagesRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   PagesRoute: PagesRouteWithChildren,
 }
 
@@ -253,19 +254,18 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_pages"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_pages": {
       "filePath": "_pages.tsx",
       "children": [
-        "/_pages/",
         "/_pages/app"
       ]
-    },
-    "/_pages/": {
-      "filePath": "_pages/index.tsx",
-      "parent": "/_pages"
     },
     "/_pages/app": {
       "filePath": "_pages/app",
