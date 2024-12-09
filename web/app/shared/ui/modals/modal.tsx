@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-2xl font-semibold text-center mb-8">{title}</div>
+        <div className="text-2xl font-semibold text-center mb-2">{title}</div>
         {children}
         <button className="absolute top-2 right-2 text-xl" onClick={onClose}>
           <Icon28CloseAmbient />

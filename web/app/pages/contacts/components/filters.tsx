@@ -11,7 +11,7 @@ export const FilterBySearch = ({
   onChange: (value: string) => void
 }) => {
   return (
-    <div className='pt-5 pb-4'>
+    <div className="pt-5 pb-4">
       <Input
         className="bg-divider text-white"
         style={{ color: 'white' }}
@@ -22,7 +22,6 @@ export const FilterBySearch = ({
         after={<img className="h-6 w-6" src={searchIcon} alt="" />}
       />
     </div>
-    
   )
 }
 

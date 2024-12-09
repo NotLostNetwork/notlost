@@ -33,10 +33,7 @@ const ContactsPage = () => {
     if (filtersBlock.current) {
       setFiltersBlockHeight(filtersBlock.current.offsetHeight)
     }
-    $getTelegramUser({ data: 'shestaya_liniy' })
-
   }, [])
-
 
   return (
     <div className="py-4 overflow-hidden no-scrollbar relative  ">

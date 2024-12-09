@@ -68,10 +68,13 @@ export const Pencil = () => {
           </div>
         </Button>
       </div>
-      <CreateContactModal isOpen={showCreateContactModal} onClose={() => {
-        setShowToolTip(false)
-        setShowCreateContactModal(false)
-      }}/>
+      <CreateContactModal
+        isOpen={showCreateContactModal}
+        onClose={() => {
+          setShowToolTip(false)
+          setShowCreateContactModal(false)
+        }}
+      />
     </div>
   )
 }

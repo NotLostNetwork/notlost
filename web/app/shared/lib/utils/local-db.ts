@@ -2,7 +2,7 @@ import { IDBCache } from '@instructure/idb-cache'
 import { Buffer } from 'buffer'
 
 const LocalDB = new IDBCache({
-  cacheKey: import.meta.env.LOCAL_DB_CACHE_KEY,
+  cacheKey: import.meta.env.VITE_LOCAL_DB_CACHE_KEY,
   cacheBuster: 'unique-cache-buster', // Doubles as salt
   // debug?: boolean,
   // chunkSize?: number;
@@ -16,7 +16,6 @@ export const getCachedAvatar = async (
   username: string
 ): Promise<Blob | null> => {
   const base64Avatar = await LocalDB.getItem(`telegramAvatar${username}`)
-  console.log(base64Avatar)
   if (base64Avatar) {
     return base64ToBlob(base64Avatar, 'image/jpeg')
   }
@@ -36,7 +35,6 @@ export const setCachedAvatar = async (
   username: string,
   avatarBuffer: Buffer
 ) => {
-  console.log('SET AVATAR')
   const base64Avatar = arrayBufferToBase64(avatarBuffer)
   await LocalDB.setItem(`telegramAvatar${username}`, base64Avatar)
 }

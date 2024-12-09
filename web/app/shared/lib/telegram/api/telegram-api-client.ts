@@ -103,7 +103,7 @@ class TelegramApiClient {
       new Api.users.GetUsers({
         id: [username],
       })
-    );
+    )
     return result
   }
 
@@ -119,8 +119,6 @@ class TelegramApiClient {
       await nextTask()
     }
   }
-
-   
 
   public static getInstance(
     session: StringSession,

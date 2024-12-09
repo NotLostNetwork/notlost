@@ -14,8 +14,8 @@ export const $getTelegramPhoto = createServerFn({ method: 'GET' })
     return await client.getPhoto(ctx.data)
   })
 
-export const $getTelegramUser = createServerFn({method: 'GET'})
-.validator((data: string) => data)
-.handler(async (ctx) => {
-  return await client.getUserByUsername(ctx.data)
-})
+export const $getTelegramUser = createServerFn({ method: 'GET' })
+  .validator((data: string) => data)
+  .handler(async (ctx) => {
+    return await client.getUserByUsername(ctx.data)
+  })
