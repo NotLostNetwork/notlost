@@ -8,4 +8,7 @@ export default defineConfig({
     },
     plugins: [tsconfigPaths()],
   },
+  server: {
+    preset: "vercel",
+  },
 })
