@@ -22,7 +22,8 @@ const CreateContactModal = ({
   const [descriptionValue, setDescriptionValue] = useState('')
   const [topicValue, setTopicValue] = useState('')
 
-  const [telegramUserSearch, setTelegramUserSearch] = useState<TelegramUser | null>(null)
+  const [telegramUserSearch, setTelegramUserSearch] =
+    useState<TelegramUser | null>(null)
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
 
   useEffect(() => {
@@ -60,16 +61,20 @@ const CreateContactModal = ({
             />
           )}
         </div>
-        <div className='relative z-10'>
+        <div className="relative z-10">
           <Input
             onFocus={() => setTelegramUserInputFocused(true)}
             onBlur={() => setTelegramUserInputFocused(false)}
             className=" p-0 text-white bg-gray-800"
             style={{ color: 'white' }}
             status={
-              telegramUserValue.length > 0 && (!telegramUserSearch && !telegramUser) ? 'error' :
-              telegramUserInputFocused ? 'focused' :
-              'default'
+              telegramUserValue.length > 0 &&
+              !telegramUserSearch &&
+              !telegramUser
+                ? 'error'
+                : telegramUserInputFocused
+                  ? 'focused'
+                  : 'default'
             }
             type="text"
             header="Telegram username"
@@ -121,28 +126,30 @@ const CreateContactModal = ({
             }
             onChange={(e) => setTelegramValue(e.target.value)}
           />
-          <div className='absolute -bottom-2  translate-y-full w-full z-20 backdrop-blur-xl rounded-xl border-primary border-2' onClick={() => {
-            setTelegramUser(telegramUserSearch)
-            setTelegramUserSearch(null)
-            }}>
           {telegramUserSearch && (
-            <Contact
-              node={{
-                username: telegramUserSearch.username!,
-                id: telegramUserSearch.firstName,
-                group: 1,
-                tags: tagsValue
-                  .split(' ')
-                  .filter((tag) => tag.trim())
-                  .map((tag) => ({ title: tag })),
-                topic: topicValue,
-                createdAt: new Date(),
+            <div
+              className="absolute -bottom-2  translate-y-full w-full z-20 backdrop-blur-xl rounded-xl border-primary border-2 shadow-2xl"
+              onClick={() => {
+                setTelegramUser(telegramUserSearch)
+                setTelegramUserSearch(null)
               }}
-            />
+            >
+              <Contact
+                node={{
+                  username: telegramUserSearch.username!,
+                  id: telegramUserSearch.firstName,
+                  group: 1,
+                  tags: tagsValue
+                    .split(' ')
+                    .filter((tag) => tag.trim())
+                    .map((tag) => ({ title: tag })),
+                  topic: topicValue,
+                  createdAt: new Date(),
+                }}
+              />
+            </div>
           )}
-          </div>
         </div>
-        
 
         {!telegramUser && (
           <div>
