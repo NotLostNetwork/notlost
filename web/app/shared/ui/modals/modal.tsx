@@ -11,7 +11,7 @@ interface ModalProps {
 const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
   return (
     <div
-      className={`h-screen w-screen fixed z-50 top-0 left-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${
+      className={`h-screen w-screen fixed z-50 top-20 left-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${
         isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       onClick={onClose}
