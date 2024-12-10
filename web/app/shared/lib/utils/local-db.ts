@@ -1,49 +1,46 @@
-'use client'
+import { openDB } from 'idb';
 
-import { IDBCache } from '@instructure/idb-cache'
-import { Buffer } from 'buffer'
+const DB_NAME = 'idb';
+const DB_VERSION = 1;
+const STORE_NAME = 'cache';
 
-const LocalDB = new IDBCache({
-  cacheKey: import.meta.env.VITE_LOCAL_DB_CACHE_KEY,
-  cacheBuster: 'unique-cache-buster', // Doubles as salt
-  // debug?: boolean,
-  // chunkSize?: number;
-  // cleanupInterval?: number;
-  // dbName?: string;
-  // pbkdf2Iterations?: number;
-  // gcTime?: number;
-})
+const initDB = async () => {
+  return openDB(DB_NAME, DB_VERSION, {
+    upgrade(db) {
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+        console.log(`Object store '${STORE_NAME}' created.`);
+      }
+    },
+  });
+};
+
+const destroyLocalDB = async () => {
+  const db = await openDB(DB_NAME, 1);
+  await db.clear(STORE_NAME);
+  console.log(`All data in the store '${STORE_NAME}' has been cleared.`);
+};
 
 export const getCachedAvatar = async (
   username: string
 ): Promise<Blob | null> => {
-  try {
-    const base64Avatar = await LocalDB.getItem(`telegramAvatar${username}`)
-    if (base64Avatar) {
-      return base64ToBlob(base64Avatar, 'image/jpeg')
-    }
-  } catch (e) {
-    // error happen of corrupted data was saved, so need to remove all that data
-    await destroyLocalDB()
+
+  const db = await initDB()
+  const base64Avatar = await db.get(STORE_NAME, `telegramAvatar@${username}`)
+  if (base64Avatar) {
+    return base64ToBlob(base64Avatar, 'image/jpeg')
   }
   
   return null
-}
-
-export const destroyLocalDB = async () => {
-  await LocalDB.clear()
-}
-
-export const removeItem = async (username: string): Promise<void> => {
-  await LocalDB.removeItem(`telegramAvatar${username}`)
 }
 
 export const setCachedAvatar = async (
   username: string,
   avatarBuffer: Buffer
 ) => {
+  const db = await initDB()
   const base64Avatar = arrayBufferToBase64(avatarBuffer)
-  await LocalDB.setItem(`telegramAvatar${username}`, base64Avatar)
+  await db.put(STORE_NAME, base64Avatar, `telegramAvatar@${username}`,)
 }
 
 const base64ToBlob = (base64: string, mimeType: any) => {
@@ -61,4 +58,3 @@ function arrayBufferToBase64(buffer: Buffer): string {
   }
   return window.btoa(binary)
 }
- 
