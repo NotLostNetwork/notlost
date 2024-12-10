@@ -36,7 +36,7 @@ const ContactsPage = () => {
     <div className="py-4 overflow-hidden no-scrollbar">
       <div
         ref={filtersBlock}
-        className="pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
+        className="pt-12 pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
         <FilterBySearch
           value={filtersState.searchState}
