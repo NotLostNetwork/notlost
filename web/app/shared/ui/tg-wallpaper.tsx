@@ -4,7 +4,7 @@ import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-v
 import '@twallpaper/react/css'
 
 const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
-  const darkThemeColors = ['#333', '#333', '#333', '#333']
+  const darkThemeColors = ['#232e3c', '#232e3c', '#232e3c', '#232e3c']
   const darkThemeColorsWithAccent = ['#5288c1', '#2F2F2F', '#5288c1', '#2F2F2F']
 
   return (

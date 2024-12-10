@@ -1,6 +1,5 @@
-import { $getTelegramPhoto } from "~/actions/telegram"
-import { getCachedAvatar, setCachedAvatar } from "../../utils/local-db"
-
+import { $getTelegramPhoto } from '~/actions/telegram'
+import { getCachedAvatar, setCachedAvatar } from '../../utils/local-db'
 
 class TelegramHelper {
   private sessionAvatarBlobs = new Map<string, string>()
@@ -18,7 +17,7 @@ class TelegramHelper {
     if (cachedAvatar) {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
-      const avatarBufferRes = await $getTelegramPhoto({data: username})
+      const avatarBufferRes = await $getTelegramPhoto({ data: username })
       await setCachedAvatar(username, avatarBufferRes.data)
 
       const avatarBlob = await getCachedAvatar(username)

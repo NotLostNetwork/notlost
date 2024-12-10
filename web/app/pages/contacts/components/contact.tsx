@@ -11,7 +11,7 @@ const Contact = ({ node }: { node: UserContact }) => {
     TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
       setAvatarUrl(avatarBlobUrl)
     })
-  }, [])
+  }, [node])
 
   return (
     <AnimatePresence>
@@ -49,7 +49,7 @@ const Contact = ({ node }: { node: UserContact }) => {
                   <div className="flex w-full">
                     <div>
                       <div className="font-medium text-left">{node.id}</div>
-                      <div className="font-medium text-link text-xs">
+                      <div className="font-medium text-link text-xs text-left">
                         @{node.username}
                       </div>
                     </div>

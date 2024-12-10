@@ -35,18 +35,19 @@ iframe {
 
 /* Resetting telegram ui components specific styles */
 
-/* Input vertical padding */
+/* Input: remove padding, remove bg */
 .tgui-8ca550c2fc85eff5 {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
 }
 
-.tgui-0f5050defacbf813 {
-  box-shadow: none !important;
+.tgui-9f9a52f695b85cc9 {
+  background: var(--tg-theme-secondary-bg-color) !important;
+  top: -14px !important;
 }
 
 .tgui-d9de1f32aee12a15 {
-  gap: 18px !important;
+  gap: 6px !important;
 }
 
 /* Make small button full rounded */

@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useLaunchParams } from '@telegram-apps/sdk-react'
 import { Button } from '@telegram-apps/telegram-ui'
 import TWallpaper from '@twallpaper/react'
-import { createUserApi } from '~/entities/user/api'
+import { $createUser } from '~/entities/user/api'
 import utyaCool from '@/shared/assets/utya-cool.gif'
 import TgWallpaper from '~/shared/ui/tg-wallpaper'
 import { Route as ContactsRoute } from '~/routes/_pages/app/_tab-bar/contacts'
@@ -17,7 +17,7 @@ function OnboardingPage() {
   const { mutate: mutateCreateUser, isError } = useMutation({
     mutationKey: ['/'],
     mutationFn: async () => {
-      const user = await createUserApi({
+      const user = await $createUser({
         data: {
           telegramId,
         },
@@ -36,7 +36,7 @@ function OnboardingPage() {
   return (
     <div className="h-screen p-4 relative flex flex-col">
       <div className="h-screen absolute">
-        <TgWallpaper/>
+        <TgWallpaper />
       </div>
       <div className="flex flex-col items-center justify-center flex-1">
         <img src={utyaCool} alt={'Utya sticker'} height={180} width={180} />

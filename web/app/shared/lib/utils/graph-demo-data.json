@@ -49,18 +49,6 @@
       ]
     },
     {
-      "id": "Nikita 2",
-      "group": 1,
-      "username": "nikivi",
-      "description": "Fullstack developer",
-      "topic": "NotLost Creators",
-      "tags": [
-        { "title": "developer" },
-        { "title": "blockchain" },
-        { "title": "web3" }
-      ]
-    },
-    {
       "id": "Denis",
       "group": 1,
       "username": "Ukr_Jugend18",

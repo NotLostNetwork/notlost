@@ -9,13 +9,16 @@ import ContactsList from './components/list'
 import mockData from '@/shared/lib/utils/graph-demo-data.json'
 import { Filter, useContactsState } from './model/state'
 import { UserContact } from '~/entities/user/user-contact/interface'
+import Modal from '~/shared/ui/modals/modal'
+import { Button } from '@telegram-apps/telegram-ui'
+import { $getTelegramUser } from '~/actions/telegram'
 
 const ContactsPage = () => {
   const data = [...mockData.nodes] as UserContact[]
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
-  
+
   const {
     filteredData,
     graphMode,
