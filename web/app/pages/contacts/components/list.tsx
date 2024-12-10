@@ -26,7 +26,7 @@ const ContactsList = ({
       <div className="h-screen absolute">
         <TgWallpaper opacity={0.1} withAccent={true} />
       </div>
-      <div className='overflow-hidden overscroll-none'>
+      <div className='overflow-y-auto overscroll-none pb-20'>
       {filtersBlockHeight > 0 &&
         data.map((node) => {
           if (node.type === 'topic') return

@@ -22,7 +22,7 @@ const ContactsGraph = ({
   LazyForceGraph.preload()
 
   return (
-    <div className="-mt-8 pt-4 h-screen">
+    <div className="-mt-48 pt-4">
       <div className="h-screen absolute">
         <TgWallpaper opacity={0.3} />
       </div>

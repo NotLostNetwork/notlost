@@ -3,10 +3,12 @@ import BottomBar from '~/shared/ui/bottom-bar'
 
 function LayoutComponent() {
   return (
-    <>
-      <Outlet />
+    <div className='h-screen flex flex-col'>
+      <div className='flex-1 overflow-auto'>
+        <Outlet />
+      </div>
       <BottomBar />
-    </>
+    </div>
   )
 }
 

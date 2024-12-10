@@ -33,12 +33,12 @@ const ContactsPage = () => {
   }, [])
 
   return (
-    <div className="py-4 overflow-hidden no-scrollbar">
+    <div className="h-full flex flex-col overflow-hidden">
       <div
         ref={filtersBlock}
-        className="pt-10 pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
+        className="pt-12 pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
-        <div className='text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse'>NotLost Alpha</div>
+        <div className='text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse relative z-10 top-2'>NotLost Alpha</div>
         <FilterBySearch
           value={filtersState.searchState}
           onChange={(value: string) =>
@@ -79,23 +79,21 @@ const ContactsPage = () => {
           />
         </div>
       </div>
-      {graphMode ? (
-        <ContactsGraph
-          data={filteredData}
-          toggleGraphMode={toggleGraphMode}
-          selectTopic={(topic: string) =>
-            updateFilterState(Filter.TOPIC, topic)
-          }
-        />
-      ) : (
-        <div className="pb-32" style={{ marginTop: filtersBlockHeight - 16 }}>
+      <div className="flex-1 overflow-auto">
+        {graphMode ? (
+          <ContactsGraph
+            data={filteredData}
+            toggleGraphMode={toggleGraphMode}
+            selectTopic={(topic: string) => updateFilterState(Filter.TOPIC, topic)}
+          />
+        ) : (
           <ContactsList
             filtersBlockHeight={filtersBlockHeight}
             data={filteredData}
             toggleGraphMode={toggleGraphMode}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
