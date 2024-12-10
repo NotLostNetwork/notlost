@@ -77,6 +77,22 @@
       "tags": []
     },
     {
+      "id": "Vlad 2",
+      "group": 1,
+      "username": "vladbyelik",
+      "description": "Fullstack developer",
+      "topic": null,
+      "tags": []
+    },
+    {
+      "id": "Vlad 3",
+      "group": 1,
+      "username": "vladbyelik",
+      "description": "Fullstack developer",
+      "topic": null,
+      "tags": []
+    },
+    {
       "id": "NotLost Creators",
       "group": 2,
       "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s",

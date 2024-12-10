@@ -26,6 +26,7 @@ const ContactsList = ({
       <div className="h-screen absolute">
         <TgWallpaper opacity={0.1} withAccent={true} />
       </div>
+      <div>
       {filtersBlockHeight > 0 &&
         data.map((node) => {
           if (node.type === 'topic') return
@@ -51,6 +52,8 @@ const ContactsList = ({
             </AnimatePresence>
           )
         })}
+      </div>
+      
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center pr-4 pl-4 absolute h-screen top-0 -mt-16">
           <img

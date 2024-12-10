@@ -6,6 +6,12 @@ body {
   background: var(--tg-theme-bg-color, white);
   height: 100%;
   -webkit-overflow-scrolling: auto !important;
+
+}
+
+html, body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 :root {
