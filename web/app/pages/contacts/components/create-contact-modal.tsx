@@ -151,16 +151,6 @@ const CreateContactModal = ({
           )}
         </div>
 
-        {!telegramUser && (
-          <div>
-            <div className="flex gap-2 mt-2.5">
-              <Button mode={'gray'} disabled={true} stretched={true}>
-                Add from my contacts
-              </Button>
-            </div>
-          </div>
-        )}
-
         <Input
           className=" p-0 text-white mt-6 bg-gray-800"
           style={{ color: 'white' }}
