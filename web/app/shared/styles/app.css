@@ -9,11 +9,6 @@ body {
 
 }
 
-html, body {
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
 :root {
   /* Overwrite tg theme colors */
   --tg-bg-color: #17212b !important;
