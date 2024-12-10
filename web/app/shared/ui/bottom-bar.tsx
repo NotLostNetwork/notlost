@@ -1,10 +1,10 @@
-import { Link } from '@tanstack/react-router'
-import { SearchIcon } from '~/shared/assets/icons/iconsAsComponent/search-icon'
-import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
-import React from 'react'
-import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
-import { Route as GraphRoute } from '~/routes/_pages/app/_tab-bar/graph'
-import { Route as ContactsRoute } from '~/routes/_pages/app/_tab-bar/contacts'
+import { Link } from "@tanstack/react-router"
+import { SearchIcon } from "~/shared/assets/icons/iconsAsComponent/search-icon"
+import { GraphIcon } from "~/shared/assets/icons/iconsAsComponent/graph-icon"
+import React from "react"
+import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
+import { Route as GraphRoute } from "~/routes/_pages/app/_tab-bar/graph"
+import { Route as ContactsRoute } from "~/routes/_pages/app/_tab-bar/contacts"
 
 export default function BottomBar() {
   return (
@@ -38,22 +38,22 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
       {({ isActive }) => (
         <>
           <div
-            className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${isActive ? 'bg-buttonBezeled' : 'bg-transparent '}`}
+            className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${isActive ? "bg-buttonBezeled" : "bg-transparent "}`}
           >
             <div
-              className={`transition-all duration-150 ease-in-out ${isActive ? 'p-1' : 'p-[3px]'}`}
+              className={`transition-all duration-150 ease-in-out ${isActive ? "p-1" : "p-[3px]"}`}
             >
               <Icon
                 color={
                   isActive
-                    ? getCssVariableValue('--tg-theme-accent-text-color')
-                    : 'white'
+                    ? getCssVariableValue("--tg-theme-accent-text-color")
+                    : "white"
                 }
               />
             </div>
           </div>
           <span
-            className={`font-medium transition-all duration-150 ease-in-out capitalize ${isActive && 'px-2 rounded-2xl text-accent'}`}
+            className={`font-medium transition-all duration-150 ease-in-out capitalize ${isActive && "px-2 rounded-2xl text-accent"}`}
           >
             {title}
           </span>

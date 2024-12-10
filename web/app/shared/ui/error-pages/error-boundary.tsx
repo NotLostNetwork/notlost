@@ -3,7 +3,7 @@ import {
   type ComponentType,
   type GetDerivedStateFromError,
   type PropsWithChildren,
-} from 'react'
+} from "react"
 
 export interface ErrorBoundaryProps extends PropsWithChildren {
   fallback: ComponentType<{ error: Error }>

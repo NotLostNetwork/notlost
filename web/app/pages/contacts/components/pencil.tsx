@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
-import { Button, Input } from '@telegram-apps/telegram-ui'
-import personIcon from '~/shared/assets/icons/person-icon.svg'
-import connectionIcon from '~/shared/assets/icons/connection-icon.svg'
-import PencilIcon from '~/shared/assets/icons/iconsAsComponent/pencil-icon'
-import Modal from '~/shared/ui/modals/modal'
-import CreateContactModal from './create-contact-modal'
+import { useEffect, useRef, useState } from "react"
+import { Button, Input } from "@telegram-apps/telegram-ui"
+import personIcon from "~/shared/assets/icons/person-icon.svg"
+import connectionIcon from "~/shared/assets/icons/connection-icon.svg"
+import PencilIcon from "~/shared/assets/icons/iconsAsComponent/pencil-icon"
+import Modal from "~/shared/ui/modals/modal"
+import CreateContactModal from "./create-contact-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
@@ -25,10 +25,10 @@ export const Pencil = () => {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
 
@@ -36,15 +36,15 @@ export const Pencil = () => {
     <div>
       <div className="fixed bottom-20 right-6">
         <div
-          className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         ></div>
         <div
           ref={tooltipRef}
-          className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? 'opacity-100' : 'opacity-0 pointer-events-none'} shadow-lg space-y-2`}
+          className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-2`}
         >
           <ToolTipItem
             icon={personIcon}
-            title={'New contact'}
+            title={"New contact"}
             action={() => {
               setShowCreateContactModal(true)
               setShowToolTip(false)
@@ -58,13 +58,13 @@ export const Pencil = () => {
           />
         </div>
         <Button
-          size={'s'}
-          className={'rounded-full'}
-          style={{ borderRadius: '50% !important' }}
+          size={"s"}
+          className={"rounded-full"}
+          style={{ borderRadius: "50% !important" }}
           onClick={toggleShowToolTip}
         >
           <div className="h-6 w-6">
-            <PencilIcon color={'#fff'} />
+            <PencilIcon color={"#fff"} />
           </div>
         </Button>
       </div>
@@ -89,7 +89,7 @@ const ToolTipItem = ({
   action: () => void
 }) => {
   return (
-    <Button mode={'plain'} stretched={true} onClick={action}>
+    <Button mode={"plain"} stretched={true} onClick={action}>
       <div className="flex w-full">
         <img src={icon} className="h-6 w-6" alt="" />
         <div className="ml-4 text-left font-medium whitespace-nowrap">

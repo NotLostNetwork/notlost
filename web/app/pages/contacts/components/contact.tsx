@@ -1,11 +1,11 @@
-import { Button } from '@telegram-apps/telegram-ui'
-import { memo, useEffect, useState } from 'react'
-import TelegramHelper from '~/shared/lib/telegram/api/telegram-helper'
-import { AnimatePresence, motion } from 'framer-motion'
-import { UserContact } from '~/entities/user/user-contact/interface'
+import { Button } from "@telegram-apps/telegram-ui"
+import { memo, useEffect, useState } from "react"
+import TelegramHelper from "~/shared/lib/telegram/api/telegram-helper"
+import { AnimatePresence, motion } from "framer-motion"
+import { UserContact } from "~/entities/user/user-contact/interface"
 
 const Contact = ({ node }: { node: UserContact }) => {
-  const [avatarUrl, setAvatarUrl] = useState('')
+  const [avatarUrl, setAvatarUrl] = useState("")
 
   useEffect(() => {
     TelegramHelper.getProfileAvatar(node.username).then((avatarBlobUrl) => {
@@ -23,12 +23,12 @@ const Contact = ({ node }: { node: UserContact }) => {
         }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{
-          type: 'spring',
+          type: "spring",
           damping: 20,
           stiffness: 300,
         }}
       >
-        <Button mode={'plain'} stretched={true} style={{ padding: 0 }}>
+        <Button mode={"plain"} stretched={true} style={{ padding: 0 }}>
           <div className={`flex px-4 min-h-20 justify-center text-sm relative`}>
             <div className="h-20 flex items-center">
               {avatarUrl ? (
@@ -44,7 +44,7 @@ const Contact = ({ node }: { node: UserContact }) => {
               )}
             </div>
             <div className="h-full ml-4 w-full ">
-              <div className={'h-full flex items-center w-full py-2'}>
+              <div className={"h-full flex items-center w-full py-2"}>
                 <div className="w-full py-2">
                   <div className="flex w-full">
                     <div>

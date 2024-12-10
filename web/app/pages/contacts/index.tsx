@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 import {
   FilterByLatest,
   FilterBySearch,
   SingleSelectFilter,
-} from './components/filters'
-import ContactsGraph from './components/graph'
-import ContactsList from './components/list'
-import mockData from '@/shared/lib/utils/graph-demo-data.json'
-import { Filter, useContactsState } from './model/state'
-import { UserContact } from '~/entities/user/user-contact/interface'
-import Modal from '~/shared/ui/modals/modal'
-import { Button } from '@telegram-apps/telegram-ui'
-import { $getTelegramUser } from '~/actions/telegram'
+} from "./components/filters"
+import ContactsGraph from "./components/graph"
+import ContactsList from "./components/list"
+import mockData from "@/shared/lib/utils/graph-demo-data.json"
+import { Filter, useContactsState } from "./model/state"
+import { UserContact } from "~/entities/user/user-contact/interface"
+import Modal from "~/shared/ui/modals/modal"
+import { Button } from "@telegram-apps/telegram-ui"
+import { $getTelegramUser } from "~/actions/telegram"
 
 const ContactsPage = () => {
   const data = [...mockData.nodes] as UserContact[]
@@ -41,7 +41,9 @@ const ContactsPage = () => {
         ref={filtersBlock}
         className="pt-12 pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
-        <div className='text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse relative z-10 top-2'>NotLost Alpha</div>
+        <div className="text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse relative z-10 top-2">
+          NotLost Alpha
+        </div>
         <FilterBySearch
           value={filtersState.searchState}
           onChange={(value: string) =>
@@ -50,7 +52,7 @@ const ContactsPage = () => {
         />
         <div
           className={
-            'flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4'
+            "flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4"
           }
         >
           <SingleSelectFilter
@@ -87,7 +89,9 @@ const ContactsPage = () => {
           <ContactsGraph
             data={filteredData}
             toggleGraphMode={toggleGraphMode}
-            selectTopic={(topic: string) => updateFilterState(Filter.TOPIC, topic)}
+            selectTopic={(topic: string) =>
+              updateFilterState(Filter.TOPIC, topic)
+            }
           />
         ) : (
           <ContactsList

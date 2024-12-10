@@ -1,14 +1,14 @@
-'use client'
+"use client"
 
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from "react"
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
-} from 'react-force-graph-2d'
-import { UserContact } from '~/entities/user/user-contact/interface'
-import TelegramHelper from '~/shared/lib/telegram/api/telegram-helper'
+} from "react-force-graph-2d"
+import { UserContact } from "~/entities/user/user-contact/interface"
+import TelegramHelper from "~/shared/lib/telegram/api/telegram-helper"
 
-import { getCssVariableValue } from '~/shared/lib/utils/funcs/get-css-variable-value'
+import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
 
 type ImageCache = {
   [key: string]: HTMLImageElement
@@ -37,7 +37,7 @@ const ForceGraph = ({
 
   nodes.forEach((node) => {
     if (node.type || node.topic === null) {
-      links.push({ source: 'Center', target: node.id })
+      links.push({ source: "Center", target: node.id })
     }
   })
 
@@ -47,18 +47,18 @@ const ForceGraph = ({
   }
 
   useEffect(() => {
-    fgRef?.current?.d3Force('charge')!.distanceMax(300)
+    fgRef?.current?.d3Force("charge")!.distanceMax(300)
     fgRef?.current?.centerAt(0, 0)
     fgRef?.current?.zoom(1)
 
     nodes.push({
-      id: 'Center',
+      id: "Center",
       group: 1,
-      username: 'Center',
-      description: 'string',
+      username: "Center",
+      description: "string",
       tags: [],
-      topic: 'string',
-      type: 'topic',
+      topic: "string",
+      type: "topic",
       createdAt: new Date(),
     })
   }, [])
@@ -95,7 +95,7 @@ const ForceGraph = ({
 
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
-      if (node.id === 'Center') return
+      if (node.id === "Center") return
       const imgSize = node.size || 10
       const fontSize = Math.min(3, (12 * globalScale) / 8)
       const fontSizeSecond = Math.min(2, (12 * globalScale) / 8)
@@ -110,28 +110,28 @@ const ForceGraph = ({
       }
 
       ctx.font = `500 ${fontSize}px Sans-Serif`
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
+      ctx.textAlign = "center"
+      ctx.textBaseline = "top"
       ctx.fillStyle = hexToRgba(
-        getCssVariableValue('--tg-theme-text-color'),
-        textOpacity
+        getCssVariableValue("--tg-theme-text-color"),
+        textOpacity,
       )
 
       ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 2 + 1)
 
       ctx.font = `400 ${fontSizeSecond}px Sans-Serif`
       ctx.fillStyle = hexToRgba(
-        getCssVariableValue('--tg-theme-link-color'),
-        textOpacity * 0.8
+        getCssVariableValue("--tg-theme-link-color"),
+        textOpacity * 0.8,
       )
       const lineHeight = fontSize * 1.2
 
       // if not a topic
       if (!node.type) {
         ctx.fillText(
-          '@' + node.username!,
+          "@" + node.username!,
           node.x!,
-          node.y! + imgSize / 2 + 1 + lineHeight
+          node.y! + imgSize / 2 + 1 + lineHeight,
         )
       }
 
@@ -148,19 +148,19 @@ const ForceGraph = ({
           node.x! - imgSize / 2,
           node.y! - imgSize / 2,
           imgSize,
-          imgSize
+          imgSize,
         )
         ctx.save()
         ctx.beginPath()
         ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
         ctx.lineWidth = 1
-        ctx.strokeStyle = getCssVariableValue('--tg-theme-accent-text-color')
+        ctx.strokeStyle = getCssVariableValue("--tg-theme-accent-text-color")
         ctx.stroke()
         ctx.restore()
       } else {
         const img = new Image()
         img.src =
-          'https://www.shutterstock.com/shutterstock/videos/1093269629/thumb/4.jpg?ip=x480'
+          "https://www.shutterstock.com/shutterstock/videos/1093269629/thumb/4.jpg?ip=x480"
         ctx.save()
         ctx.beginPath()
         ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
@@ -171,11 +171,11 @@ const ForceGraph = ({
           node.x! - imgSize / 2,
           node.y! - imgSize / 2,
           imgSize,
-          imgSize
+          imgSize,
         )
       }
     },
-    [imageCache]
+    [imageCache],
   )
 
   return (
@@ -192,21 +192,21 @@ const ForceGraph = ({
         ctx.fill()
       }}
       linkCanvasObject={(link, ctx) => {
-        ctx.strokeStyle = getCssVariableValue('--tg-theme-button-color')
+        ctx.strokeStyle = getCssVariableValue("--tg-theme-button-color")
         ctx.lineWidth = 0.5
 
         //@ts-ignore
-        if (link.source.id === 'Center') {
-          ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
+        if (link.source.id === "Center") {
+          ctx.strokeStyle = "rgba(0, 0, 0, 0)"
         }
         ctx.beginPath()
         ctx.moveTo(
           (link.source as { x: number; y: number }).x,
-          (link.source as { x: number; y: number }).y
+          (link.source as { x: number; y: number }).y,
         )
         ctx.lineTo(
           (link.target as { x: number; y: number }).x,
-          (link.target as { x: number; y: number }).y
+          (link.target as { x: number; y: number }).y,
         )
         ctx.stroke()
       }}
@@ -215,12 +215,12 @@ const ForceGraph = ({
 }
 
 function hexToRgba(hex: string, alpha = 1) {
-  hex = hex.replace(/^#/, '')
+  hex = hex.replace(/^#/, "")
   if (hex.length === 3) {
     hex = hex
-      .split('')
+      .split("")
       .map((char) => char + char)
-      .join('')
+      .join("")
   }
 
   const r = parseInt(hex.slice(0, 2), 16)

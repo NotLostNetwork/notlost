@@ -1,16 +1,16 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from "framer-motion"
 
-import utyaLoading from '~/shared/assets/utya-loading.gif'
+import utyaLoading from "~/shared/assets/utya-loading.gif"
 
-import { Button } from '@telegram-apps/telegram-ui'
-import { GraphIcon } from '~/shared/assets/icons/iconsAsComponent/graph-icon'
-import React from 'react'
+import { Button } from "@telegram-apps/telegram-ui"
+import { GraphIcon } from "~/shared/assets/icons/iconsAsComponent/graph-icon"
+import React from "react"
 
-import TgWallpaper from '~/shared/ui/tg-wallpaper'
-import Contact from './contact'
-import { Pencil } from './pencil'
-import { UserContact } from '~/entities/user/user-contact/interface'
-import Modal from '~/shared/ui/modals/modal'
+import TgWallpaper from "~/shared/ui/tg-wallpaper"
+import Contact from "./contact"
+import { Pencil } from "./pencil"
+import { UserContact } from "~/entities/user/user-contact/interface"
+import Modal from "~/shared/ui/modals/modal"
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -27,39 +27,39 @@ const ContactsList = ({
       <div className="h-screen absolute">
         <TgWallpaper opacity={0.1} withAccent={true} />
       </div>
-      <div className='overflow-y-auto overscroll-none pb-20'>
-      {filtersBlockHeight > 0 &&
-        data.map((node) => {
-          if (node.type === 'topic') return
-          animationDelay += 0.05
-          return (
-            <AnimatePresence key={node.id}>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{
-                  type: 'spring',
-                  damping: 50,
-                  stiffness: 500,
-                  delay: animationDelay,
-                }}
-              >
-                <Contact node={node} />
-              </motion.div>
-            </AnimatePresence>
-          )
-        })}
+      <div className="overflow-y-auto overscroll-none pb-20">
+        {filtersBlockHeight > 0 &&
+          data.map((node) => {
+            if (node.type === "topic") return
+            animationDelay += 0.05
+            return (
+              <AnimatePresence key={node.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{
+                    type: "spring",
+                    damping: 50,
+                    stiffness: 500,
+                    delay: animationDelay,
+                  }}
+                >
+                  <Contact node={node} />
+                </motion.div>
+              </AnimatePresence>
+            )
+          })}
       </div>
-      
+
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0 mt-64">
           <img
             src={utyaLoading}
-            alt={'Utya sticker'}
+            alt={"Utya sticker"}
             height={150}
             width={150}
           />
@@ -72,13 +72,13 @@ const ContactsList = ({
       <Pencil />
       <div className="fixed bottom-20 left-6">
         <Button
-          size={'s'}
-          className={'rounded-full'}
-          style={{ borderRadius: '50% !important' }}
+          size={"s"}
+          className={"rounded-full"}
+          style={{ borderRadius: "50% !important" }}
           onClick={toggleGraphMode}
         >
           <div className="h-6 w-6">
-            <GraphIcon color={'#fff'} />
+            <GraphIcon color={"#fff"} />
           </div>
         </Button>
       </div>

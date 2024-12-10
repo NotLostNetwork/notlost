@@ -1,4 +1,4 @@
-export const SearchIcon = ({ color = '#fff' }: { color: string }) => {
+export const SearchIcon = ({ color = "#fff" }: { color: string }) => {
   return (
     <div className="p-[2px]">
       <svg

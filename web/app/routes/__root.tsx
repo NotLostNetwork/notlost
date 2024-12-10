@@ -1,17 +1,17 @@
-import type { QueryClient } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import type { QueryClient } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import {
   Outlet,
   ScrollRestoration,
   createRootRouteWithContext,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Meta, Scripts } from '@tanstack/start'
-import * as React from 'react'
-import { DefaultCatchBoundary } from '~/shared/ui/error-pages/DefaultCatchBoundary'
-import { NotFound } from '~/shared/ui/error-pages/NotFound'
-import { seo } from '~/shared/lib/seo'
-import appCss from '~/shared/styles/app.css?url'
+} from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/router-devtools"
+import { Meta, Scripts } from "@tanstack/start"
+import * as React from "react"
+import { DefaultCatchBoundary } from "~/shared/ui/error-pages/DefaultCatchBoundary"
+import { NotFound } from "~/shared/ui/error-pages/NotFound"
+import { seo } from "~/shared/lib/seo"
+import appCss from "~/shared/styles/app.css?url"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -19,38 +19,38 @@ export const Route = createRootRouteWithContext<{
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, user-scalable=no",
       },
       ...seo({
-        title: '',
-        description: '',
+        title: "",
+        description: "",
       }),
     ],
     links: [
-      { rel: 'stylesheet', href: appCss },
+      { rel: "stylesheet", href: appCss },
       {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/apple-touch-icon.png',
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/apple-touch-icon.png",
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon-32x32.png',
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        href: "/favicon-32x32.png",
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        href: '/favicon-16x16.png',
+        rel: "icon",
+        type: "image/png",
+        sizes: "16x16",
+        href: "/favicon-16x16.png",
       },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
+      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
+      { rel: "icon", href: "/favicon.ico" },
     ],
   }),
   errorComponent: (props) => {

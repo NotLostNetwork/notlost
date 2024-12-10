@@ -1,5 +1,5 @@
-import { $getTelegramPhoto } from '~/actions/telegram'
-import { getCachedAvatar, setCachedAvatar } from '../../utils/local-db'
+import { $getTelegramPhoto } from "~/actions/telegram"
+import { getCachedAvatar, setCachedAvatar } from "../../utils/local-db"
 
 class TelegramHelper {
   private sessionAvatarBlobs = new Map<string, string>()

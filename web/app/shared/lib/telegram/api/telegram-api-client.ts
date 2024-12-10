@@ -1,8 +1,8 @@
-import { Api, TelegramClient } from 'telegram'
-import { StringSession } from 'telegram/sessions'
-import bigInt from 'big-integer'
+import { Api, TelegramClient } from "telegram"
+import { StringSession } from "telegram/sessions"
+import bigInt from "big-integer"
 import Photo = Api.Photo
-import { Buffer } from 'buffer'
+import { Buffer } from "buffer"
 
 class TelegramApiClient {
   private static instance: TelegramApiClient
@@ -17,7 +17,7 @@ class TelegramApiClient {
   private constructor(
     session: StringSession,
     api_id: number,
-    api_hash: string
+    api_hash: string,
   ) {
     this.client = new TelegramClient(session, api_id, api_hash, {
       connectionRetries: 5,
@@ -28,10 +28,10 @@ class TelegramApiClient {
     try {
       if (!this.client.connected) {
         await this.client.connect()
-        console.log('Telegram client connected.')
+        console.log("Telegram client connected.")
       }
     } catch (error) {
-      console.error('Failed to connect Telegram client:', error)
+      console.error("Failed to connect Telegram client:", error)
       throw error
     }
   }
@@ -54,7 +54,7 @@ class TelegramApiClient {
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
               userId: username,
-            })
+            }),
           )
 
           const photo = result.photos[0] as Photo
@@ -65,18 +65,18 @@ class TelegramApiClient {
               id: photo.id,
               accessHash: photo.accessHash,
               fileReference: fr,
-              thumbSize: 'c',
+              thumbSize: "c",
             }),
             {
               dcId: photo.dcId,
               fileSize: bigInt(829542),
-            }
+            },
           )
 
           if (Buffer.isBuffer(res)) {
             resolve(res)
           } else {
-            throw new Error('Failed to download photo as a Buffer')
+            throw new Error("Failed to download photo as a Buffer")
           }
         } catch (error) {
           reject(error)
@@ -102,7 +102,7 @@ class TelegramApiClient {
     const result = await this.client.invoke(
       new Api.users.GetUsers({
         id: [username],
-      })
+      }),
     )
     return result
   }
@@ -123,13 +123,13 @@ class TelegramApiClient {
   public static getInstance(
     session: StringSession,
     api_id: number,
-    api_hash: string
+    api_hash: string,
   ) {
     if (!TelegramApiClient.instance) {
       TelegramApiClient.instance = new TelegramApiClient(
         session,
         api_id,
-        api_hash
+        api_hash,
       )
     }
     return TelegramApiClient.instance

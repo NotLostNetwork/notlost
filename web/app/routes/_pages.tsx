@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_pages")({
 })
 
 // TODO: FOR TESTING - REMOVE IN PROD
-import('eruda').then((lib) => lib.default.init()).catch(console.error)
+import("eruda").then((lib) => lib.default.init()).catch(console.error)
 //
 
 function RouteComponent() {

@@ -1,7 +1,7 @@
-import BottomModal from '~/shared/ui/modals/bottom-modal'
-import { useState } from 'react'
-import { Button, Input } from '@telegram-apps/telegram-ui'
-import searchIcon from '~/shared/assets/icons/search.svg'
+import BottomModal from "~/shared/ui/modals/bottom-modal"
+import { useState } from "react"
+import { Button, Input } from "@telegram-apps/telegram-ui"
+import searchIcon from "~/shared/assets/icons/search.svg"
 
 export const FilterBySearch = ({
   value,
@@ -14,7 +14,7 @@ export const FilterBySearch = ({
     <div className="pt-5 pb-4">
       <Input
         className="bg-divider text-white"
-        style={{ color: 'white' }}
+        style={{ color: "white" }}
         type="text"
         placeholder="Search"
         value={value}
@@ -40,12 +40,12 @@ export const SingleSelectFilter = ({
 }) => {
   const [open, setOpen] = useState(false)
   const [buttonText, setButtonText] = useState(placeholder)
-  const [buttonMode, setButtonMode] = useState('outline')
+  const [buttonMode, setButtonMode] = useState("outline")
 
   const handleSet = (item: string) => {
     setSelected(item)
     setButtonText(item)
-    setButtonMode('filled')
+    setButtonMode("filled")
     setOpen(false)
   }
 
@@ -53,7 +53,7 @@ export const SingleSelectFilter = ({
     setSelected(null)
     setButtonText(placeholder)
     setOpen(false)
-    setButtonMode('outline')
+    setButtonMode("outline")
   }
 
   items = items.filter((item) => item)
@@ -61,9 +61,9 @@ export const SingleSelectFilter = ({
   return (
     <div>
       <Button
-        mode={buttonMode as 'outline'}
+        mode={buttonMode as "outline"}
         onClick={() => setOpen(true)}
-        className={'text-xs'}
+        className={"text-xs"}
       >
         {buttonText}
       </Button>
@@ -74,9 +74,9 @@ export const SingleSelectFilter = ({
       >
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {items.map((item) => (
-            <div style={{ marginTop: 'unset' }} key={item}>
+            <div style={{ marginTop: "unset" }} key={item}>
               <Button
-                mode={item === selected ? 'filled' : 'bezeled'}
+                mode={item === selected ? "filled" : "bezeled"}
                 onClick={() => {
                   handleSet(item)
                 }}
@@ -115,7 +115,7 @@ export const FilterByLatest = ({
 
   return (
     <div>
-      <Button mode={enabled ? 'filled' : 'outline'} onClick={handleToggle}>
+      <Button mode={enabled ? "filled" : "outline"} onClick={handleToggle}>
         Filter by latest
       </Button>
     </div>

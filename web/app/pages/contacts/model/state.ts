@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { UserContact } from '~/entities/user/user-contact/interface'
+import { useState } from "react"
+import { UserContact } from "~/entities/user/user-contact/interface"
 
 export enum Filter {
-  SEARCH_STATE = 'searchState',
-  TAG = 'selectedTag',
-  TOPIC = 'selectedTopic',
-  LAST_ADDED = 'lastAdded',
+  SEARCH_STATE = "searchState",
+  TAG = "selectedTag",
+  TOPIC = "selectedTopic",
+  LAST_ADDED = "lastAdded",
 }
 
 const initialFiltersData = {
-  searchState: '',
+  searchState: "",
   selectedTag: null,
   selectedTopic: null,
   lastAdded: false,
@@ -21,7 +21,7 @@ export const useContactsState = (data: UserContact[]) => {
 
   const updateFilterState = (
     filter: Filter,
-    value: string | boolean | null
+    value: string | boolean | null,
   ) => {
     setFiltersData((prev) => ({
       ...prev,
@@ -32,7 +32,7 @@ export const useContactsState = (data: UserContact[]) => {
   const toggleGraphMode = () => setGraphMode(!graphMode)
 
   const uniqueTags = Array.from(
-    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
+    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
   )
 
   const uniqueTopics = Array.from(new Set(data.flatMap((node) => node.topic!)))
