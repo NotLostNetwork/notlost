@@ -24,6 +24,7 @@
     "@twallpaper/react": "^2.1.2",
     "eruda": "^3.4.1",
     "framer-motion": "^11.13.3",
+    "idb": "^8.0.0",
     "lottie-react": "^2.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
