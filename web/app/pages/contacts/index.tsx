@@ -38,6 +38,7 @@ const ContactsPage = () => {
         ref={filtersBlock}
         className="pt-12 pb-4 fixed z-50 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
+        <div className='text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse'>NotLost Alpha</div>
         <FilterBySearch
           value={filtersState.searchState}
           onChange={(value: string) =>
@@ -77,7 +78,6 @@ const ContactsPage = () => {
             }}
           />
         </div>
-        <div className='text-blue-500 font-semibold text-center mr-4 mt-2'>NotLost Alpha</div>
       </div>
       {graphMode ? (
         <ContactsGraph
