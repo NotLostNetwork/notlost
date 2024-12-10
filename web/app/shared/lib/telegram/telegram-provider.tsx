@@ -1,17 +1,18 @@
-import React, { PropsWithChildren, useEffect } from "react"
-import { AppRoot } from "@telegram-apps/telegram-ui"
+import * as TelegramUI from "@telegram-apps/telegram-ui"
 import "@telegram-apps/telegram-ui/dist/styles.css"
+import { PropsWithChildren, useEffect } from "react"
+const { AppRoot } = TelegramUI
 
 import "@telegram-apps/telegram-ui/dist/styles.css"
 
 // Mock the environment in case, we are outside Telegram.
-import "./miniAppEnv/mock-env"
 import {
   initData,
   postEvent,
   retrieveLaunchParams,
 } from "@telegram-apps/sdk-react"
 import { init } from "./miniAppEnv/init"
+import "./miniAppEnv/mock-env"
 
 function TelegramProvider({ children }: PropsWithChildren) {
   init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV)
