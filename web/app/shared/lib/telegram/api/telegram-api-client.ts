@@ -8,6 +8,8 @@ class TelegramApiClient {
   private static instance: TelegramApiClient
 
   private client: TelegramClient
+  private apiId: number 
+  private apiHash: string
 
   private avatarsQueue: (() => Promise<void>)[] = []
   private downloadedAvatars = 0
@@ -15,11 +17,13 @@ class TelegramApiClient {
   private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
   private constructor(
-    session: StringSession,
     api_id: number,
     api_hash: string,
   ) {
-    this.client = new TelegramClient(session, api_id, api_hash, {
+    this.apiId = api_id
+    this.apiHash = api_hash
+    
+    this.client = new TelegramClient(new StringSession(/* TODO: get stored string session */ ""), api_id, api_hash, {
       connectionRetries: 5,
     })
   }
@@ -34,6 +38,36 @@ class TelegramApiClient {
       console.error("Failed to connect Telegram client:", error)
       throw error
     }
+  }
+
+  public async sendSignInCode(phoneNumber: string): Promise<void> {
+    await this.initialize()
+    await this.client.sendCode(
+      {
+        apiId: this.apiId,
+        apiHash: this.apiHash
+      },
+      phoneNumber
+    )
+  }
+
+  public async signIn(
+    phoneNumber: string,
+    password: string,
+    phoneCode: string
+  ): Promise<void> {
+    try {
+      return await this.client.start({ phoneNumber, password: userAuthParamCallback(password), phoneCode: userAuthParamCallback(phoneCode), onError: (e) => {
+        console.log(e)
+        return
+      } })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  public getSession(): string {
+    return JSON.stringify(this.client.session.save())
   }
 
   async getPhoto(username: string): Promise<Buffer> {
@@ -121,18 +155,24 @@ class TelegramApiClient {
   }
 
   public static getInstance(
-    session: StringSession,
     api_id: number,
     api_hash: string,
   ) {
     if (!TelegramApiClient.instance) {
       TelegramApiClient.instance = new TelegramApiClient(
-        session,
         api_id,
         api_hash,
       )
     }
     return TelegramApiClient.instance
+  }
+}
+
+function userAuthParamCallback <T> (param: T): () => Promise<T> {
+  return async function () {
+    return await new Promise<T>(resolve => {
+      resolve(param)
+    })
   }
 }
 
