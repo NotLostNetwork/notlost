@@ -2,6 +2,7 @@ import TWallpaper from "@twallpaper/react"
 import React from "react"
 import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
 import "@twallpaper/react/css"
+import tgWallpaperParis from "@/shared/assets/tg-wallpaper-paris.svg"
 
 const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
   const darkThemeColors = ["#232e3c", "#232e3c", "#232e3c", "#232e3c"]
@@ -16,7 +17,7 @@ const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
         scrollAnimate: true,
         colors: withAccent ? darkThemeColorsWithAccent : darkThemeColors,
         pattern: {
-          image: "https://twallpaper.js.org/patterns/paris.svg",
+          image: tgWallpaperParis,
           background: getCssVariableValue("--tg-theme-bg-color"),
           blur: 0,
           size: "420px",
