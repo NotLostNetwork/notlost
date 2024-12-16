@@ -19,6 +19,6 @@
       "@/*": ["./app/*"]
     },
     "noEmit": true,
-    "types": ["@ronin/notlost"]
+    "types": ["@ronin-types/notlost"]
   }
 }
