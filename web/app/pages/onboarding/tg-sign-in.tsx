@@ -11,14 +11,15 @@ const TgSignIn = () => {
     $sendCode({ data: phoneNumber })
   }
 
-  const signIn = () => {
-    $signIn({
+  const signIn = async () => {
+    const res = await $signIn({
       data: {
         phone: phoneNumber,
         phoneCode,
         password,
       },
     })
+    console.log(res)
   }
 
   return (

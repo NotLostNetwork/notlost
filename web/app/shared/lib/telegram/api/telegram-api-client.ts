@@ -3,6 +3,7 @@ import { StringSession } from "telegram/sessions"
 import bigInt from "big-integer"
 import Photo = Api.Photo
 import { Buffer } from "buffer"
+import { getCookie } from "vinxi/http"
 
 class TelegramApiClient {
   private static instance: TelegramApiClient
@@ -19,9 +20,8 @@ class TelegramApiClient {
   private constructor(api_id: number, api_hash: string) {
     this.apiId = api_id
     this.apiHash = api_hash
-
     this.client = new TelegramClient(
-      new StringSession(/* TODO: get stored string session */ ""),
+      new StringSession(decodeURIComponent(getCookie("telegramStringSession") || "").replace(/"/g, '')),
       api_id,
       api_hash,
       {
