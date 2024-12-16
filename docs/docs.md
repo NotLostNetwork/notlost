@@ -1,4 +1,5 @@
-- to update types of ronin after schema changes, do `bun update @ronin/notlost`
+- to update types of ronin after schema changes, do `bun update @ronin-types/notlost`
+  - this will not be needed soon though
 
 ## how to do referential data in RONIN
 
