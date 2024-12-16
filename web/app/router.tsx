@@ -16,7 +16,7 @@ export function createRouter() {
       defaultErrorComponent: DefaultCatchBoundary,
       defaultNotFoundComponent: () => <NotFound />,
     }),
-    queryClient,
+    queryClient
   )
 }
 

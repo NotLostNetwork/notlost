@@ -18,21 +18,25 @@ export const $getTelegramUser = createServerFn({ method: "GET" })
     return await client.getUserByUsername(ctx.data)
   })
 
-export const $sendCode = createServerFn({method: "GET"})
+export const $sendCode = createServerFn({ method: "GET" })
   .validator((data: string) => data)
   .handler(async (ctx) => {
-    const res =  await client.sendSignInCode(ctx.data)
+    const res = await client.sendSignInCode(ctx.data)
     return res
   })
 
-export const $signIn = createServerFn({method: "GET"})
-.validator((data: SignInData) => data)
-.handler(async (ctx) => {
-  console.log(ctx.data)
-  const res = await client.signIn(ctx.data.phone, ctx.data.password, ctx.data.phoneCode)
-  // TODO: need to store client.getSession()
-  return res
-})
+export const $signIn = createServerFn({ method: "GET" })
+  .validator((data: SignInData) => data)
+  .handler(async (ctx) => {
+    console.log(ctx.data)
+    const res = await client.signIn(
+      ctx.data.phone,
+      ctx.data.password,
+      ctx.data.phoneCode
+    )
+    // TODO: need to store client.getSession()
+    return res
+  })
 
 interface SignInData {
   phone: string

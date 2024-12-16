@@ -12,6 +12,6 @@ function LayoutComponent() {
   )
 }
 
-export const Route = createFileRoute("/_pages/app/_tab-bar")({
+export const Route = createFileRoute("/app/_tab-bar")({
   component: LayoutComponent,
 })

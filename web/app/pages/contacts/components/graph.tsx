@@ -17,7 +17,7 @@ const ContactsGraph = ({
   selectTopic: (topic: string) => void
 }) => {
   const LazyForceGraph = lazyWithPreload(
-    () => import("~/shared/ui/force-graph"),
+    () => import("~/shared/ui/force-graph")
   )
   LazyForceGraph.preload()
 

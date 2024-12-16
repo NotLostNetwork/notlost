@@ -2,7 +2,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router"
 import "@/shared/styles/app.css"
 import TelegramProvider from "~/shared/lib/telegram/telegram-provider"
 
-export const Route = createFileRoute("/_pages")({
+export const Route = createFileRoute("/app")({
   component: RouteComponent,
 })
 

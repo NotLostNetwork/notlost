@@ -8,7 +8,7 @@ class TelegramApiClient {
   private static instance: TelegramApiClient
 
   private client: TelegramClient
-  private apiId: number 
+  private apiId: number
   private apiHash: string
 
   private avatarsQueue: (() => Promise<void>)[] = []
@@ -16,16 +16,18 @@ class TelegramApiClient {
   private isProcessingInAvatarQueue = false
   private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
-  private constructor(
-    api_id: number,
-    api_hash: string,
-  ) {
+  private constructor(api_id: number, api_hash: string) {
     this.apiId = api_id
     this.apiHash = api_hash
-    
-    this.client = new TelegramClient(new StringSession(/* TODO: get stored string session */ ""), api_id, api_hash, {
-      connectionRetries: 5,
-    })
+
+    this.client = new TelegramClient(
+      new StringSession(/* TODO: get stored string session */ ""),
+      api_id,
+      api_hash,
+      {
+        connectionRetries: 5,
+      }
+    )
   }
 
   public async initialize(): Promise<void> {
@@ -45,7 +47,7 @@ class TelegramApiClient {
     await this.client.sendCode(
       {
         apiId: this.apiId,
-        apiHash: this.apiHash
+        apiHash: this.apiHash,
       },
       phoneNumber
     )
@@ -57,10 +59,15 @@ class TelegramApiClient {
     phoneCode: string
   ): Promise<void> {
     try {
-      return await this.client.start({ phoneNumber, password: userAuthParamCallback(password), phoneCode: userAuthParamCallback(phoneCode), onError: (e) => {
-        console.log(e)
-        return
-      } })
+      return await this.client.start({
+        phoneNumber,
+        password: userAuthParamCallback(password),
+        phoneCode: userAuthParamCallback(phoneCode),
+        onError: (e) => {
+          console.log(e)
+          return
+        },
+      })
     } catch (e) {
       console.log(e)
     }
@@ -88,7 +95,7 @@ class TelegramApiClient {
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
               userId: username,
-            }),
+            })
           )
 
           const photo = result.photos[0] as Photo
@@ -104,7 +111,7 @@ class TelegramApiClient {
             {
               dcId: photo.dcId,
               fileSize: bigInt(829542),
-            },
+            }
           )
 
           if (Buffer.isBuffer(res)) {
@@ -136,7 +143,7 @@ class TelegramApiClient {
     const result = await this.client.invoke(
       new Api.users.GetUsers({
         id: [username],
-      }),
+      })
     )
     return result
   }
@@ -154,23 +161,17 @@ class TelegramApiClient {
     }
   }
 
-  public static getInstance(
-    api_id: number,
-    api_hash: string,
-  ) {
+  public static getInstance(api_id: number, api_hash: string) {
     if (!TelegramApiClient.instance) {
-      TelegramApiClient.instance = new TelegramApiClient(
-        api_id,
-        api_hash,
-      )
+      TelegramApiClient.instance = new TelegramApiClient(api_id, api_hash)
     }
     return TelegramApiClient.instance
   }
 }
 
-function userAuthParamCallback <T> (param: T): () => Promise<T> {
+function userAuthParamCallback<T>(param: T): () => Promise<T> {
   return async function () {
-    return await new Promise<T>(resolve => {
+    return await new Promise<T>((resolve) => {
       resolve(param)
     })
   }

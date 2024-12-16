@@ -8,28 +8,23 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PagesImport } from './routes/_pages'
+import { Route as AppImport } from './routes/app'
 import { Route as IndexImport } from './routes/index'
-import { Route as PagesAppIndexImport } from './routes/_pages/app/index'
-import { Route as PagesAppTgSignInImport } from './routes/_pages/app/tg-sign-in'
-import { Route as PagesAppOnboardingImport } from './routes/_pages/app/onboarding'
-import { Route as PagesAppTabBarImport } from './routes/_pages/app/_tab-bar'
-import { Route as PagesAppTabBarGraphImport } from './routes/_pages/app/_tab-bar/graph'
-import { Route as PagesAppTabBarContactsImport } from './routes/_pages/app/_tab-bar/contacts'
-
-// Create Virtual Routes
-
-const PagesAppImport = createFileRoute('/_pages/app')()
+import { Route as AppIndexImport } from './routes/app/index'
+import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
+import { Route as AppOnboardingImport } from './routes/app/onboarding'
+import { Route as AppTabBarImport } from './routes/app/_tab-bar'
+import { Route as AppTabBarGraphImport } from './routes/app/_tab-bar/graph'
+import { Route as AppTabBarContactsImport } from './routes/app/_tab-bar/contacts'
 
 // Create/Update Routes
 
-const PagesRoute = PagesImport.update({
-  id: '/_pages',
+const AppRoute = AppImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,45 +34,39 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PagesAppRoute = PagesAppImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => PagesRoute,
-} as any)
-
-const PagesAppIndexRoute = PagesAppIndexImport.update({
+const AppIndexRoute = AppIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PagesAppRoute,
+  getParentRoute: () => AppRoute,
 } as any)
 
-const PagesAppTgSignInRoute = PagesAppTgSignInImport.update({
+const AppTgSignInRoute = AppTgSignInImport.update({
   id: '/tg-sign-in',
   path: '/tg-sign-in',
-  getParentRoute: () => PagesAppRoute,
+  getParentRoute: () => AppRoute,
 } as any)
 
-const PagesAppOnboardingRoute = PagesAppOnboardingImport.update({
+const AppOnboardingRoute = AppOnboardingImport.update({
   id: '/onboarding',
   path: '/onboarding',
-  getParentRoute: () => PagesAppRoute,
+  getParentRoute: () => AppRoute,
 } as any)
 
-const PagesAppTabBarRoute = PagesAppTabBarImport.update({
+const AppTabBarRoute = AppTabBarImport.update({
   id: '/_tab-bar',
-  getParentRoute: () => PagesAppRoute,
+  getParentRoute: () => AppRoute,
 } as any)
 
-const PagesAppTabBarGraphRoute = PagesAppTabBarGraphImport.update({
+const AppTabBarGraphRoute = AppTabBarGraphImport.update({
   id: '/graph',
   path: '/graph',
-  getParentRoute: () => PagesAppTabBarRoute,
+  getParentRoute: () => AppTabBarRoute,
 } as any)
 
-const PagesAppTabBarContactsRoute = PagesAppTabBarContactsImport.update({
+const AppTabBarContactsRoute = AppTabBarContactsImport.update({
   id: '/contacts',
   path: '/contacts',
-  getParentRoute: () => PagesAppTabBarRoute,
+  getParentRoute: () => AppTabBarRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -91,148 +80,125 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/_pages': {
-      id: '/_pages'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PagesImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
-    '/_pages/app': {
-      id: '/_pages/app'
-      path: '/app'
+    '/app/_tab-bar': {
+      id: '/app/_tab-bar'
+      path: ''
       fullPath: '/app'
-      preLoaderRoute: typeof PagesAppImport
-      parentRoute: typeof PagesImport
+      preLoaderRoute: typeof AppTabBarImport
+      parentRoute: typeof AppImport
     }
-    '/_pages/app/_tab-bar': {
-      id: '/_pages/app/_tab-bar'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof PagesAppTabBarImport
-      parentRoute: typeof PagesAppRoute
-    }
-    '/_pages/app/onboarding': {
-      id: '/_pages/app/onboarding'
+    '/app/onboarding': {
+      id: '/app/onboarding'
       path: '/onboarding'
       fullPath: '/app/onboarding'
-      preLoaderRoute: typeof PagesAppOnboardingImport
-      parentRoute: typeof PagesAppImport
+      preLoaderRoute: typeof AppOnboardingImport
+      parentRoute: typeof AppImport
     }
-    '/_pages/app/tg-sign-in': {
-      id: '/_pages/app/tg-sign-in'
+    '/app/tg-sign-in': {
+      id: '/app/tg-sign-in'
       path: '/tg-sign-in'
       fullPath: '/app/tg-sign-in'
-      preLoaderRoute: typeof PagesAppTgSignInImport
-      parentRoute: typeof PagesAppImport
+      preLoaderRoute: typeof AppTgSignInImport
+      parentRoute: typeof AppImport
     }
-    '/_pages/app/': {
-      id: '/_pages/app/'
+    '/app/': {
+      id: '/app/'
       path: '/'
       fullPath: '/app/'
-      preLoaderRoute: typeof PagesAppIndexImport
-      parentRoute: typeof PagesAppImport
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppImport
     }
-    '/_pages/app/_tab-bar/contacts': {
-      id: '/_pages/app/_tab-bar/contacts'
+    '/app/_tab-bar/contacts': {
+      id: '/app/_tab-bar/contacts'
       path: '/contacts'
       fullPath: '/app/contacts'
-      preLoaderRoute: typeof PagesAppTabBarContactsImport
-      parentRoute: typeof PagesAppTabBarImport
+      preLoaderRoute: typeof AppTabBarContactsImport
+      parentRoute: typeof AppTabBarImport
     }
-    '/_pages/app/_tab-bar/graph': {
-      id: '/_pages/app/_tab-bar/graph'
+    '/app/_tab-bar/graph': {
+      id: '/app/_tab-bar/graph'
       path: '/graph'
       fullPath: '/app/graph'
-      preLoaderRoute: typeof PagesAppTabBarGraphImport
-      parentRoute: typeof PagesAppTabBarImport
+      preLoaderRoute: typeof AppTabBarGraphImport
+      parentRoute: typeof AppTabBarImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface PagesAppTabBarRouteChildren {
-  PagesAppTabBarContactsRoute: typeof PagesAppTabBarContactsRoute
-  PagesAppTabBarGraphRoute: typeof PagesAppTabBarGraphRoute
+interface AppTabBarRouteChildren {
+  AppTabBarContactsRoute: typeof AppTabBarContactsRoute
+  AppTabBarGraphRoute: typeof AppTabBarGraphRoute
 }
 
-const PagesAppTabBarRouteChildren: PagesAppTabBarRouteChildren = {
-  PagesAppTabBarContactsRoute: PagesAppTabBarContactsRoute,
-  PagesAppTabBarGraphRoute: PagesAppTabBarGraphRoute,
+const AppTabBarRouteChildren: AppTabBarRouteChildren = {
+  AppTabBarContactsRoute: AppTabBarContactsRoute,
+  AppTabBarGraphRoute: AppTabBarGraphRoute,
 }
 
-const PagesAppTabBarRouteWithChildren = PagesAppTabBarRoute._addFileChildren(
-  PagesAppTabBarRouteChildren,
+const AppTabBarRouteWithChildren = AppTabBarRoute._addFileChildren(
+  AppTabBarRouteChildren,
 )
 
-interface PagesAppRouteChildren {
-  PagesAppTabBarRoute: typeof PagesAppTabBarRouteWithChildren
-  PagesAppOnboardingRoute: typeof PagesAppOnboardingRoute
-  PagesAppTgSignInRoute: typeof PagesAppTgSignInRoute
-  PagesAppIndexRoute: typeof PagesAppIndexRoute
+interface AppRouteChildren {
+  AppTabBarRoute: typeof AppTabBarRouteWithChildren
+  AppOnboardingRoute: typeof AppOnboardingRoute
+  AppTgSignInRoute: typeof AppTgSignInRoute
+  AppIndexRoute: typeof AppIndexRoute
 }
 
-const PagesAppRouteChildren: PagesAppRouteChildren = {
-  PagesAppTabBarRoute: PagesAppTabBarRouteWithChildren,
-  PagesAppOnboardingRoute: PagesAppOnboardingRoute,
-  PagesAppTgSignInRoute: PagesAppTgSignInRoute,
-  PagesAppIndexRoute: PagesAppIndexRoute,
+const AppRouteChildren: AppRouteChildren = {
+  AppTabBarRoute: AppTabBarRouteWithChildren,
+  AppOnboardingRoute: AppOnboardingRoute,
+  AppTgSignInRoute: AppTgSignInRoute,
+  AppIndexRoute: AppIndexRoute,
 }
 
-const PagesAppRouteWithChildren = PagesAppRoute._addFileChildren(
-  PagesAppRouteChildren,
-)
-
-interface PagesRouteChildren {
-  PagesAppRoute: typeof PagesAppRouteWithChildren
-}
-
-const PagesRouteChildren: PagesRouteChildren = {
-  PagesAppRoute: PagesAppRouteWithChildren,
-}
-
-const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof PagesRouteWithChildren
-  '/app': typeof PagesAppTabBarRouteWithChildren
-  '/app/onboarding': typeof PagesAppOnboardingRoute
-  '/app/tg-sign-in': typeof PagesAppTgSignInRoute
-  '/app/': typeof PagesAppIndexRoute
-  '/app/contacts': typeof PagesAppTabBarContactsRoute
-  '/app/graph': typeof PagesAppTabBarGraphRoute
+  '/app': typeof AppTabBarRouteWithChildren
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/': typeof AppIndexRoute
+  '/app/contacts': typeof AppTabBarContactsRoute
+  '/app/graph': typeof AppTabBarGraphRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof PagesRouteWithChildren
-  '/app': typeof PagesAppIndexRoute
-  '/app/onboarding': typeof PagesAppOnboardingRoute
-  '/app/tg-sign-in': typeof PagesAppTgSignInRoute
-  '/app/contacts': typeof PagesAppTabBarContactsRoute
-  '/app/graph': typeof PagesAppTabBarGraphRoute
+  '/app': typeof AppIndexRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/contacts': typeof AppTabBarContactsRoute
+  '/app/graph': typeof AppTabBarGraphRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_pages': typeof PagesRouteWithChildren
-  '/_pages/app': typeof PagesAppRouteWithChildren
-  '/_pages/app/_tab-bar': typeof PagesAppTabBarRouteWithChildren
-  '/_pages/app/onboarding': typeof PagesAppOnboardingRoute
-  '/_pages/app/tg-sign-in': typeof PagesAppTgSignInRoute
-  '/_pages/app/': typeof PagesAppIndexRoute
-  '/_pages/app/_tab-bar/contacts': typeof PagesAppTabBarContactsRoute
-  '/_pages/app/_tab-bar/graph': typeof PagesAppTabBarGraphRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/_tab-bar': typeof AppTabBarRouteWithChildren
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/': typeof AppIndexRoute
+  '/app/_tab-bar/contacts': typeof AppTabBarContactsRoute
+  '/app/_tab-bar/graph': typeof AppTabBarGraphRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | ''
     | '/app'
     | '/app/onboarding'
     | '/app/tg-sign-in'
@@ -242,7 +208,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | ''
     | '/app'
     | '/app/onboarding'
     | '/app/tg-sign-in'
@@ -251,25 +216,24 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_pages'
-    | '/_pages/app'
-    | '/_pages/app/_tab-bar'
-    | '/_pages/app/onboarding'
-    | '/_pages/app/tg-sign-in'
-    | '/_pages/app/'
-    | '/_pages/app/_tab-bar/contacts'
-    | '/_pages/app/_tab-bar/graph'
+    | '/app'
+    | '/app/_tab-bar'
+    | '/app/onboarding'
+    | '/app/tg-sign-in'
+    | '/app/'
+    | '/app/_tab-bar/contacts'
+    | '/app/_tab-bar/graph'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PagesRoute: typeof PagesRouteWithChildren
+  AppRoute: typeof AppRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PagesRoute: PagesRouteWithChildren,
+  AppRoute: AppRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -283,55 +247,48 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_pages"
+        "/app"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/_pages": {
-      "filePath": "_pages.tsx",
+    "/app": {
+      "filePath": "app.tsx",
       "children": [
-        "/_pages/app"
+        "/app/_tab-bar",
+        "/app/onboarding",
+        "/app/tg-sign-in",
+        "/app/"
       ]
     },
-    "/_pages/app": {
-      "filePath": "_pages/app",
-      "parent": "/_pages",
+    "/app/_tab-bar": {
+      "filePath": "app/_tab-bar.tsx",
+      "parent": "/app",
       "children": [
-        "/_pages/app/_tab-bar",
-        "/_pages/app/onboarding",
-        "/_pages/app/tg-sign-in",
-        "/_pages/app/"
+        "/app/_tab-bar/contacts",
+        "/app/_tab-bar/graph"
       ]
     },
-    "/_pages/app/_tab-bar": {
-      "filePath": "_pages/app/_tab-bar.tsx",
-      "parent": "/_pages/app",
-      "children": [
-        "/_pages/app/_tab-bar/contacts",
-        "/_pages/app/_tab-bar/graph"
-      ]
+    "/app/onboarding": {
+      "filePath": "app/onboarding.tsx",
+      "parent": "/app"
     },
-    "/_pages/app/onboarding": {
-      "filePath": "_pages/app/onboarding.tsx",
-      "parent": "/_pages/app"
+    "/app/tg-sign-in": {
+      "filePath": "app/tg-sign-in.tsx",
+      "parent": "/app"
     },
-    "/_pages/app/tg-sign-in": {
-      "filePath": "_pages/app/tg-sign-in.tsx",
-      "parent": "/_pages/app"
+    "/app/": {
+      "filePath": "app/index.tsx",
+      "parent": "/app"
     },
-    "/_pages/app/": {
-      "filePath": "_pages/app/index.tsx",
-      "parent": "/_pages/app"
+    "/app/_tab-bar/contacts": {
+      "filePath": "app/_tab-bar/contacts.tsx",
+      "parent": "/app/_tab-bar"
     },
-    "/_pages/app/_tab-bar/contacts": {
-      "filePath": "_pages/app/_tab-bar/contacts.tsx",
-      "parent": "/_pages/app/_tab-bar"
-    },
-    "/_pages/app/_tab-bar/graph": {
-      "filePath": "_pages/app/_tab-bar/graph.tsx",
-      "parent": "/_pages/app/_tab-bar"
+    "/app/_tab-bar/graph": {
+      "filePath": "app/_tab-bar/graph.tsx",
+      "parent": "/app/_tab-bar"
     }
   }
 }

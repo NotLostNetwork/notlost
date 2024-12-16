@@ -114,7 +114,7 @@ const ForceGraph = ({
       ctx.textBaseline = "top"
       ctx.fillStyle = hexToRgba(
         getCssVariableValue("--tg-theme-text-color"),
-        textOpacity,
+        textOpacity
       )
 
       ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 2 + 1)
@@ -122,7 +122,7 @@ const ForceGraph = ({
       ctx.font = `400 ${fontSizeSecond}px Sans-Serif`
       ctx.fillStyle = hexToRgba(
         getCssVariableValue("--tg-theme-link-color"),
-        textOpacity * 0.8,
+        textOpacity * 0.8
       )
       const lineHeight = fontSize * 1.2
 
@@ -131,7 +131,7 @@ const ForceGraph = ({
         ctx.fillText(
           "@" + node.username!,
           node.x!,
-          node.y! + imgSize / 2 + 1 + lineHeight,
+          node.y! + imgSize / 2 + 1 + lineHeight
         )
       }
 
@@ -148,7 +148,7 @@ const ForceGraph = ({
           node.x! - imgSize / 2,
           node.y! - imgSize / 2,
           imgSize,
-          imgSize,
+          imgSize
         )
         ctx.save()
         ctx.beginPath()
@@ -171,11 +171,11 @@ const ForceGraph = ({
           node.x! - imgSize / 2,
           node.y! - imgSize / 2,
           imgSize,
-          imgSize,
+          imgSize
         )
       }
     },
-    [imageCache],
+    [imageCache]
   )
 
   return (
@@ -202,11 +202,11 @@ const ForceGraph = ({
         ctx.beginPath()
         ctx.moveTo(
           (link.source as { x: number; y: number }).x,
-          (link.source as { x: number; y: number }).y,
+          (link.source as { x: number; y: number }).y
         )
         ctx.lineTo(
           (link.target as { x: number; y: number }).x,
-          (link.target as { x: number; y: number }).y,
+          (link.target as { x: number; y: number }).y
         )
         ctx.stroke()
       }}

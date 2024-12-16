@@ -47,6 +47,6 @@ function RouteComponent() {
   return <></>
 }
 
-export const Route = createFileRoute("/_pages/app/")({
+export const Route = createFileRoute("/app/")({
   component: RouteComponent,
 })

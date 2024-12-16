@@ -22,7 +22,7 @@ const destroyLocalDB = async () => {
 }
 
 export const getCachedAvatar = async (
-  username: string,
+  username: string
 ): Promise<Blob | null> => {
   const db = await initDB()
   const base64Avatar = await db.get(STORE_NAME, `telegramAvatar@${username}`)
@@ -35,7 +35,7 @@ export const getCachedAvatar = async (
 
 export const setCachedAvatar = async (
   username: string,
-  avatarBuffer: Buffer,
+  avatarBuffer: Buffer
 ) => {
   const db = await initDB()
   const base64Avatar = arrayBufferToBase64(avatarBuffer)

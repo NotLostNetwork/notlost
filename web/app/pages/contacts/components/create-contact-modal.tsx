@@ -33,7 +33,7 @@ const CreateContactModal = ({
         if (res[0]) {
           setTelegramUserSearch(res[0] as TelegramUser)
         }
-      },
+      }
     )
   }, [telegramUserValue])
 

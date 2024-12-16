@@ -21,7 +21,7 @@ export const useContactsState = (data: UserContact[]) => {
 
   const updateFilterState = (
     filter: Filter,
-    value: string | boolean | null,
+    value: string | boolean | null
   ) => {
     setFiltersData((prev) => ({
       ...prev,
@@ -32,7 +32,7 @@ export const useContactsState = (data: UserContact[]) => {
   const toggleGraphMode = () => setGraphMode(!graphMode)
 
   const uniqueTags = Array.from(
-    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || [])),
+    new Set(data.flatMap((node) => node.tags?.map((tag) => tag.title) || []))
   )
 
   const uniqueTopics = Array.from(new Set(data.flatMap((node) => node.topic!)))
