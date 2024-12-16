@@ -6,7 +6,7 @@ import TWallpaper from "@twallpaper/react"
 import { $createUser } from "~/entities/user/api"
 import utyaCool from "@/shared/assets/utya-cool.gif"
 import TgWallpaper from "~/shared/ui/tg-wallpaper"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
+import { Route as ContactsRoute } from "~/routes/_pages/app/_tab-bar/contacts"
 
 function OnboardingPage() {
   const navigate = useNavigate()

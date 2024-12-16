@@ -3,8 +3,8 @@ import { SearchIcon } from "~/shared/assets/icons/iconsAsComponent/search-icon"
 import { GraphIcon } from "~/shared/assets/icons/iconsAsComponent/graph-icon"
 import React from "react"
 import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
-import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
+import { Route as GraphRoute } from "~/routes/_pages/app/_tab-bar/graph"
+import { Route as ContactsRoute } from "~/routes/_pages/app/_tab-bar/contacts"
 
 export default function BottomBar() {
   return (
