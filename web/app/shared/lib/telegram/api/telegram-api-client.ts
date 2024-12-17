@@ -3,7 +3,7 @@ import { StringSession } from "telegram/sessions"
 import bigInt from "big-integer"
 import Photo = Api.Photo
 import { Buffer } from "buffer"
-import { getCookie } from "vinxi/http"
+import { getAndDecodeCookie } from "../../utils/funcs/get-cookie"
 
 class TelegramApiClient {
   private static instance: TelegramApiClient
@@ -17,11 +17,12 @@ class TelegramApiClient {
   private isProcessingInAvatarQueue = false
   private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
-  private constructor(api_id: number, api_hash: string) {
+  private constructor(api_id: number, api_hash: string, string_session: string) {
     this.apiId = api_id
     this.apiHash = api_hash
+
     this.client = new TelegramClient(
-      new StringSession(decodeURIComponent(getCookie("telegramStringSession") || "").replace(/"/g, '')),
+      new StringSession(string_session),
       api_id,
       api_hash,
       {
@@ -161,9 +162,9 @@ class TelegramApiClient {
     }
   }
 
-  public static getInstance(api_id: number, api_hash: string) {
+  public static getInstance(api_id: number, api_hash: string, string_session: string) {
     if (!TelegramApiClient.instance) {
-      TelegramApiClient.instance = new TelegramApiClient(api_id, api_hash)
+      TelegramApiClient.instance = new TelegramApiClient(api_id, api_hash, string_session)
     }
     return TelegramApiClient.instance
   }

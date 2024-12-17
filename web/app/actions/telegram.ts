@@ -1,16 +1,17 @@
 import { createServerFn } from "@tanstack/start"
-import { getWebRequest, setCookie, getCookie } from "vinxi/http"
+import { setCookie } from "vinxi/http"
 import TelegramApiClient from "~/shared/lib/telegram/api/telegram-api-client"
+import { getAndDecodeCookie } from "~/shared/lib/utils/funcs/get-cookie"
 
 const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH
+const STRING_SESSION = getAndDecodeCookie("telegramStringSession")
 
-const client = TelegramApiClient.getInstance(API_ID, API_HASH!)
+const client = TelegramApiClient.getInstance(API_ID, API_HASH!, STRING_SESSION || "")
 
 export const $getTelegramPhoto = createServerFn({ method: "GET" })
   .validator((data: string) => data)
   .handler(async (ctx) => {
-    
     return await client.getPhoto(ctx.data)
   })
 
@@ -36,12 +37,10 @@ export const $signIn = createServerFn({ method: "GET" })
       ctx.data.password,
       ctx.data.phoneCode
     )
-    console.log(res)
     setCookie("telegramStringSession", client.getSession(), {
       path: "/",              
       maxAge: 90*24*60*60,  
-      // TODO: secure - true on prod
-      secure: false,           
+      secure: true,           
       httpOnly: true,         
       sameSite: "lax",       
     });
