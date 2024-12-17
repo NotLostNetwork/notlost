@@ -19,6 +19,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     try {
       if (initData) {
+        postEvent("web_app_expand")
         postEvent("web_app_request_fullscreen")
         postEvent("web_app_setup_swipe_behavior", {
           allow_vertical_swipe: false,
