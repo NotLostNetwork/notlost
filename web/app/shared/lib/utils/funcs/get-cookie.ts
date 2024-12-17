@@ -7,10 +7,14 @@ export const getAndDecodeCookie = (key: string): string | null => {
     if (!cookie) return null
 
     return decodeURIComponent(cookie).replace(/"/g, "")
-    
+
   } catch (e) {
     console.log(e)
   }
 
   return null
+}
+
+export enum COOKIE {
+  TELEGRAM_STRING_SESSION = "telegramStringSession"
 }
