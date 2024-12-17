@@ -6,10 +6,11 @@ export const getAndDecodeCookie = (key: string): string | null => {
 
     if (!cookie) return null
 
-    return decodeURIComponent(cookie).replace(/"/g, '')
+    return decodeURIComponent(cookie).replace(/"/g, "")
+    
   } catch (e) {
     console.log(e)
   }
-  
+
   return null
 }

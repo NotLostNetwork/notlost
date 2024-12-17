@@ -17,7 +17,11 @@ class TelegramApiClient {
   private isProcessingInAvatarQueue = false
   private inFlightAvatarPromises: Map<string, Promise<Buffer>> = new Map()
 
-  private constructor(api_id: number, api_hash: string, string_session: string) {
+  private constructor(
+    api_id: number,
+    api_hash: string,
+    string_session: string
+  ) {
     this.apiId = api_id
     this.apiHash = api_hash
 
@@ -162,9 +166,17 @@ class TelegramApiClient {
     }
   }
 
-  public static getInstance(api_id: number, api_hash: string, string_session: string) {
+  public static getInstance(
+    api_id: number,
+    api_hash: string,
+    string_session: string
+  ) {
     if (!TelegramApiClient.instance) {
-      TelegramApiClient.instance = new TelegramApiClient(api_id, api_hash, string_session)
+      TelegramApiClient.instance = new TelegramApiClient(
+        api_id,
+        api_hash,
+        string_session
+      )
     }
     return TelegramApiClient.instance
   }

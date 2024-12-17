@@ -7,7 +7,11 @@ const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH
 const STRING_SESSION = getAndDecodeCookie("telegramStringSession")
 
-const client = TelegramApiClient.getInstance(API_ID, API_HASH!, STRING_SESSION || "")
+const client = TelegramApiClient.getInstance(
+  API_ID,
+  API_HASH!,
+  STRING_SESSION || ""
+)
 
 export const $getTelegramPhoto = createServerFn({ method: "GET" })
   .validator((data: string) => data)
@@ -38,12 +42,12 @@ export const $signIn = createServerFn({ method: "GET" })
       ctx.data.phoneCode
     )
     setCookie("telegramStringSession", client.getSession(), {
-      path: "/",              
-      maxAge: 90*24*60*60,  
-      secure: true,           
-      httpOnly: true,         
-      sameSite: "lax",       
-    });
+      path: "/",
+      maxAge: 90 * 24 * 60 * 60,
+      secure: true,
+      httpOnly: true,
+      sameSite: "lax",
+    })
     return res
   })
 
