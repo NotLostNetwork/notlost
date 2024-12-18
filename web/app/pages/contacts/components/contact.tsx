@@ -28,7 +28,7 @@ const Contact = ({ node }: { node: UserContact }) => {
           stiffness: 300,
         }}
       >
-        <Button mode={"plain"} stretched={true} style={{ padding: 0 }}>
+        <Button mode={"plain"} stretched={true} style={{ padding: 0 }} onClick={() => window.open(`https://t.me/${node.username}`)}>
           <div className={`flex px-4 min-h-20 justify-center text-sm relative`}>
             <div className="h-20 flex items-center">
               {avatarUrl ? (
