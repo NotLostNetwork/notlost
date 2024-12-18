@@ -1,7 +1,13 @@
 import { $getTelegramPhoto } from "~/actions/telegram"
 import { getCachedAvatar, setCachedAvatar } from "../../utils/local-db"
+import shestayaLiniyaAvatar from "~/shared/assets/trialAvatars/shestaya_liniya.jpeg"
+import piraJokeAvatar from "~/shared/assets/trialAvatars/pirajoke.jpeg"
+import nikiviAvatar from "~/shared/assets/trialAvatars/nikivi.jpeg"
+import skywlkAvatar from "~/shared/assets/trialAvatars/sky_wlk.jpeg"
+import vladbyelikAvatar from "~/shared/assets/trialAvatars/vladbyelik.jpeg"
 
 class TelegramHelper {
+  private trialUsernames = ['shestaya_liniya', 'PiraJoke', 'nikivi', 'skywl_k', 'vladbyelik']
   private sessionAvatarBlobs = new Map<string, string>()
 
   getProfileAvatar = async (username: string): Promise<string> => {
@@ -17,8 +23,25 @@ class TelegramHelper {
     if (cachedAvatar) {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
-      const avatarBufferRes = await $getTelegramPhoto({ data: username })
-      await setCachedAvatar(username, avatarBufferRes.data)
+      try {
+        const avatarBufferRes = await $getTelegramPhoto({ data: username })
+        await setCachedAvatar(username, avatarBufferRes.data)
+      } catch(e) {
+        if (this.trialUsernames.includes(username)) {
+          switch(username) {
+            case TrialUsernames.ShestayaLiniya:
+              return shestayaLiniyaAvatar
+            case TrialUsernames.PiraJoke:
+              return piraJokeAvatar
+            case TrialUsernames.VladByelik:
+              return vladbyelikAvatar
+            case TrialUsernames.Nikivi:
+              return nikiviAvatar
+            case TrialUsernames.SkywlK:
+              return skywlkAvatar
+          }
+        }
+      }
 
       const avatarBlob = await getCachedAvatar(username)
       avatarBlobUrl = URL.createObjectURL(avatarBlob!)
@@ -36,6 +59,14 @@ class TelegramHelper {
   private getSessionBlob = (key: string): string | undefined => {
     return this.sessionAvatarBlobs.get(key)
   }
+}
+
+enum TrialUsernames {
+  ShestayaLiniya = "shestaya_liniya",
+  PiraJoke = "PiraJoke",
+  Nikivi = "nikivi",
+  SkywlK = "skywl_k",
+  VladByelik = "vladbyelik",
 }
 
 export default new TelegramHelper()
