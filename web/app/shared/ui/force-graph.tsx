@@ -27,6 +27,7 @@ const ForceGraph = ({
 }) => {
   const fgRef = React.useRef<ForceGraphMethods>()
   const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
+  const [clickedNodeTimeStamp, setClickedNodeTimeStamp] = useState<number | null>(null)
 
   const links: Link[] = []
   nodes.forEach((nodeBody) => {
@@ -137,39 +138,7 @@ const ForceGraph = ({
           node.y! + imgSize / 4 + 1 + lineHeight,
         )
       }
-      
-      // Tooltip
-      if (node.id === clickedNodeId) {
-        const padding = 2;
-        const borderRadius = 2;
-        const tooltipWidth = 10 + padding * 2;
-        const tooltipHeight = fontSize + padding * 2;
-  
-        const x = node.x! - tooltipWidth / 2;
-        const y = node.y! - imgSize / 4 - tooltipHeight - 2;
-  
-        ctx.fillStyle = "#121212";
-        ctx.beginPath();
-        ctx.moveTo(x + borderRadius, y);
-        ctx.lineTo(x + tooltipWidth - borderRadius, y);
-        ctx.quadraticCurveTo(x + tooltipWidth, y, x + tooltipWidth, y + borderRadius);
-        ctx.lineTo(x + tooltipWidth, y + tooltipHeight - borderRadius);
-        ctx.quadraticCurveTo(x + tooltipWidth, y + tooltipHeight, x + tooltipWidth - borderRadius, y + tooltipHeight);
-        ctx.lineTo(x + borderRadius, y + tooltipHeight);
-        ctx.quadraticCurveTo(x, y + tooltipHeight, x, y + tooltipHeight - borderRadius);
-        ctx.lineTo(x, y + borderRadius);
-        ctx.quadraticCurveTo(x, y, x + borderRadius, y);
-        ctx.closePath();
-        ctx.fill();
-  
-        ctx.fillStyle = "#fff";
-  
-        const imgTooltip = new Image();
-        imgTooltip.src = chatIcon;
-        ctx.drawImage(imgTooltip, x + padding / 2, y + padding / 2, 5, 5);
-      }
-      
-
+    
       const img = imageCache[node.id!]
 
       if (img) {
@@ -220,7 +189,14 @@ const ForceGraph = ({
       graphData={graphData}
       nodeAutoColorBy="group"
       onNodeClick={(node) => {
-        setClickedNodeId(node.id!.toString())
+        // simulate double click
+        if (clickedNodeId === node.id!.toString() && Date.now() - (clickedNodeTimeStamp!)  <= 500) {
+          window.open(`https://t.me/${node.username}`)
+        } else {
+          setClickedNodeId(node.id!.toString())
+          setClickedNodeTimeStamp(Date.now())
+          console.log(clickedNodeTimeStamp)
+        }
       }}
       onBackgroundClick={() => {
         setClickedNodeId(null)
