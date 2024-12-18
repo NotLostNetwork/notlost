@@ -5,6 +5,7 @@ import piraJokeAvatar from "~/shared/assets/trialAvatars/pirajoke.jpeg"
 import nikiviAvatar from "~/shared/assets/trialAvatars/nikivi.jpeg"
 import skywlkAvatar from "~/shared/assets/trialAvatars/sky_wlk.jpeg"
 import vladbyelikAvatar from "~/shared/assets/trialAvatars/vladbyelik.jpeg"
+import notLostBotAvatar from "~/shared/assets/trialAvatars/not_lost_bot.jpeg"
 
 class TelegramHelper {
   private trialUsernames = ['shestaya_liniya', 'PiraJoke', 'nikivi', 'skywl_k', 'vladbyelik']
@@ -24,10 +25,11 @@ class TelegramHelper {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
       try {
+        throw new Error
         const avatarBufferRes = await $getTelegramPhoto({ data: username })
         await setCachedAvatar(username, avatarBufferRes.data)
       } catch(e) {
-        if (this.trialUsernames.includes(username)) {
+        if (Object.values(TrialUsernames).includes(username as TrialUsernames)) {
           switch(username) {
             case TrialUsernames.ShestayaLiniya:
               return shestayaLiniyaAvatar
@@ -39,6 +41,8 @@ class TelegramHelper {
               return nikiviAvatar
             case TrialUsernames.SkywlK:
               return skywlkAvatar
+            case TrialUsernames.NotLostBot:
+              return notLostBotAvatar
           }
         }
       }
@@ -67,6 +71,7 @@ enum TrialUsernames {
   Nikivi = "nikivi",
   SkywlK = "skywl_k",
   VladByelik = "vladbyelik",
+  NotLostBot = "not_lost_bot"
 }
 
 export default new TelegramHelper()

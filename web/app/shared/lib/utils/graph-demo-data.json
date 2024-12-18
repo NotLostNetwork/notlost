@@ -49,63 +49,15 @@
       ]
     },
     {
-      "id": "Denis",
-      "group": 1,
-      "username": "Ukr_Jugend18",
-      "description": "Fullstack developer",
-      "topic": null,
-      "tags": []
-    },
-    {
       "id": "Vlad",
       "group": 1,
       "username": "vladbyelik",
       "description": "Fullstack developer",
-      "topic": null,
-      "tags": []
-    },
-    {
-      "id": "Vlad 2",
-      "group": 1,
-      "username": "vladbyelik",
-      "description": "Fullstack developer",
-      "topic": null,
-      "tags": []
-    },
-    {
-      "id": "Vlad 3",
-      "group": 1,
-      "username": "vladbyelik",
-      "description": "Fullstack developer",
-      "topic": null,
+      "topic": "NotLost Creators",
       "tags": []
     },
     {
       "id": "NotLost Creators",
-      "group": 2,
-      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s",
-      "username": "not_lost_bot",
-      "size": 15,
-      "type": "topic"
-    },
-    {
-      "id": "NotLost Creators 2",
-      "group": 2,
-      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s",
-      "username": "not_lost_bot",
-      "size": 15,
-      "type": "topic"
-    },
-    {
-      "id": "NotLost Creators 3",
-      "group": 2,
-      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s",
-      "username": "not_lost_bot",
-      "size": 15,
-      "type": "topic"
-    },
-    {
-      "id": "NotLost Creators 4",
       "group": 2,
       "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_s4hzT31Pte691BvjmzSisxWjjRGLuGPG_g&s",
       "username": "not_lost_bot",
