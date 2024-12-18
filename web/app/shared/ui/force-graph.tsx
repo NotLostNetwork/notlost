@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useEffect, useState, useCallback } from "react"
 import ForceGraph2D, {
   ForceGraphMethods,
@@ -7,6 +5,7 @@ import ForceGraph2D, {
 } from "react-force-graph-2d"
 import { UserContact } from "~/entities/user/user-contact/interface"
 import TelegramHelper from "~/shared/lib/telegram/api/telegram-helper"
+import chatIcon from "@/shared/assets/icons/chat-round.svg"
 
 import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
 
@@ -27,6 +26,8 @@ const ForceGraph = ({
   selectTopic: (topic: string) => void
 }) => {
   const fgRef = React.useRef<ForceGraphMethods>()
+  const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
+  const [clickedNodeTimeStamp, setClickedNodeTimeStamp] = useState<number | null>(null)
 
   const links: Link[] = []
   nodes.forEach((nodeBody) => {
@@ -36,7 +37,7 @@ const ForceGraph = ({
   })
 
   nodes.forEach((node) => {
-    if (node.type || node.topic === null) {
+    if (node.topic === null) {
       links.push({ source: "Center", target: node.id })
     }
   })
@@ -47,7 +48,7 @@ const ForceGraph = ({
   }
 
   useEffect(() => {
-    fgRef?.current?.d3Force("charge")!.distanceMax(300)
+    fgRef?.current?.d3Force("charge")!.distanceMax(50)
     fgRef?.current?.centerAt(0, 0)
     fgRef?.current?.zoom(1)
 
@@ -96,7 +97,10 @@ const ForceGraph = ({
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       if (node.id === "Center") return
-      const imgSize = node.size || 10
+      let imgSize = 20
+      if (node.type) {
+        imgSize = 30
+      }
       const fontSize = Math.min(3, (12 * globalScale) / 8)
       const fontSizeSecond = Math.min(2, (12 * globalScale) / 8)
 
@@ -117,7 +121,7 @@ const ForceGraph = ({
         textOpacity
       )
 
-      ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 2 + 1)
+      ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 4 + 1)
 
       ctx.font = `400 ${fontSizeSecond}px Sans-Serif`
       ctx.fillStyle = hexToRgba(
@@ -131,28 +135,28 @@ const ForceGraph = ({
         ctx.fillText(
           "@" + node.username!,
           node.x!,
-          node.y! + imgSize / 2 + 1 + lineHeight
+          node.y! + imgSize / 4 + 1 + lineHeight,
         )
       }
-
+    
       const img = imageCache[node.id!]
 
       if (img) {
         ctx.save()
         ctx.beginPath()
-        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
+        ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false)
         ctx.closePath()
         ctx.clip()
         ctx.drawImage(
           img,
-          node.x! - imgSize / 2,
-          node.y! - imgSize / 2,
-          imgSize,
-          imgSize
+          node.x! - imgSize / 4,
+          node.y! - imgSize / 4,
+          imgSize / 2,
+          imgSize / 2,
         )
         ctx.save()
         ctx.beginPath()
-        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
+        ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false)
         ctx.lineWidth = 1
         ctx.strokeStyle = getCssVariableValue("--tg-theme-accent-text-color")
         ctx.stroke()
@@ -163,19 +167,20 @@ const ForceGraph = ({
           "https://www.shutterstock.com/shutterstock/videos/1093269629/thumb/4.jpg?ip=x480"
         ctx.save()
         ctx.beginPath()
-        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
+        ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false)
         ctx.closePath()
         ctx.clip()
         ctx.drawImage(
           img,
-          node.x! - imgSize / 2,
-          node.y! - imgSize / 2,
-          imgSize,
-          imgSize
+          node.x! - imgSize / 4,
+          node.y! - imgSize / 4,
+          imgSize / 2,
+          imgSize / 2,
         )
       }
+
     },
-    [imageCache]
+    [imageCache, clickedNodeId],
   )
 
   return (
@@ -183,6 +188,19 @@ const ForceGraph = ({
       ref={fgRef}
       graphData={graphData}
       nodeAutoColorBy="group"
+      onNodeClick={(node) => {
+        // simulate double click
+        if (clickedNodeId === node.id!.toString() && Date.now() - (clickedNodeTimeStamp!)  <= 500) {
+          window.open(`https://t.me/${node.username}`)
+        } else {
+          setClickedNodeId(node.id!.toString())
+          setClickedNodeTimeStamp(Date.now())
+          console.log(clickedNodeTimeStamp)
+        }
+      }}
+      onBackgroundClick={() => {
+        setClickedNodeId(null)
+      }}
       nodeCanvasObject={drawNode}
       nodePointerAreaPaint={(node, color, ctx) => {
         const imgSize = 10
@@ -194,10 +212,10 @@ const ForceGraph = ({
       linkCanvasObject={(link, ctx) => {
         ctx.strokeStyle = getCssVariableValue("--tg-theme-button-color")
         ctx.lineWidth = 0.5
-
+        
         //@ts-ignore
         if (link.source.id === "Center") {
-          ctx.strokeStyle = "rgba(0, 0, 0, 0)"
+          ctx.strokeStyle = "rgba(0,0,0,0)"
         }
         ctx.beginPath()
         ctx.moveTo(
