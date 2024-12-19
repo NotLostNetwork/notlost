@@ -134,19 +134,21 @@ const CreateContactModal = ({
                 setTelegramUserSearch(null)
               }}
             >
-              <Contact
-                node={{
-                  username: telegramUserSearch.username!,
-                  id: telegramUserSearch.firstName,
-                  group: 1,
-                  tags: tagsValue
-                    .split(" ")
-                    .filter((tag) => tag.trim())
-                    .map((tag) => ({ title: tag })),
-                  topic: topicValue,
-                  createdAt: new Date(),
-                }}
-              />
+              <div className="pointer-events-none">
+                <Contact
+                  node={{
+                    username: telegramUserSearch.username!,
+                    id: telegramUserSearch.firstName,
+                    group: 1,
+                    tags: tagsValue
+                      .split(" ")
+                      .filter((tag) => tag.trim())
+                      .map((tag) => ({ title: tag })),
+                    topic: topicValue,
+                    createdAt: new Date(),
+                  }}
+                />
+              </div>
             </div>
           )}
         </div>
