@@ -11,6 +11,7 @@ class TelegramApiClient {
   private client: TelegramClient
   private apiId: number
   private apiHash: string
+  private botToken: string
 
   private avatarsQueue: (() => Promise<void>)[] = []
   private downloadedAvatars = 0
@@ -20,10 +21,12 @@ class TelegramApiClient {
   private constructor(
     api_id: number,
     api_hash: string,
-    string_session: string
+    string_session: string,
+    bot_token: string
   ) {
     this.apiId = api_id
     this.apiHash = api_hash
+    this.botToken = bot_token
 
     this.client = new TelegramClient(
       new StringSession(string_session),
@@ -38,7 +41,9 @@ class TelegramApiClient {
   public async initialize(): Promise<void> {
     try {
       if (!this.client.connected) {
-        await this.client.connect()
+        await this.client.start({
+          botAuthToken: this.botToken,
+        })
         console.log("Telegram client connected.")
       }
     } catch (error) {
@@ -96,7 +101,6 @@ class TelegramApiClient {
             // TODO: sometime api return api rate limit exceed, catch time to wait before retry, 10 seconds is a default
             await new Promise((resolve) => setTimeout(resolve, 0))
           this.downloadedAvatars += 1
-
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
               userId: username,
@@ -169,13 +173,15 @@ class TelegramApiClient {
   public static getInstance(
     api_id: number,
     api_hash: string,
-    string_session: string
+    string_session: string,
+    bot_token: string
   ) {
     if (!TelegramApiClient.instance) {
       TelegramApiClient.instance = new TelegramApiClient(
         api_id,
         api_hash,
-        string_session
+        string_session,
+        bot_token
       )
     }
     return TelegramApiClient.instance

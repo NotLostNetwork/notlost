@@ -25,7 +25,6 @@ class TelegramHelper {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
       try {
-        throw new Error
         const avatarBufferRes = await $getTelegramPhoto({ data: username })
         await setCachedAvatar(username, avatarBufferRes.data)
       } catch(e) {

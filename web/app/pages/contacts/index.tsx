@@ -12,6 +12,7 @@ import { UserContact } from "~/entities/user/user-contact/interface"
 import Modal from "~/shared/ui/modals/modal"
 import { Button } from "@telegram-apps/telegram-ui"
 import { $getTelegramUser } from "~/actions/telegram"
+import { destroyLocalDB } from "~/shared/lib/utils/local-db"
 
 const ContactsPage = () => {
   const data = [...mockData.nodes] as UserContact[]
@@ -82,6 +83,7 @@ const ContactsPage = () => {
               updateFilterState(Filter.LAST_ADDED, false)
             }}
           />
+          <Button onClick={destroyLocalDB}>Destroy LDB</Button>
         </div>
       </div>
       <div className="flex-1 overflow-auto">

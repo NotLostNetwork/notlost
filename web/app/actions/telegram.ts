@@ -5,12 +5,14 @@ import { COOKIE, getAndDecodeCookie } from "~/shared/lib/utils/funcs/get-cookie"
 
 const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const STRING_SESSION = getAndDecodeCookie(COOKIE.TELEGRAM_STRING_SESSION)
 
 const client = TelegramApiClient.getInstance(
   API_ID,
   API_HASH!,
-  STRING_SESSION || ""
+  STRING_SESSION || "",
+  BOT_TOKEN!
 )
 
 export const $getTelegramPhoto = createServerFn({ method: "GET" })

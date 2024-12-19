@@ -15,7 +15,7 @@ const initDB = async () => {
   })
 }
 
-const destroyLocalDB = async () => {
+export const destroyLocalDB = async () => {
   const db = await openDB(DB_NAME, 1)
   await db.clear(STORE_NAME)
   console.log(`All data in the store '${STORE_NAME}' has been cleared.`)
