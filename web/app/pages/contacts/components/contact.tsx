@@ -1,4 +1,4 @@
-import { Button } from "@telegram-apps/telegram-ui"
+import { Avatar, Button } from "@telegram-apps/telegram-ui"
 import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/shared/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
@@ -35,12 +35,15 @@ const Contact = ({ node }: { node: UserContact }) => {
                 <img
                   loading="lazy"
                   src={avatarUrl}
-                  className="h-14 min-w-14 rounded-full"
+                  className="h-12 min-w-12 rounded-full"
                   decoding="async"
                   alt=""
                 />
               ) : (
-                <div className="h-14 min-w-14 rounded-full animate-pulse bg-skeleton"></div>
+                <Avatar
+                  acronym={node.id[0]}
+                  size={48}
+                />
               )}
             </div>
             <div className="h-full ml-4 w-full ">
