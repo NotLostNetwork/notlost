@@ -15,12 +15,6 @@ const client = TelegramApiClient.getInstance(
   BOT_TOKEN!
 )
 
-export const $getTelegramPhoto = createServerFn({ method: "GET" })
-  .validator((data: string) => data)
-  .handler(async (ctx) => {
-    return await client.getPhoto(ctx.data)
-  })
-
 export const $getTelegramUser = createServerFn({ method: "GET" })
   .validator((data: string) => data)
   .handler(async (ctx) => {

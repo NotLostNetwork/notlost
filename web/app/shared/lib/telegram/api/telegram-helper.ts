@@ -1,4 +1,3 @@
-import { $getTelegramPhoto } from "~/actions/telegram"
 import { getCachedAvatar, setCachedAvatar } from "../../utils/local-db"
 import shestayaLiniyaAvatar from "~/shared/assets/trialAvatars/shestaya_liniya.jpeg"
 import piraJokeAvatar from "~/shared/assets/trialAvatars/pirajoke.jpeg"
@@ -6,6 +5,7 @@ import nikiviAvatar from "~/shared/assets/trialAvatars/nikivi.jpeg"
 import skywlkAvatar from "~/shared/assets/trialAvatars/sky_wlk.jpeg"
 import vladbyelikAvatar from "~/shared/assets/trialAvatars/vladbyelik.jpeg"
 import notLostBotAvatar from "~/shared/assets/trialAvatars/not_lost_bot.jpeg"
+import { $getTelegramPhoto } from "./telegram-api-server"
 
 class TelegramHelper {
   private trialUsernames = ['shestaya_liniya', 'PiraJoke', 'nikivi', 'skywl_k', 'vladbyelik']
