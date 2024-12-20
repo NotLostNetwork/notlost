@@ -7,6 +7,8 @@ import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { AnimatePresence, motion } from "framer-motion"
+import { $getTelegramUserByUsername } from "~/shared/lib/telegram/api/telegram-api-server"
+
 
 const CreateContactModal = ({
   isOpen,
@@ -28,7 +30,7 @@ const CreateContactModal = ({
 
   useEffect(() => {
     setTelegramUserSearch(null)
-    $getTelegramUser({ data: telegramUserValue.replace(/@/g, "") }).then(
+    $getTelegramUserByUsername({ data: telegramUserValue }).then(
       (res) => {
         if (res[0]) {
           setTelegramUserSearch(res[0] as TelegramUser)

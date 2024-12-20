@@ -16,3 +16,13 @@ export const $getTelegramPhoto = createServerFn({
 
   return response.data
 })
+
+export const $getTelegramUserByUsername = createServerFn({
+  method: 'GET'
+})
+.validator((data: string) => data)
+.handler(async (ctx) => {
+  const response = await axiosInstance.get(`getUserByUsername/${ctx.data}`);
+
+  return response.data
+})
