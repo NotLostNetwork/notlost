@@ -43,6 +43,7 @@ module.exports = {
       },
       borderColor: {
         primary: "hsla(0, 0%, 100%, .05)",
+        accent: "#6ab3f3"
       },
     },
   },

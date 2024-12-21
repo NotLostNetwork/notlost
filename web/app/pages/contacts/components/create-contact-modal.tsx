@@ -17,7 +17,9 @@ const CreateContactModal = ({
   isOpen: boolean
   onClose: () => void
 }) => {
-  const [telegramUserValue, setTelegramValue] = useState("")
+  const [step, setStep] = useState(0)
+
+  const [telegramUserValue, setTelegramUserValue] = useState("")
   const [telegramUserInputFocused, setTelegramUserInputFocused] =
     useState(false)
   const [tagsValue, setTagsValue] = useState("")
@@ -27,6 +29,8 @@ const CreateContactModal = ({
   const [telegramUserSearch, setTelegramUserSearch] =
     useState<TelegramUser | null>(null)
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
+
+  const telegramUserInputError = telegramUserValue.length > 0 && !telegramUserSearch && !telegramUser
 
   useEffect(() => {
     setTelegramUserSearch(null)
@@ -38,6 +42,12 @@ const CreateContactModal = ({
       }
     )
   }, [telegramUserValue])
+
+  const StepButton = ({stepTitle, toStep} : {stepTitle: string, toStep: number}) => {
+    return (
+      <div className={`transition-all duration-300 ease-in-out text-xs text-center border-t-2 p-2 relative bottom-[4px] flex-grow ${step === toStep ? 'border-accent text-white' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
+    )
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={"New contact"}>
@@ -63,7 +73,10 @@ const CreateContactModal = ({
             />
           )}
         </div>
-        <div className="relative z-10">
+        {
+          step === 0
+          &&
+          <div className="relative z-10">
           <Input
             onFocus={() => setTelegramUserInputFocused(true)}
             onBlur={() => setTelegramUserInputFocused(false)}
@@ -79,7 +92,6 @@ const CreateContactModal = ({
                   : "default"
             }
             type="text"
-            header="Telegram username"
             placeholder="durov"
             value={telegramUserValue}
             before={<div className="text-gray-500">@</div>}
@@ -94,7 +106,7 @@ const CreateContactModal = ({
                       opacity: telegramUserInputFocused ? "1" : "0",
                     }}
                     onClick={() => {
-                      setTelegramValue("")
+                      setTelegramUserValue("")
                       setTelegramUser(null)
                     }}
                   >
@@ -112,7 +124,7 @@ const CreateContactModal = ({
                     key="qr"
                     Component="div"
                     style={{ display: "flex" }}
-                    onClick={() => setTelegramValue("")}
+                    onClick={() => setTelegramUserValue("")}
                   >
                     <motion.div
                       initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
@@ -126,7 +138,7 @@ const CreateContactModal = ({
                 )}
               </AnimatePresence>
             }
-            onChange={(e) => setTelegramValue(e.target.value)}
+            onChange={(e) => setTelegramUserValue(e.target.value)}
           />
           {telegramUserSearch && (
             <div
@@ -136,7 +148,7 @@ const CreateContactModal = ({
                 setTelegramUserSearch(null)
               }}
             >
-              <div className="pointer-events-none">
+              <div className="pointer-events-none border-b-[1px] border-primary">
                 <Contact
                   node={{
                     username: telegramUserSearch.username!,
@@ -154,40 +166,67 @@ const CreateContactModal = ({
             </div>
           )}
         </div>
+        }
+        
+        {
+          step === 1
+          &&
+          <Input
+            autoFocus={true}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: "white" }}
+            type="text"
+            placeholder="Description"
+            value={descriptionValue}
+            onChange={(e) => setDescriptionValue(e.target.value)}
+          />  
+        }
 
-        <Input
-          className=" p-0 text-white mt-6 bg-gray-800"
-          style={{ color: "white" }}
-          type="text"
-          header="Description"
-          placeholder="CEO of Telegram"
-          value={descriptionValue}
-          onChange={(e) => setDescriptionValue(e.target.value)}
-        />
-        <Input
-          className=" p-0 text-white mt-6 bg-gray-800"
-          style={{ color: "white" }}
-          type="text"
-          header="Tag(s)"
-          placeholder="ceo telegram sport"
-          value={tagsValue}
-          onChange={(e) => setTagsValue(e.target.value)}
-        />
-        <Input
-          className=" p-0 text-white mt-6 bg-gray-800"
-          style={{ color: "white" }}
-          type="text"
-          header="Topic"
-          placeholder="Telegram contest 2024"
-          value={topicValue}
-          onChange={(e) => setTopicValue(e.target.value)}
-        />
-        <div className="pt-8 space-y-2">
-          <Button stretched={true}>Create</Button>
+        {
+          step === 2
+          &&
+          <Input
+            autoFocus={true}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: "white" }}
+            type="text"
+            placeholder="Tags"
+            value={tagsValue}
+            onChange={(e) => setTagsValue(e.target.value)}
+          />
+        }
+        
+        {
+          step === 3
+          &&
+          <Input
+            autoFocus={true}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: "white" }}
+            type="text"
+            placeholder="Topic"
+            value={topicValue}
+            onChange={(e) => setTopicValue(e.target.value)}
+          />
+        }
+        <div className="w-full px-2 pt-2">
+          <div className={" border-primary border-t-2 flex"}>
+            <div className="flex w-full relative top-[2px]">
+              <StepButton stepTitle="Username" toStep={0}/>
+              <StepButton stepTitle="Description" toStep={1}/>
+              <StepButton stepTitle="Tags" toStep={2}/>
+              <StepButton stepTitle="Topic" toStep={3}/>
+            </div>
+          </div>
+        </div>
+        <div className="pt-4 space-y-2">
+          <Button stretched={true} disabled={telegramUserInputError || telegramUserValue.length < 1 || telegramUserSearch !== null}>Create</Button>
         </div>
       </div>
     </Modal>
   )
 }
+
+
 
 export default CreateContactModal
