@@ -13,6 +13,7 @@ import Modal from "~/shared/ui/modals/modal"
 import { Button } from "@telegram-apps/telegram-ui"
 import { $getTelegramUser } from "~/actions/telegram"
 import { destroyLocalDB } from "~/shared/lib/utils/local-db"
+import { getCssVariableValue } from "~/shared/lib/utils/funcs/get-css-variable-value"
 
 const ContactsPage = () => {
   const data = [...mockData.nodes] as UserContact[]
@@ -40,17 +41,22 @@ const ContactsPage = () => {
     <div className="h-full flex flex-col overflow-hidden">
       <div
         ref={filtersBlock}
-        className="pt-12 pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
+        style={{paddingTop: `calc(${getCssVariableValue('--tg-viewport-safe-area-inset-top') || '0px'} + ${getCssVariableValue('--tg-viewport-content-safe-area-inset-top')})`}}
+        className="pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
-        <div className="text-blue-500 font-semibold text-center mr-4 mt-2 animate-pulse relative z-10 top-2">
-          NotLost Alpha
+        
+        <div className="relative">
+          <FilterBySearch
+            value={filtersState.searchState}
+            onChange={(value: string) =>
+              updateFilterState(Filter.SEARCH_STATE, value)
+            }
+          />
+          <div className="text-accent font-semibold text-center w-full animate-pulse absolute z-10 -top-4">
+            NotLost Alpha
+          </div>
         </div>
-        <FilterBySearch
-          value={filtersState.searchState}
-          onChange={(value: string) =>
-            updateFilterState(Filter.SEARCH_STATE, value)
-          }
-        />
+        
         <div
           className={
             "flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4"
