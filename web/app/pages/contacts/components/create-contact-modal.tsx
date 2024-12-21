@@ -45,7 +45,7 @@ const CreateContactModal = ({
 
   const StepButton = ({stepTitle, toStep} : {stepTitle: string, toStep: number}) => {
     return (
-      <div className={`transition-all duration-300 ease-in-out text-xs border-b-2 h-6 ${step === toStep ? 'border-accent' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
+      <div className={`transition-all duration-300 ease-in-out text-xs border-b-2 px-2 h-6 ${step === toStep ? 'border-accent' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
     )
   }
 
@@ -76,7 +76,7 @@ const CreateContactModal = ({
         <div className="w-full px-2 pb-2">
           <div className={" border-primary border-b-2 flex"}>
             <div className="flex justify-between w-full relative top-[2px]">
-              <StepButton stepTitle="Name" toStep={0}/>
+              <StepButton stepTitle="Username" toStep={0}/>
               <StepButton stepTitle="Description" toStep={1}/>
               <StepButton stepTitle="Tags" toStep={2}/>
               <StepButton stepTitle="Topic" toStep={3}/>
@@ -102,7 +102,6 @@ const CreateContactModal = ({
                   : "default"
             }
             type="text"
-            header="Telegram username"
             placeholder="durov"
             value={telegramUserValue}
             before={<div className="text-gray-500">@</div>}
