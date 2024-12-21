@@ -8,6 +8,10 @@ body {
   -webkit-overflow-scrolling: auto !important;
 }
 
+html, body {
+  overscroll-behavior: none;
+}
+
 :root {
   /* Overwrite tg theme colors */
   --tg-bg-color: #17212b !important;
