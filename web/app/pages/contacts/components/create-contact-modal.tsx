@@ -45,7 +45,7 @@ const CreateContactModal = ({
 
   const StepButton = ({stepTitle, toStep} : {stepTitle: string, toStep: number}) => {
     return (
-      <div className={`transition-all duration-300 ease-in-out text-xs border-b-2 px-2 h-6 ${step === toStep ? 'border-accent text-white' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
+      <div className={`transition-all duration-300 ease-in-out text-xs border-b-2 p-2 -mt-4 ${step === toStep ? 'border-accent text-white' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
     )
   }
 
@@ -88,7 +88,6 @@ const CreateContactModal = ({
           &&
           <div className="relative z-10">
           <Input
-            autoFocus={true}
             onFocus={() => setTelegramUserInputFocused(true)}
             onBlur={() => setTelegramUserInputFocused(false)}
             className=" p-0 text-white bg-gray-800"
