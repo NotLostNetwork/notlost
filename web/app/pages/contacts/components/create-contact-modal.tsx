@@ -45,7 +45,7 @@ const CreateContactModal = ({
 
   const StepButton = ({stepTitle, toStep} : {stepTitle: string, toStep: number}) => {
     return (
-      <div className={`transition-all duration-300 ease-in-out text-xs border-b-2 p-2 -mt-4 ${step === toStep ? 'border-accent text-white' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
+      <div className={`transition-all duration-300 ease-in-out text-xs text-center border-t-2 p-2 relative bottom-[4px] flex-grow ${step === toStep ? 'border-accent text-white' : 'border-transparent text-gray-500'}`} onClick={() => setStep(toStep)}>{stepTitle}</div>
     )
   }
 
@@ -72,16 +72,6 @@ const CreateContactModal = ({
               }}
             />
           )}
-        </div>
-        <div className="w-full px-2 pb-2">
-          <div className={" border-primary border-b-2 flex"}>
-            <div className="flex justify-between w-full relative top-[2px]">
-              <StepButton stepTitle="Username" toStep={0}/>
-              <StepButton stepTitle="Description" toStep={1}/>
-              <StepButton stepTitle="Tags" toStep={2}/>
-              <StepButton stepTitle="Topic" toStep={3}/>
-            </div>
-          </div>
         </div>
         {
           step === 0
@@ -219,6 +209,16 @@ const CreateContactModal = ({
             onChange={(e) => setTopicValue(e.target.value)}
           />
         }
+        <div className="w-full px-2 pt-2">
+          <div className={" border-primary border-t-2 flex"}>
+            <div className="flex w-full relative top-[2px]">
+              <StepButton stepTitle="Username" toStep={0}/>
+              <StepButton stepTitle="Description" toStep={1}/>
+              <StepButton stepTitle="Tags" toStep={2}/>
+              <StepButton stepTitle="Topic" toStep={3}/>
+            </div>
+          </div>
+        </div>
         <div className="pt-4 space-y-2">
           <Button stretched={true} disabled={telegramUserInputError || telegramUserValue.length < 1 || telegramUserSearch !== null}>Create</Button>
         </div>
