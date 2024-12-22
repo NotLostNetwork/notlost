@@ -145,6 +145,7 @@ const CreateContactModal = ({
               className="absolute -bottom-2  translate-y-full w-full z-20 backdrop-blur-xl rounded-xl border-primary border-2 shadow-2xl"
               onClick={() => {
                 setTelegramUser(telegramUserSearch)
+                setStep(1)
                 setTelegramUserSearch(null)
               }}
             >
