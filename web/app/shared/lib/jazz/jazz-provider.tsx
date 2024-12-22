@@ -1,3 +1,22 @@
+import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
+
+const Jazz = createJazzReactApp()
+export const { useAccount, useCoState } = Jazz
+
+export function JazzAndAuth({ children }: { children: React.ReactNode }) {
+  const [auth, state] = useDemoAuth()
+  return (
+    <>
+      <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
+        {children}
+      </Jazz.Provider>
+      {state.state !== "signedIn" && (
+        <DemoAuthBasicUI appName="NotLost" state={state} />
+      )}
+    </>
+  )
+}
+
 // TODO: below is commented as it gives issues, doing the jazz `chat` example 1 to 1
 // see if that works
 
