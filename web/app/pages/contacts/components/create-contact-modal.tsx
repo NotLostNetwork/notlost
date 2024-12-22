@@ -209,7 +209,17 @@ const CreateContactModal = ({
             onChange={(e) => setTopicValue(e.target.value)}
           />
         }
-        <div className="w-full px-2 pt-2">
+        {
+          !telegramUser 
+          &&
+          <Button stretched={true} disabled={true}>Add from my dialogs</Button>
+        }
+        <div
+          style={
+            telegramUser ? {overflow: 'visible', height: '100%', paddingTop: 8}
+            : {overflow: 'hidden', height: 0}
+          }
+          className="w-full px-2 transition-all duration-300 ease-in-out">
           <div className={" border-primary border-t-2 flex"}>
             <div className="flex w-full relative top-[2px]">
               <StepButton stepTitle="Username" toStep={0}/>
@@ -219,7 +229,7 @@ const CreateContactModal = ({
             </div>
           </div>
         </div>
-        <div className="pt-4 space-y-2">
+        <div className="pt-2 space-y-2">
           <Button stretched={true} disabled={telegramUserInputError || telegramUserValue.length < 1 || telegramUserSearch !== null}>Create</Button>
         </div>
       </div>
