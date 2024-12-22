@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useAccount } from "~/shared/lib/jazz/jazz-provider"
 
 function RouteComponent() {
-  const { me } = useAccount({})
-  console.log(me, "me")
+  // const { me } = useaccoun({})
+  // console.log(me, "me")
   return (
     <>
       <div>test</div>
