@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { useAccountOrGuest } from "~/shared/lib/jazz/jazz-provider"
 
 function RouteComponent() {
   // const { me } = useAccountOrGuest({})

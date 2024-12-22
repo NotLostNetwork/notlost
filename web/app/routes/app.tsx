@@ -1,10 +1,24 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router"
 import "@/shared/styles/app.css"
+import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
 import TelegramProvider from "~/shared/lib/telegram/telegram-provider"
-import { DemoAuthBasicUI, createJazzReactApp, useDemoAuth } from "jazz-react"
 
 const Jazz = createJazzReactApp()
 export const { useAccount, useCoState } = Jazz
+
+function JazzAndAuth({ children }: { children: React.ReactNode }) {
+  const [auth, state] = useDemoAuth()
+  return (
+    <>
+      <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
+        {children}
+      </Jazz.Provider>
+      {state.state !== "signedIn" && (
+        <DemoAuthBasicUI appName="NotLost" state={state} />
+      )}
+    </>
+  )
+}
 
 export const Route = createFileRoute("/app")({
   component: RouteComponent,
@@ -15,15 +29,11 @@ export const Route = createFileRoute("/app")({
 import("eruda").then((lib) => lib.default.init()).catch(console.error)
 
 function RouteComponent() {
-  // TODO: seems we have to edit it as we don't need the `sign up / sign in` scree
-  // sign up / sign in is done in background through telegram id
-  const [auth, state] = useDemoAuth()
-
   return (
     <TelegramProvider>
-      <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
+      <JazzAndAuth>
         <Outlet />
-      </Jazz.Provider>
+      </JazzAndAuth>
     </TelegramProvider>
   )
 }
