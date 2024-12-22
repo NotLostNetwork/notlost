@@ -25,6 +25,8 @@
     "eruda": "^3.4.1",
     "framer-motion": "^11.15.0",
     "idb": "^8.0.1",
+    "jazz-react": "^0.8.44",
+    "jazz-tools": "^0.8.44",
     "lottie-react": "^2.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

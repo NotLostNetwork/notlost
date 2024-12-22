@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AppImport } from './routes/app'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
+import { Route as AppTryImport } from './routes/app/try'
 import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
 import { Route as AppOnboardingImport } from './routes/app/onboarding'
 import { Route as AppTabBarImport } from './routes/app/_tab-bar'
@@ -37,6 +38,12 @@ const IndexRoute = IndexImport.update({
 const AppIndexRoute = AppIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppTryRoute = AppTryImport.update({
+  id: '/try',
+  path: '/try',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -108,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTgSignInImport
       parentRoute: typeof AppImport
     }
+    '/app/try': {
+      id: '/app/try'
+      path: '/try'
+      fullPath: '/app/try'
+      preLoaderRoute: typeof AppTryImport
+      parentRoute: typeof AppImport
+    }
     '/app/': {
       id: '/app/'
       path: '/'
@@ -152,6 +166,7 @@ interface AppRouteChildren {
   AppTabBarRoute: typeof AppTabBarRouteWithChildren
   AppOnboardingRoute: typeof AppOnboardingRoute
   AppTgSignInRoute: typeof AppTgSignInRoute
+  AppTryRoute: typeof AppTryRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -159,6 +174,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppTabBarRoute: AppTabBarRouteWithChildren,
   AppOnboardingRoute: AppOnboardingRoute,
   AppTgSignInRoute: AppTgSignInRoute,
+  AppTryRoute: AppTryRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
@@ -169,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppTabBarRouteWithChildren
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/try': typeof AppTryRoute
   '/app/': typeof AppIndexRoute
   '/app/contacts': typeof AppTabBarContactsRoute
   '/app/graph': typeof AppTabBarGraphRoute
@@ -179,6 +196,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/try': typeof AppTryRoute
   '/app/contacts': typeof AppTabBarContactsRoute
   '/app/graph': typeof AppTabBarGraphRoute
 }
@@ -190,6 +208,7 @@ export interface FileRoutesById {
   '/app/_tab-bar': typeof AppTabBarRouteWithChildren
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/try': typeof AppTryRoute
   '/app/': typeof AppIndexRoute
   '/app/_tab-bar/contacts': typeof AppTabBarContactsRoute
   '/app/_tab-bar/graph': typeof AppTabBarGraphRoute
@@ -202,6 +221,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/onboarding'
     | '/app/tg-sign-in'
+    | '/app/try'
     | '/app/'
     | '/app/contacts'
     | '/app/graph'
@@ -211,6 +231,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/onboarding'
     | '/app/tg-sign-in'
+    | '/app/try'
     | '/app/contacts'
     | '/app/graph'
   id:
@@ -220,6 +241,7 @@ export interface FileRouteTypes {
     | '/app/_tab-bar'
     | '/app/onboarding'
     | '/app/tg-sign-in'
+    | '/app/try'
     | '/app/'
     | '/app/_tab-bar/contacts'
     | '/app/_tab-bar/graph'
@@ -259,6 +281,7 @@ export const routeTree = rootRoute
         "/app/_tab-bar",
         "/app/onboarding",
         "/app/tg-sign-in",
+        "/app/try",
         "/app/"
       ]
     },
@@ -276,6 +299,10 @@ export const routeTree = rootRoute
     },
     "/app/tg-sign-in": {
       "filePath": "app/tg-sign-in.tsx",
+      "parent": "/app"
+    },
+    "/app/try": {
+      "filePath": "app/try.tsx",
       "parent": "/app"
     },
     "/app/": {
