@@ -3,9 +3,10 @@ import { CoMap, co, Account, Profile, CoList } from "jazz-tools"
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
 // user loads the mini app, we get their telegram id
-// we create jazz account with telegram id
-// we create jazz account root with empty contacts (TODO: what is diff between root and just account?)
-// then user can create contacts and add them to the root
+// this telegram id is validated through initData verfication provided by telegram itself
+// we then create jazz account for that user with that unique telegram id
+// this root acccount starts with an empty contacts list and some default values
+// then user can create contacts and add them to the root, more later
 
 class ListOfTags extends CoList.Of(co.string) {}
 class Contact extends CoMap {
