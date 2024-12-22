@@ -2,7 +2,7 @@ import { createJazzReactApp } from "jazz-react"
 import { getEnvVariable } from "../utils/utils"
 const Jazz = createJazzReactApp()
 
-export const { useAccount, useCoState } = Jazz
+export const { useAccount, useCoState, useAccountOrGuest } = Jazz
 
 function assertPeerUrl(
   url: string | undefined,
