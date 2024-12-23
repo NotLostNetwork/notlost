@@ -18,8 +18,7 @@ import { Route as AppTryImport } from './routes/app/try'
 import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
 import { Route as AppOnboardingImport } from './routes/app/onboarding'
 import { Route as AppTabBarImport } from './routes/app/_tab-bar'
-import { Route as AppTabBarGraphImport } from './routes/app/_tab-bar/graph'
-import { Route as AppTabBarContactsImport } from './routes/app/_tab-bar/contacts'
+import { Route as AppTabBarContactsIndexImport } from './routes/app/_tab-bar/contacts/index'
 
 // Create/Update Routes
 
@@ -64,15 +63,9 @@ const AppTabBarRoute = AppTabBarImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppTabBarGraphRoute = AppTabBarGraphImport.update({
-  id: '/graph',
-  path: '/graph',
-  getParentRoute: () => AppTabBarRoute,
-} as any)
-
-const AppTabBarContactsRoute = AppTabBarContactsImport.update({
-  id: '/contacts',
-  path: '/contacts',
+const AppTabBarContactsIndexRoute = AppTabBarContactsIndexImport.update({
+  id: '/contacts/',
+  path: '/contacts/',
   getParentRoute: () => AppTabBarRoute,
 } as any)
 
@@ -129,18 +122,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/app/_tab-bar/contacts': {
-      id: '/app/_tab-bar/contacts'
+    '/app/_tab-bar/contacts/': {
+      id: '/app/_tab-bar/contacts/'
       path: '/contacts'
       fullPath: '/app/contacts'
-      preLoaderRoute: typeof AppTabBarContactsImport
-      parentRoute: typeof AppTabBarImport
-    }
-    '/app/_tab-bar/graph': {
-      id: '/app/_tab-bar/graph'
-      path: '/graph'
-      fullPath: '/app/graph'
-      preLoaderRoute: typeof AppTabBarGraphImport
+      preLoaderRoute: typeof AppTabBarContactsIndexImport
       parentRoute: typeof AppTabBarImport
     }
   }
@@ -149,13 +135,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppTabBarRouteChildren {
-  AppTabBarContactsRoute: typeof AppTabBarContactsRoute
-  AppTabBarGraphRoute: typeof AppTabBarGraphRoute
+  AppTabBarContactsIndexRoute: typeof AppTabBarContactsIndexRoute
 }
 
 const AppTabBarRouteChildren: AppTabBarRouteChildren = {
-  AppTabBarContactsRoute: AppTabBarContactsRoute,
-  AppTabBarGraphRoute: AppTabBarGraphRoute,
+  AppTabBarContactsIndexRoute: AppTabBarContactsIndexRoute,
 }
 
 const AppTabBarRouteWithChildren = AppTabBarRoute._addFileChildren(
@@ -187,8 +171,7 @@ export interface FileRoutesByFullPath {
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
   '/app/': typeof AppIndexRoute
-  '/app/contacts': typeof AppTabBarContactsRoute
-  '/app/graph': typeof AppTabBarGraphRoute
+  '/app/contacts': typeof AppTabBarContactsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -197,8 +180,7 @@ export interface FileRoutesByTo {
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
-  '/app/contacts': typeof AppTabBarContactsRoute
-  '/app/graph': typeof AppTabBarGraphRoute
+  '/app/contacts': typeof AppTabBarContactsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -210,8 +192,7 @@ export interface FileRoutesById {
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
   '/app/': typeof AppIndexRoute
-  '/app/_tab-bar/contacts': typeof AppTabBarContactsRoute
-  '/app/_tab-bar/graph': typeof AppTabBarGraphRoute
+  '/app/_tab-bar/contacts/': typeof AppTabBarContactsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -224,7 +205,6 @@ export interface FileRouteTypes {
     | '/app/try'
     | '/app/'
     | '/app/contacts'
-    | '/app/graph'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -233,7 +213,6 @@ export interface FileRouteTypes {
     | '/app/tg-sign-in'
     | '/app/try'
     | '/app/contacts'
-    | '/app/graph'
   id:
     | '__root__'
     | '/'
@@ -243,8 +222,7 @@ export interface FileRouteTypes {
     | '/app/tg-sign-in'
     | '/app/try'
     | '/app/'
-    | '/app/_tab-bar/contacts'
-    | '/app/_tab-bar/graph'
+    | '/app/_tab-bar/contacts/'
   fileRoutesById: FileRoutesById
 }
 
@@ -289,8 +267,7 @@ export const routeTree = rootRoute
       "filePath": "app/_tab-bar.tsx",
       "parent": "/app",
       "children": [
-        "/app/_tab-bar/contacts",
-        "/app/_tab-bar/graph"
+        "/app/_tab-bar/contacts/"
       ]
     },
     "/app/onboarding": {
@@ -309,12 +286,8 @@ export const routeTree = rootRoute
       "filePath": "app/index.tsx",
       "parent": "/app"
     },
-    "/app/_tab-bar/contacts": {
-      "filePath": "app/_tab-bar/contacts.tsx",
-      "parent": "/app/_tab-bar"
-    },
-    "/app/_tab-bar/graph": {
-      "filePath": "app/_tab-bar/graph.tsx",
+    "/app/_tab-bar/contacts/": {
+      "filePath": "app/_tab-bar/contacts/index.tsx",
       "parent": "/app/_tab-bar"
     }
   }

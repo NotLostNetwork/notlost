@@ -1,11 +1,9 @@
-import "@/shared/styles/app.css"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
-import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
-import { JazzAndAuth } from "~/shared/lib/jazz/jazz-provider"
-import TelegramProvider from "~/shared/lib/telegram/telegram-provider"
+import { JazzAndAuth } from "~/lib/jazz/jazz-provider"
+import TelegramProvider from "~/lib/telegram/telegram-provider"
 
-const Jazz = createJazzReactApp()
-export const { useAccount, useCoState } = Jazz
+/* const Jazz = createJazzReactApp()
+export const { useAccount, useCoState } = Jazz */
 
 export const Route = createFileRoute("/app")({
   component: RouteComponent,

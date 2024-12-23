@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/start"
 import { setCookie } from "vinxi/http"
-import TelegramApiClient from "~/shared/lib/telegram/api/telegram-api-client"
-import { COOKIE, getAndDecodeCookie } from "~/shared/lib/utils/funcs/get-cookie"
+import TelegramApiClient from "~/lib/telegram/api/telegram-api-client"
+import { COOKIE, getAndDecodeCookie } from "~/lib/utils/funcs/get-cookie"
 
 const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH

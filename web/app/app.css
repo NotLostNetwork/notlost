@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: var(--tg-theme-bg-color, white);
+  height: 100%;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+:root {
+  /* Overwrite tg theme colors */
+  --tg-bg-color: #17212b !important;
+  --tg-bottom-bar-color: #232e3c !important;
+  --tg-header-color: #17212b !important;
+  --tg-theme-accent-text-color: #6ab2f2 !important;
+  --tg-theme-bg-color: #17212b !important;
+  --tg-theme-button-color: #5288c1 !important;
+  --tg-theme-button-text-color: #ffffff !important;
+  --tg-theme-destructive-text-color: #ec3942 !important;
+  --tg-theme-header-bg-color: #17212b !important;
+  --tg-theme-hint-color: #708499 !important;
+  --tg-theme-link-color: #6ab3f3 !important;
+  --tg-theme-secondary-bg-color: #232e3c !important;
+  --tg-theme-section-bg-color: #17212b !important;
+  --tg-theme-section-header-text-color: #6ab3f3 !important;
+  --tg-theme-subtitle-text-color: #708499 !important;
+  --tg-theme-text-color: #f5f5f5 !important;
+}
+
+iframe {
+  overscroll-behavior: none; /* Disable overscroll in the iframe container */
+}
+
+/* Resetting telegram ui components specific styles */
+
+/* Input: remove padding, remove bg */
+.tgui-8ca550c2fc85eff5 {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.tgui-9f9a52f695b85cc9 {
+  background: var(--tg-theme-secondary-bg-color) !important;
+  top: -14px !important;
+}
+
+.tgui-d9de1f32aee12a15 {
+  gap: 6px !important;
+}
+
+/* Make small button full rounded */
+.tgui-13f23a224303ddaa {
+  border-radius: 50% !important;
+  padding: 8px !important;
+  height: 52px !important;
+  width: 52px !important;
+}
+
+/* Make plain button text color primary */
+.tgui-48956537c34690db {
+  color: var(--tg-theme-text-color) !important;
+  display: block !important;
+  height: 100% !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
+}

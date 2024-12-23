@@ -8,10 +8,10 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 import { Meta, Scripts } from "@tanstack/start"
 import * as React from "react"
-import { DefaultCatchBoundary } from "~/shared/ui/error-pages/DefaultCatchBoundary"
-import { NotFound } from "~/shared/ui/error-pages/NotFound"
-import { seo } from "~/shared/lib/seo"
-import appCss from "~/shared/styles/app.css?url"
+import { DefaultCatchBoundary } from "~/ui/error-pages/DefaultCatchBoundary"
+import { NotFound } from "~/ui/error-pages/NotFound"
+import { seo } from "~/lib/seo"
+import appCss from "~/app.css?url"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -23,7 +23,8 @@ export const Route = createRootRouteWithContext<{
       },
       {
         name: "viewport",
-        content: "width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover",
+        content:
+          "width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover",
       },
       ...seo({
         title: "",

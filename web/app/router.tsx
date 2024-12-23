@@ -2,8 +2,8 @@ import { QueryClient } from "@tanstack/react-query"
 import { createRouter as createTanStackRouter } from "@tanstack/react-router"
 import { routerWithQueryClient } from "@tanstack/react-router-with-query"
 import { routeTree } from "./routeTree.gen"
-import { DefaultCatchBoundary } from "./shared/ui/error-pages/DefaultCatchBoundary"
-import { NotFound } from "./shared/ui/error-pages/NotFound"
+import { DefaultCatchBoundary } from "./ui/error-pages/DefaultCatchBoundary"
+import { NotFound } from "./ui/error-pages/NotFound"
 
 export function createRouter() {
   const queryClient = new QueryClient()
