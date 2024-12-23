@@ -7,12 +7,21 @@ import { $createUser } from "~/entities/user/api"
 import utyaCool from "@/assets/utya-cool.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
+import { $validateInitData } from "~/actions/telegram"
 
 function OnboardingPage() {
   const navigate = useNavigate()
 
   const lp = useLaunchParams()
   const telegramId = lp.initData!.user!.id.toString()
+
+  if (process.env.NODE_ENV !== "development") {
+    try {
+      $validateInitData({ data: lp.initDataRaw! })
+    } catch (e) {
+      throw new Error()
+    }
+  }
 
   const { mutate: mutateCreateUser, isError } = useMutation({
     mutationKey: ["/"],
