@@ -9,7 +9,6 @@ import {
   initData,
   postEvent,
   retrieveLaunchParams,
-  useLaunchParams,
 } from "@telegram-apps/sdk-react"
 import { init } from "./miniAppEnv/init"
 import "./miniAppEnv/mock-env"
@@ -19,8 +18,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     try {
       if (initData) {
-        const lp = useLaunchParams()
-        if (!["macos", "tdesktop"].includes(lp.platform)) {
+        if (!["macos", "tdesktop"].includes(retrieveLaunchParams().platform)) {
           postEvent("web_app_expand")
           postEvent("web_app_request_fullscreen")
           postEvent("web_app_setup_swipe_behavior", {
@@ -29,6 +27,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
         }
       }
     } catch (e) {
+      console.log("ERROR TG", e)
       console.log("The app runs outside of the telegram")
     }
   }, [])
