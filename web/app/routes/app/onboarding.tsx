@@ -8,8 +8,17 @@ import utyaCool from "@/assets/utya-cool.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { $validateInitData } from "~/actions/telegram"
+import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 
 function OnboardingPage() {
+  const { me } = useAccount()
+
+  const user = useCoState(JazzAccount, me?.id)
+  const profile = useCoState(RootUserProfile, user?.profile?.id)
+  console.log(profile)
+  //profile?.telegramId = 1
+
   const navigate = useNavigate()
 
   const lp = useLaunchParams()
