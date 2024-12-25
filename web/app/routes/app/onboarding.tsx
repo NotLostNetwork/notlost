@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "@tanstack/react-router"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { Button } from "@telegram-apps/telegram-ui"
 import { $createUser } from "~/entities/user/api"
@@ -16,13 +14,8 @@ function OnboardingPage() {
 
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
-  console.log(profile)
-  //profile?.telegramId = 1
-
-  const navigate = useNavigate()
 
   const lp = useLaunchParams()
-  const telegramId = lp.initData!.user!.id.toString()
 
   if (process.env.NODE_ENV !== "development") {
     try {
@@ -32,23 +25,14 @@ function OnboardingPage() {
     }
   }
 
-  const { mutate: mutateCreateUser, isError } = useMutation({
-    mutationKey: ["/"],
-    mutationFn: async () => {
-      const user = await $createUser({
-        data: {
-          telegramId,
-        },
-      })
-
-      navigate({ to: ContactsRoute.to })
-
-      return user
-    },
-  })
-
   const handleOnClick = () => {
-    mutateCreateUser()
+    if (profile) {
+      profile.telegramId = lp.initData?.user?.id!
+      profile.firstName = lp.initData?.user?.firstName!
+      profile.lastName = lp.initData?.user?.lastName!
+      profile.telegramSync = false
+      profile.username = lp.initData?.user?.username!
+    }
   }
 
   return (
