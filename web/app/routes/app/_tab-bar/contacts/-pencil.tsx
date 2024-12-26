@@ -4,7 +4,7 @@ import personIcon from "~/assets/icons/person-icon.svg"
 import connectionIcon from "~/assets/icons/connection-icon.svg"
 import PencilIcon from "~/assets/icons/iconsAsComponent/pencil-icon"
 
-import CreateContactModal from "./-create-contact-modal"
+import CreateContactModal from "./(modals)/-create-contact-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)

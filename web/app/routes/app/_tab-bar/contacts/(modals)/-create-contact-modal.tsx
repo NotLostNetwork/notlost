@@ -1,7 +1,7 @@
 import { Button, Input, Tappable } from "@telegram-apps/telegram-ui"
 import { useEffect, useState } from "react"
 import Modal from "~/ui/modals/modal"
-import Contact from "./-contact"
+import Contact from "../-contact"
 import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
@@ -82,11 +82,18 @@ const CreateContactModal = ({
             firstName: telegramUser?.firstName!,
             lastName: telegramUser?.lastName!,
             topic: topicValue,
+            description: descriptionValue,
             tags: JazzListOfTags.create(tags, { owner: profile._owner }),
           },
           { owner: profile._owner },
         ),
       )
+      setTelegramUser(null)
+      setStep(0)
+      setTelegramUserValue("")
+      setTagsValue("")
+      setDescriptionValue("")
+      setTopicValue("")
       closeModal()
     }
   }
@@ -129,7 +136,7 @@ const CreateContactModal = ({
                     : "default"
               }
               type="text"
-              placeholder="durov"
+              placeholder="username"
               value={telegramUserValue}
               before={<div className="text-gray-500">@</div>}
               after={

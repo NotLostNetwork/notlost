@@ -13,6 +13,7 @@ export class JazzContact extends CoMap {
   username = co.string
   firstName = co.string
   lastName = co.string
+  description = co.string
   topic = co.string
   tags = co.ref(JazzListOfTags)
 }

@@ -69,6 +69,11 @@ iframe {
   height: 100% !important;
 }
 
+/* Add border radius to Tapppable */
+.tgui-8071f6e38c77bc0b {
+  border-radius: 8px !important;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
 }

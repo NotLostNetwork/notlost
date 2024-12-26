@@ -55,7 +55,7 @@ const ContactsList = ({
       </div>
 
       {data && data.length === 0 && (
-        <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0 mt-64">
+        <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0">
           <img
             src={utyaLoading}
             alt={"Utya sticker"}
