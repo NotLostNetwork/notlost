@@ -50,6 +50,15 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
     }
   }
 
+  const handleTouchMove = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+      isLongPress.current = true
+      setLongPressTriggered(false)
+    }
+  }
+
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
   const removeContact = () => {
@@ -88,6 +97,7 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
             <Tappable
               onTouchStart={startPress}
               onTouchEnd={endPress}
+              onTouchMove={handleTouchMove}
               className={`flex px-4 min-h-20 justify-center text-sm relative`}
             >
               <div className="h-20 flex items-center">
