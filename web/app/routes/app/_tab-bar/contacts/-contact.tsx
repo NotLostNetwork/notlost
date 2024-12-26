@@ -55,7 +55,6 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
       clearTimeout(timerRef.current)
       timerRef.current = null
       isLongPress.current = true
-      setLongPressTriggered(false)
     }
   }
 
