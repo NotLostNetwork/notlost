@@ -7,20 +7,36 @@ import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { AnimatePresence, motion } from "framer-motion"
 import { $getTelegramUserByUsername } from "~/lib/telegram/api/telegram-api-server"
+import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import {
+  JazzAccount,
+  RootUserProfile,
+  JazzContact,
+  JazzListOfTags,
+} from "~/lib/jazz/schema"
 
 const CreateContactModal = ({
   isOpen,
+  closeModal,
   onClose,
 }: {
   isOpen: boolean
+  closeModal: () => void
   onClose: () => void
 }) => {
+  const { me } = useAccount()
+
+  const user = useCoState(JazzAccount, me?.id)
+  const profile = useCoState(RootUserProfile, user?.profile?.id)
+
   const [step, setStep] = useState(0)
 
   const [telegramUserValue, setTelegramUserValue] = useState("")
   const [telegramUserInputFocused, setTelegramUserInputFocused] =
     useState(false)
   const [tagsValue, setTagsValue] = useState("")
+  const tags = tagsValue.split(" ").filter((tag) => tag.trim())
+
   const [descriptionValue, setDescriptionValue] = useState("")
   const [topicValue, setTopicValue] = useState("")
 
@@ -57,6 +73,24 @@ const CreateContactModal = ({
     )
   }
 
+  const createNewContact = () => {
+    if (profile) {
+      profile.contacts!.push(
+        JazzContact.create(
+          {
+            username: telegramUser!.username!,
+            firstName: telegramUser?.firstName!,
+            lastName: telegramUser?.lastName!,
+            topic: topicValue,
+            tags: JazzListOfTags.create(tags, { owner: profile._owner }),
+          },
+          { owner: profile._owner },
+        ),
+      )
+      closeModal()
+    }
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={"New contact"}>
       <div className="space-y-2">
@@ -67,17 +101,14 @@ const CreateContactModal = ({
         >
           {telegramUser && (
             <Contact
-              contact={{
-                username: telegramUser.username!,
-                id: telegramUser.firstName,
-                group: 1,
-                tags: tagsValue
-                  .split(" ")
-                  .filter((tag) => tag.trim())
-                  .map((tag) => ({ title: tag })),
-                topic: topicValue,
-                createdAt: new Date(),
-              }}
+              contact={
+                {
+                  username: telegramUser.username!,
+                  topic: topicValue,
+                  firstName: telegramUser.firstName,
+                  tags: JazzListOfTags.create(tags, { owner: profile!._owner }),
+                } as JazzContact
+              }
             />
           )}
         </div>
@@ -157,17 +188,16 @@ const CreateContactModal = ({
               >
                 <div className="pointer-events-none border-b-[1px] border-primary">
                   <Contact
-                    contact={{
-                      username: telegramUserSearch.username!,
-                      id: telegramUserSearch.firstName,
-                      group: 1,
-                      tags: tagsValue
-                        .split(" ")
-                        .filter((tag) => tag.trim())
-                        .map((tag) => ({ title: tag })),
-                      topic: topicValue,
-                      createdAt: new Date(),
-                    }}
+                    contact={
+                      {
+                        username: telegramUserSearch.username!,
+                        firstName: telegramUserSearch.firstName,
+                        tags: JazzListOfTags.create(tags, {
+                          owner: profile!._owner,
+                        }),
+                        topic: topicValue,
+                      } as JazzContact
+                    }
                   />
                 </div>
               </div>
@@ -235,6 +265,7 @@ const CreateContactModal = ({
         <div className="pt-2 space-y-2">
           <Button
             stretched={true}
+            onClick={createNewContact}
             disabled={
               telegramUserInputError ||
               telegramUserValue.length < 1 ||

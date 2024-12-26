@@ -8,7 +8,7 @@ import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
-import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzListOfContacts } from "~/lib/jazz/schema"
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -16,7 +16,7 @@ const ContactsList = ({
   toggleGraphMode,
 }: {
   filtersBlockHeight: number
-  data: UserContact[]
+  data: JazzListOfContacts | undefined | null
   toggleGraphMode: () => void
 }) => {
   let animationDelay = -0.05
@@ -27,8 +27,9 @@ const ContactsList = ({
       </div>
       <div className="overflow-y-auto overscroll-none pb-20">
         {filtersBlockHeight > 0 &&
+          data &&
           data.map((contact) => {
-            if (contact.type === "topic") return
+            if (!contact) return
             animationDelay += 0.05
             return (
               <AnimatePresence key={contact.id}>
@@ -53,7 +54,7 @@ const ContactsList = ({
           })}
       </div>
 
-      {data.length === 0 && (
+      {data && data.length === 0 && (
         <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0 mt-64">
           <img
             src={utyaLoading}

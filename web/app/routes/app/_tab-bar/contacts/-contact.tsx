@@ -2,9 +2,9 @@ import { Avatar, Button } from "@telegram-apps/telegram-ui"
 import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
-import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzContact } from "~/lib/jazz/schema"
 
-const Contact = ({ contact }: { contact: UserContact }) => {
+const Contact = ({ contact }: { contact: JazzContact }) => {
   const [avatarUrl, setAvatarUrl] = useState("")
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Contact = ({ contact }: { contact: UserContact }) => {
                   alt=""
                 />
               ) : (
-                <Avatar acronym={contact.id[0]} size={48} />
+                <Avatar acronym={contact.firstName[0]} size={48} />
               )}
             </div>
             <div className="h-full ml-4 w-full ">
@@ -53,7 +53,9 @@ const Contact = ({ contact }: { contact: UserContact }) => {
                 <div className="w-full py-2">
                   <div className="flex w-full">
                     <div>
-                      <div className="font-medium text-left">{contact.id}</div>
+                      <div className="font-medium text-left">
+                        {contact.firstName}
+                      </div>
                       <div className="font-medium text-link text-xs text-left">
                         @{contact.username}
                       </div>
@@ -68,10 +70,10 @@ const Contact = ({ contact }: { contact: UserContact }) => {
                     {contact.tags &&
                       contact.tags.map((tag) => (
                         <span
-                          className={`px-2 py-[0.5px]  text-xs text-black font-normal bg-buttonBezeled text-link rounded-xl`}
-                          key={tag.title}
+                          className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                          key={tag}
                         >
-                          {tag.title}
+                          {tag}
                         </span>
                       ))}
                   </div>

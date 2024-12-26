@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { Button } from "@telegram-apps/telegram-ui"
-import { $createUser } from "~/entities/user/api"
 import utyaCool from "@/assets/utya-cool.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { $validateInitData } from "~/actions/telegram"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
-import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
+import {
+  JazzAccount,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
 
 function OnboardingPage() {
   const { me } = useAccount()
@@ -32,6 +34,9 @@ function OnboardingPage() {
       profile.lastName = lp.initData?.user?.lastName!
       profile.telegramSync = false
       profile.username = lp.initData?.user?.username!
+      profile.contacts = JazzListOfContacts.create([], {
+        owner: profile._owner,
+      })
     }
   }
 

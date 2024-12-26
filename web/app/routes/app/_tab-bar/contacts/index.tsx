@@ -9,11 +9,15 @@ import { Filter, useContactsState } from "./-$state"
 import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
 import ContactsGraph from "./-graph"
 import ContactsList from "./-list"
-import { useLaunchParams } from "@telegram-apps/sdk-react"
+import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 
 const ContactsPage = () => {
-  const lp = useLaunchParams()
-  console.log(lp.platform)
+  const { me } = useAccount()
+
+  const user = useCoState(JazzAccount, me?.id)
+  const profile = useCoState(RootUserProfile, user?.profile?.id)
+
   const data = [...mockData.nodes] as UserContact[]
 
   const filtersBlock = useRef<HTMLDivElement>(null)
@@ -103,7 +107,7 @@ const ContactsPage = () => {
         ) : (
           <ContactsList
             filtersBlockHeight={filtersBlockHeight}
-            data={filteredData}
+            data={profile?.contacts}
             toggleGraphMode={toggleGraphMode}
           />
         )}

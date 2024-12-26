@@ -8,21 +8,21 @@ import { CoMap, co, Account, Profile, CoList } from "jazz-tools"
 // this root acccount starts with an empty contacts list and some default values
 // then user can create contacts and add them to the root, more later
 
-class ListOfTags extends CoList.Of(co.string) {}
-export class Contact extends CoMap {
+export class JazzListOfTags extends CoList.Of(co.string) {}
+export class JazzContact extends CoMap {
   username = co.string
   firstName = co.string
   lastName = co.string
   topic = co.string
-  tags = co.ref(ListOfTags)
+  tags = co.ref(JazzListOfTags)
 }
-class ListOfContacts extends CoList.Of(co.ref(Contact)) {}
+export class JazzListOfContacts extends CoList.Of(co.ref(JazzContact)) {}
 
 // account root is an app-specific per-user private `CoMap`
 // where you can store top-level objects for that user
 export class RootUserProfile extends Profile {
   telegramId = co.number // unique id for the user (how auth is done kind of)
-  contacts = co.ref(ListOfContacts)
+  contacts = co.ref(JazzListOfContacts)
 
   username = co.string
   firstName = co.string
