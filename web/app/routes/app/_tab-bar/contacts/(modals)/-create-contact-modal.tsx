@@ -1,4 +1,4 @@
-import { Button, Input, Tappable } from "@telegram-apps/telegram-ui"
+import { Button, Input, Spinner, Tappable } from "@telegram-apps/telegram-ui"
 import { useEffect, useState } from "react"
 import Modal from "~/ui/modals/modal"
 import Contact from "../-contact"
@@ -42,6 +42,8 @@ const CreateContactModal = ({
 
   const [telegramUserSearch, setTelegramUserSearch] =
     useState<TelegramUser | null>(null)
+  const [telegramUserSearchLoading, setTelegramUserSearchLoading] =
+    useState(false)
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
 
   const telegramUserInputError =
@@ -49,11 +51,16 @@ const CreateContactModal = ({
 
   useEffect(() => {
     setTelegramUserSearch(null)
-    $getTelegramUserByUsername({ data: telegramUserValue }).then((res) => {
-      if (res[0]) {
-        setTelegramUserSearch(res[0] as TelegramUser)
-      }
-    })
+    setTelegramUserSearchLoading(true)
+    $getTelegramUserByUsername({ data: telegramUserValue })
+      .then((res) => {
+        if (res[0]) {
+          setTelegramUserSearch(res[0] as TelegramUser)
+        }
+      })
+      .finally(() => {
+        setTelegramUserSearchLoading(false)
+      })
   }, [telegramUserValue])
 
   const StepButton = ({
@@ -209,6 +216,11 @@ const CreateContactModal = ({
                 </div>
               </div>
             )}
+            <div
+              className={`absolute top-[12px] right-[12px] transition-all duration-100 ease-in-out bg-gray-800 pointer-events-none ${telegramUserSearchLoading ? "opacity-100 h-6" : "opacity-0 h-0"}`}
+            >
+              <Spinner size="s" />
+            </div>
           </div>
         )}
 

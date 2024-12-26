@@ -148,9 +148,12 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
             <div
               className={`transition-all pl-4 pr-2 ml-16 duration-300 ease ${longPressTriggered ? "max-h-[100px] opacity-100 pb-2" : "max-h-0 opacity-0"}`}
             >
-              <div className="font-medium text-xs pb-4 text-hint">
-                {contact.description}
-              </div>
+              {contact.description && (
+                <div className="font-medium text-xs pb-4 text-hint">
+                  {contact.description}
+                </div>
+              )}
+
               <div className="flex justify-end gap-2 rounded-lg pr-2">
                 <Tappable onClick={() => {}}>
                   <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
