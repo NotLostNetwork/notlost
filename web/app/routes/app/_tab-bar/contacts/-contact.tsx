@@ -139,25 +139,25 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
             <div
               className={`transition-all pl-4 pr-2 ml-16 duration-300 ease ${longPressTriggered ? "max-h-[100px] opacity-100 pb-2" : "max-h-0 opacity-0"}`}
             >
-              <div className="font-medium text-xs">{contact.description}</div>
-              <div className="flex justify-end gap-2 rounded-xl">
-                <div className="rounded-xl">
-                  <Tappable>
-                    <div className="flex items-center gap-2 p-2 rounded-sm">
-                      <div className="h-4 w-4">
-                        <PencilIcon color={"#fff"} />
-                      </div>
-                      <div className="font-semibold text-sm">Edit</div>
+              <div className="font-medium text-xs pb-4 text-hint">
+                {contact.description}
+              </div>
+              <div className="flex justify-end gap-2 rounded-lg pr-2">
+                <Tappable onClick={() => {}}>
+                  <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
+                    <div className="h-6 w-6">
+                      <PencilIcon color="#6ab2f2" />
                     </div>
-                  </Tappable>
-                </div>
+                    <div className="text-xs text-link font-medium">Modify</div>
+                  </div>
+                </Tappable>
 
                 <Tappable onClick={() => setIsOpenDeleteModal(true)}>
-                  <div className="flex items-center gap-2 p-2 rounded-sm">
-                    <div className="h-4 w-4">
+                  <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
+                    <div className="h-6 w-6">
                       <img src={TrashBinIcon} alt="" />
                     </div>
-                    <div className="font-semibold text-[#ff4059] text-sm">
+                    <div className="text-xs font-medium text-[#ff4059]">
                       Remove
                     </div>
                   </div>
