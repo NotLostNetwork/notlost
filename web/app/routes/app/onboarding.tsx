@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { Button } from "@telegram-apps/telegram-ui"
 import utyaCool from "@/assets/utya-cool.gif"
@@ -10,6 +10,7 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
+import { Route as ContactsRoute } from "./_tab-bar/contacts/index"
 
 function OnboardingPage() {
   const { me } = useAccount()
@@ -18,6 +19,7 @@ function OnboardingPage() {
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
   const lp = useLaunchParams()
+  const navigate = useNavigate()
 
   if (process.env.NODE_ENV !== "development") {
     try {
@@ -37,6 +39,7 @@ function OnboardingPage() {
       profile.contacts = JazzListOfContacts.create([], {
         owner: profile._owner,
       })
+      navigate({ to: ContactsRoute.to })
     }
   }
 

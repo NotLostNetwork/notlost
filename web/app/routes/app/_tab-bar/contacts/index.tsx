@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
 import mockData from "~/lib/utils/graph-demo-data.json"
 import { UserContact } from "~/entities/user/user-contact/interface"
@@ -11,6 +11,7 @@ import ContactsGraph from "./-graph"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
+import { Route as OnboardingRoute } from "../../onboarding"
 
 const ContactsPage = () => {
   const { me } = useAccount()
@@ -22,6 +23,8 @@ const ContactsPage = () => {
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
+
+  const navigate = useNavigate()
 
   const {
     filteredData,
@@ -93,6 +96,9 @@ const ContactsPage = () => {
             }}
           />
           <Button onClick={destroyLocalDB}>Destroy LDB</Button>
+          <Button onClick={() => navigate({ to: OnboardingRoute.to })}>
+            Onboarding
+          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-auto">
