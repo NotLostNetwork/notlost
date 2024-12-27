@@ -109,6 +109,7 @@ const ContactsPage = () => {
             selectTopic={(topic: string) =>
               updateFilterState(Filter.TOPIC, topic)
             }
+            uniqueTopics={uniqueTopics || []}
           />
         ) : (
           <ContactsList

@@ -3,7 +3,7 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from "react-force-graph-2d"
-import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzListOfContacts } from "~/lib/jazz/schema"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
@@ -17,14 +17,62 @@ interface Link {
   target: string
 }
 
+interface Node {
+  id: string
+  username: string
+  firstName: string
+  topic: string | null
+  description: string
+  tags: string[][]
+  type: string
+}
+
 const ForceGraph = ({
-  nodes,
+  data,
   selectTopic,
+  uniqueTopics,
 }: {
-  nodes: UserContact[]
+  data: JazzListOfContacts
   selectTopic: (topic: string) => void
+  uniqueTopics: string[]
 }) => {
-  const fgRef = React.useRef<ForceGraphMethods>()
+  const nodes: Node[] = data
+    .filter((item) => item !== undefined && item !== null)
+    .map((item) => ({
+      id: item.username,
+      username: item.username,
+      topic: item.topic || null,
+      firstName: item.firstName,
+      description: item.description,
+      tags: new Array(item.tags?.map((tag) => tag.toString()) || []),
+      type: "null",
+    }))
+
+  nodes.push({
+    id: "Center",
+    username: "Center",
+    firstName: "Center",
+    description: "string",
+    tags: [],
+    topic: "string",
+    type: "topic",
+  })
+
+  uniqueTopics.forEach((topic) => {
+    nodes.push({
+      id: topic,
+      username: "not_lost_bot",
+      firstName: topic,
+      description: topic,
+      tags: [],
+      topic: topic,
+      type: "topic",
+    })
+  })
+
+  const fgRef = React.useRef<
+    ForceGraphMethods<{ id: string | number }, {}> | undefined
+  >(undefined)
   const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
   const [clickedNodeTimeStamp, setClickedNodeTimeStamp] = useState<
     number | null
@@ -52,17 +100,6 @@ const ForceGraph = ({
     fgRef?.current?.d3Force("charge")!.distanceMax(50)
     fgRef?.current?.centerAt(0, 0)
     fgRef?.current?.zoom(1)
-
-    nodes.push({
-      id: "Center",
-      group: 1,
-      username: "Center",
-      description: "string",
-      tags: [],
-      topic: "string",
-      type: "topic",
-      createdAt: new Date(),
-    })
   }, [])
   const [imageCache, setImageCache] = useState<ImageCache>({})
 
@@ -75,7 +112,7 @@ const ForceGraph = ({
       })
     }
 
-    const loadNodeImage = async (node: UserContact) => {
+    const loadNodeImage = async (node: Node) => {
       try {
         const avatarUrl = await TelegramHelper.getProfileAvatar(node.username)
         const img = await loadImage(avatarUrl)
@@ -90,7 +127,7 @@ const ForceGraph = ({
 
     graphData.nodes.forEach((node) => {
       if (!imageCache[node.id]) {
-        loadNodeImage(node)
+        loadNodeImage(node as Node)
       }
     })
   }, [graphData.nodes, imageCache])
@@ -119,15 +156,19 @@ const ForceGraph = ({
       ctx.textBaseline = "top"
       ctx.fillStyle = hexToRgba(
         getCssVariableValue("--tg-theme-text-color"),
-        textOpacity
+        textOpacity,
       )
 
-      ctx.fillText(node.id!.toString(), node.x!, node.y! + imgSize / 4 + 1)
+      ctx.fillText(
+        node.firstName.toString(),
+        node.x!,
+        node.y! + imgSize / 4 + 1,
+      )
 
       ctx.font = `400 ${fontSizeSecond}px Sans-Serif`
       ctx.fillStyle = hexToRgba(
         getCssVariableValue("--tg-theme-link-color"),
-        textOpacity * 0.8
+        textOpacity * 0.8,
       )
       const lineHeight = fontSize * 1.2
 
@@ -136,7 +177,7 @@ const ForceGraph = ({
         ctx.fillText(
           "@" + node.username!,
           node.x!,
-          node.y! + imgSize / 4 + 1 + lineHeight
+          node.y! + imgSize / 4 + 1 + lineHeight,
         )
       }
 
@@ -153,7 +194,7 @@ const ForceGraph = ({
           node.x! - imgSize / 4,
           node.y! - imgSize / 4,
           imgSize / 2,
-          imgSize / 2
+          imgSize / 2,
         )
         ctx.save()
         ctx.beginPath()
@@ -176,11 +217,11 @@ const ForceGraph = ({
           node.x! - imgSize / 4,
           node.y! - imgSize / 4,
           imgSize / 2,
-          imgSize / 2
+          imgSize / 2,
         )
       }
     },
-    [imageCache, clickedNodeId]
+    [imageCache, clickedNodeId],
   )
 
   return (
@@ -223,11 +264,11 @@ const ForceGraph = ({
         ctx.beginPath()
         ctx.moveTo(
           (link.source as { x: number; y: number }).x,
-          (link.source as { x: number; y: number }).y
+          (link.source as { x: number; y: number }).y,
         )
         ctx.lineTo(
           (link.target as { x: number; y: number }).x,
-          (link.target as { x: number; y: number }).y
+          (link.target as { x: number; y: number }).y,
         )
         ctx.stroke()
       }}

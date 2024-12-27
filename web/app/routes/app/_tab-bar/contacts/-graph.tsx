@@ -5,16 +5,18 @@ import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import lazyWithPreload from "react-lazy-with-preload"
-import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzListOfContacts } from "~/lib/jazz/schema"
 
 const ContactsGraph = ({
   data,
   toggleGraphMode,
   selectTopic,
+  uniqueTopics,
 }: {
-  data: UserContact[]
+  data: JazzListOfContacts
   toggleGraphMode: () => void
   selectTopic: (topic: string) => void
+  uniqueTopics: string[]
 }) => {
   const LazyForceGraph = lazyWithPreload(() => import("~/ui/force-graph"))
   LazyForceGraph.preload()
@@ -42,7 +44,8 @@ const ContactsGraph = ({
           >
             <Suspense>
               <LazyForceGraph
-                nodes={data}
+                data={data}
+                uniqueTopics={uniqueTopics}
                 selectTopic={(topic) => selectTopic(topic)}
               />
             </Suspense>
