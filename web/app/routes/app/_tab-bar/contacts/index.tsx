@@ -1,7 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
-import mockData from "~/lib/utils/graph-demo-data.json"
-import { UserContact } from "~/entities/user/user-contact/interface"
 import { Button } from "@telegram-apps/telegram-ui"
 import { destroyLocalDB } from "~/lib/utils/local-db"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
@@ -10,7 +8,11 @@ import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
 import ContactsGraph from "./-graph"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
-import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
+import {
+  JazzAccount,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
 import { Route as OnboardingRoute } from "../../onboarding"
 
 const ContactsPage = () => {
@@ -18,8 +20,6 @@ const ContactsPage = () => {
 
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
-
-  const data = [...mockData.nodes] as UserContact[]
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
@@ -34,7 +34,7 @@ const ContactsPage = () => {
     updateFilterState,
     uniqueTags,
     uniqueTopics,
-  } = useContactsState(data)
+  } = useContactsState(profile?.contacts)
 
   useEffect(() => {
     if (filtersBlock.current) {
@@ -78,7 +78,7 @@ const ContactsPage = () => {
             modalTitle="Filter by tag"
           />
           <SingleSelectFilter
-            items={uniqueTopics!}
+            items={uniqueTopics}
             setSelected={(topic: string | null) =>
               updateFilterState(Filter.TOPIC, topic)
             }
@@ -104,7 +104,7 @@ const ContactsPage = () => {
       <div className="flex-1 overflow-auto">
         {graphMode ? (
           <ContactsGraph
-            data={filteredData}
+            data={filteredData as JazzListOfContacts}
             toggleGraphMode={toggleGraphMode}
             selectTopic={(topic: string) =>
               updateFilterState(Filter.TOPIC, topic)
@@ -113,7 +113,7 @@ const ContactsPage = () => {
         ) : (
           <ContactsList
             filtersBlockHeight={filtersBlockHeight}
-            data={profile?.contacts}
+            data={filteredData as JazzListOfContacts}
             toggleGraphMode={toggleGraphMode}
           />
         )}
