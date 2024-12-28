@@ -3,7 +3,6 @@ import { StringSession } from "telegram/sessions"
 import bigInt from "big-integer"
 import Photo = Api.Photo
 import { Buffer } from "buffer"
-import { getAndDecodeCookie } from "../../utils/funcs/get-cookie"
 
 class TelegramApiClient {
   private static instance: TelegramApiClient
@@ -22,7 +21,7 @@ class TelegramApiClient {
     api_id: number,
     api_hash: string,
     string_session: string,
-    bot_token: string
+    bot_token: string,
   ) {
     this.apiId = api_id
     this.apiHash = api_hash
@@ -34,7 +33,7 @@ class TelegramApiClient {
       api_hash,
       {
         connectionRetries: 5,
-      }
+      },
     )
   }
 
@@ -59,14 +58,14 @@ class TelegramApiClient {
         apiId: this.apiId,
         apiHash: this.apiHash,
       },
-      phoneNumber
+      phoneNumber,
     )
   }
 
   public async signIn(
     phoneNumber: string,
     password: string,
-    phoneCode: string
+    phoneCode: string,
   ): Promise<void> {
     try {
       return await this.client.start({
@@ -104,7 +103,7 @@ class TelegramApiClient {
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
               userId: username,
-            })
+            }),
           )
 
           const photo = result.photos[0] as Photo
@@ -120,7 +119,7 @@ class TelegramApiClient {
             {
               dcId: photo.dcId,
               fileSize: bigInt(829542),
-            }
+            },
           )
 
           if (Buffer.isBuffer(res)) {
@@ -152,7 +151,7 @@ class TelegramApiClient {
     const result = await this.client.invoke(
       new Api.users.GetUsers({
         id: [username],
-      })
+      }),
     )
     return result
   }
@@ -174,14 +173,14 @@ class TelegramApiClient {
     api_id: number,
     api_hash: string,
     string_session: string,
-    bot_token: string
+    bot_token: string,
   ) {
     if (!TelegramApiClient.instance) {
       TelegramApiClient.instance = new TelegramApiClient(
         api_id,
         api_hash,
         string_session,
-        bot_token
+        bot_token,
       )
     }
     return TelegramApiClient.instance
