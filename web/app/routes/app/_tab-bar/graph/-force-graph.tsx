@@ -5,6 +5,7 @@ import ForceGraph2D, {
 } from "react-force-graph-2d"
 import { JazzListOfContacts } from "~/lib/jazz/schema"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
+import topicIcon from "@/assets/icons/link.svg"
 
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 
@@ -24,16 +25,14 @@ interface Node {
   topic: string | null
   description: string
   tags: string[][]
-  type: string
+  type: string | null
 }
 
 const ForceGraph = ({
   data,
-  selectTopic,
   uniqueTopics,
 }: {
   data: JazzListOfContacts
-  selectTopic: (topic: string) => void
   uniqueTopics: string[]
 }) => {
   const nodes: Node[] = data
@@ -45,7 +44,7 @@ const ForceGraph = ({
       firstName: item.firstName,
       description: item.description,
       tags: new Array(item.tags?.map((tag) => tag.toString()) || []),
-      type: "null",
+      type: null,
     }))
 
   nodes.push({
@@ -61,7 +60,7 @@ const ForceGraph = ({
   uniqueTopics.forEach((topic) => {
     nodes.push({
       id: topic,
-      username: "not_lost_bot",
+      username: topic,
       firstName: topic,
       description: topic,
       tags: [],
@@ -159,11 +158,13 @@ const ForceGraph = ({
         textOpacity,
       )
 
-      ctx.fillText(
-        node.firstName.toString(),
-        node.x!,
-        node.y! + imgSize / 4 + 1,
-      )
+      if (!node.type) {
+        ctx.fillText(
+          node.firstName.toString(),
+          node.x!,
+          node.y! + imgSize / 4 + 1,
+        )
+      }
 
       ctx.font = `400 ${fontSizeSecond}px Sans-Serif`
       ctx.fillStyle = hexToRgba(
@@ -179,6 +180,56 @@ const ForceGraph = ({
           node.x!,
           node.y! + imgSize / 4 + 1 + lineHeight,
         )
+      }
+
+      if (node.type) {
+        const titleText = node.username
+
+        // Circle as base
+        const radius = 6
+        ctx.beginPath()
+        ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false)
+        ctx.fillStyle = hexToRgba("#0063cc", 1) // Fill color
+        ctx.fill()
+        ctx.lineWidth = 1.5
+        ctx.strokeStyle = hexToRgba("#6ab2f2", 1) // Stroke color
+        ctx.stroke()
+
+        // Text on top of the circle
+        ctx.font = `400 ${fontSizeSecond + 5}px Sans-Serif`
+        const textOpacity = Math.min(globalScale / 3, 1)
+
+        ctx.strokeStyle = hexToRgba("#ffffff", 0.2) // Text outline
+        ctx.lineWidth = 0.5
+        ctx.strokeText(titleText, node.x!, node.y! + 10)
+
+        ctx.fillStyle = hexToRgba("#fff", textOpacity) // Text fill color
+        ctx.fillText(titleText, node.x!, node.y! + 10)
+
+        const imgSize = 12
+        const img = new Image()
+        img.src = topicIcon // Path to
+
+        img.onload = () => {
+          ctx.save()
+          ctx.beginPath()
+          ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false) // Define clipping area
+          ctx.clip()
+          ctx.drawImage(
+            img,
+            node.x! - imgSize / 2,
+            node.y! - imgSize / 2,
+            imgSize,
+            imgSize,
+          )
+          ctx.restore()
+        }
+
+        img.onerror = () => {
+          console.error("Image failed to load.")
+        }
+
+        return // Exit function after rendering
       }
 
       const img = imageCache[node.id!]

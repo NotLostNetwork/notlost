@@ -2,9 +2,6 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import utyaLoading from "~/assets/utya-loading.gif"
 
-import { Button } from "@telegram-apps/telegram-ui"
-import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
-
 import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
@@ -13,7 +10,6 @@ import { JazzListOfContacts } from "~/lib/jazz/schema"
 const ContactsList = ({
   filtersBlockHeight,
   data,
-  toggleGraphMode,
 }: {
   filtersBlockHeight: number
   data: JazzListOfContacts | undefined | null
@@ -69,18 +65,6 @@ const ContactsList = ({
         </div>
       )}
       <Pencil />
-      <div className="fixed bottom-20 left-6">
-        <Button
-          size={"s"}
-          className={"rounded-full"}
-          style={{ borderRadius: "50% !important" }}
-          onClick={toggleGraphMode}
-        >
-          <div className="h-6 w-6">
-            <GraphIcon color={"#fff"} />
-          </div>
-        </Button>
-      </div>
     </div>
   )
 }

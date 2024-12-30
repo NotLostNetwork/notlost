@@ -1,28 +1,30 @@
+import { createFileRoute } from "@tanstack/react-router"
+import { Button } from "@telegram-apps/telegram-ui"
 import { AnimatePresence, motion } from "framer-motion"
 import { Suspense } from "react"
-import { Button } from "@telegram-apps/telegram-ui"
-import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
-import TgWallpaper from "~/ui/tg-wallpaper"
-import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import lazyWithPreload from "react-lazy-with-preload"
-import { JazzListOfContacts } from "~/lib/jazz/schema"
+import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
+import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
+import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
+import TgWallpaper from "~/ui/tg-wallpaper"
+import { useContactsState } from "../contacts/-$state"
 
-const ContactsGraph = ({
-  data,
-  toggleGraphMode,
-  selectTopic,
-  uniqueTopics,
-}: {
-  data: JazzListOfContacts
-  toggleGraphMode: () => void
-  selectTopic: (topic: string) => void
-  uniqueTopics: string[]
-}) => {
-  const LazyForceGraph = lazyWithPreload(() => import("~/ui/force-graph"))
+const ContactsGraph = () => {
+  const { me } = useAccount()
+
+  const user = useCoState(JazzAccount, me?.id)
+  const profile = useCoState(RootUserProfile, user?.profile?.id)
+
+  const LazyForceGraph = lazyWithPreload(
+    () => import("~/routes/app/_tab-bar/graph/-force-graph"),
+  )
   LazyForceGraph.preload()
 
+  const { uniqueTopics } = useContactsState(profile?.contacts)
+
   return (
-    <div className="-mt-48 pt-4">
+    <div>
       <div className="h-screen absolute">
         <TgWallpaper opacity={0.5} />
       </div>
@@ -44,9 +46,8 @@ const ContactsGraph = ({
           >
             <Suspense>
               <LazyForceGraph
-                data={data}
+                data={profile?.contacts!}
                 uniqueTopics={uniqueTopics}
-                selectTopic={(topic) => selectTopic(topic)}
               />
             </Suspense>
           </motion.div>
@@ -57,7 +58,6 @@ const ContactsGraph = ({
             mode={"outline"}
             className={"rounded-full"}
             style={{ borderRadius: "50% !important" }}
-            onClick={toggleGraphMode}
           >
             <div className="h-6 w-6">
               <GraphIcon
@@ -71,4 +71,7 @@ const ContactsGraph = ({
   )
 }
 
-export default ContactsGraph
+export const Route = createFileRoute("/app/_tab-bar/graph/")({
+  component: ContactsGraph,
+  staleTime: Infinity,
+})

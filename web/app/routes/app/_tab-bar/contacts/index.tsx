@@ -5,7 +5,6 @@ import { destroyLocalDB } from "~/lib/utils/local-db"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Filter, useContactsState } from "./-$state"
 import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
-import ContactsGraph from "./-graph"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import {
@@ -14,6 +13,8 @@ import {
   RootUserProfile,
 } from "~/lib/jazz/schema"
 import { Route as OnboardingRoute } from "../../onboarding"
+import tagIcon from "@/assets/icons/tag.svg"
+import linkIcon from "@/assets/icons/link.svg"
 
 const ContactsPage = () => {
   const { me } = useAccount()
@@ -28,7 +29,6 @@ const ContactsPage = () => {
 
   const {
     filteredData,
-    graphMode,
     toggleGraphMode,
     filtersState,
     updateFilterState,
@@ -69,22 +69,36 @@ const ContactsPage = () => {
           }
         >
           <SingleSelectFilter
-            items={uniqueTags}
-            setSelected={(tag: string | null) =>
-              updateFilterState(Filter.TAG, tag)
-            }
-            selected={filtersState.selectedTag}
-            placeholder="No tag selected"
-            modalTitle="Filter by tag"
-          />
-          <SingleSelectFilter
             items={uniqueTopics}
             setSelected={(topic: string | null) =>
               updateFilterState(Filter.TOPIC, topic)
             }
             selected={filtersState.selectedTopic}
-            placeholder="No topic selected"
+            placeholder={
+              <div className="flex w-full justify-between gap-2 items-center">
+                <div className="w-4 h-4">
+                  <img src={linkIcon} />
+                </div>
+                Topic
+              </div>
+            }
             modalTitle="Filter by topic"
+          />
+          <SingleSelectFilter
+            items={uniqueTags}
+            setSelected={(tag: string | null) =>
+              updateFilterState(Filter.TAG, tag)
+            }
+            selected={filtersState.selectedTag}
+            placeholder={
+              <div className="flex w-full justify-between gap-2 items-center">
+                <div className="w-4 h-4">
+                  <img src={tagIcon} />
+                </div>
+                Tag
+              </div>
+            }
+            modalTitle="Filter by tag"
           />
           <FilterByLatest
             enable={() => {
@@ -102,22 +116,11 @@ const ContactsPage = () => {
         </div>
       </div>
       <div className="flex-1 overflow-auto">
-        {graphMode ? (
-          <ContactsGraph
-            data={filteredData as JazzListOfContacts}
-            toggleGraphMode={toggleGraphMode}
-            selectTopic={(topic: string) =>
-              updateFilterState(Filter.TOPIC, topic)
-            }
-            uniqueTopics={uniqueTopics || []}
-          />
-        ) : (
-          <ContactsList
-            filtersBlockHeight={filtersBlockHeight}
-            data={filteredData as JazzListOfContacts}
-            toggleGraphMode={toggleGraphMode}
-          />
-        )}
+        <ContactsList
+          filtersBlockHeight={filtersBlockHeight}
+          data={filteredData as JazzListOfContacts}
+          toggleGraphMode={toggleGraphMode}
+        />
       </div>
     </div>
   )
