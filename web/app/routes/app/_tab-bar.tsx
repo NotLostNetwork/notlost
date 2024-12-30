@@ -10,7 +10,7 @@ import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
 export default function TabBar() {
   return (
     <div className="bg-primary border-t-[1px] border-primary">
-      <div className="max-w-screen-xl mx-auto px-4 py-2">
+      <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
           <BottomBarLink to={GraphRoute.to} title="Network" Icon={GraphIcon} />
           <BottomBarLink
