@@ -138,6 +138,7 @@ const CreateContactModal = ({
         {step === 0 && (
           <div className="relative z-10">
             <Input
+              autoFocus={isOpen}
               onFocus={() => setTelegramUserInputFocused(true)}
               onBlur={() => setTelegramUserInputFocused(false)}
               className=" p-0 text-white bg-gray-800"
