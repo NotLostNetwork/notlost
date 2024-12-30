@@ -2,21 +2,17 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import utyaLoading from "~/assets/utya-loading.gif"
 
-import { Button } from "@telegram-apps/telegram-ui"
-import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
-
 import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
-import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzListOfContacts } from "~/lib/jazz/schema"
 
 const ContactsList = ({
   filtersBlockHeight,
   data,
-  toggleGraphMode,
 }: {
   filtersBlockHeight: number
-  data: UserContact[]
+  data: JazzListOfContacts | undefined | null
   toggleGraphMode: () => void
 }) => {
   let animationDelay = -0.05
@@ -27,8 +23,9 @@ const ContactsList = ({
       </div>
       <div className="overflow-y-auto overscroll-none pb-20">
         {filtersBlockHeight > 0 &&
+          data &&
           data.map((contact) => {
-            if (contact.type === "topic") return
+            if (!contact) return
             animationDelay += 0.05
             return (
               <AnimatePresence key={contact.id}>
@@ -53,8 +50,8 @@ const ContactsList = ({
           })}
       </div>
 
-      {data.length === 0 && (
-        <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0 mt-64">
+      {data && data.length === 0 && (
+        <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0">
           <img
             src={utyaLoading}
             alt={"Utya sticker"}
@@ -68,18 +65,6 @@ const ContactsList = ({
         </div>
       )}
       <Pencil />
-      <div className="fixed bottom-20 left-6">
-        <Button
-          size={"s"}
-          className={"rounded-full"}
-          style={{ borderRadius: "50% !important" }}
-          onClick={toggleGraphMode}
-        >
-          <div className="h-6 w-6">
-            <GraphIcon color={"#fff"} />
-          </div>
-        </Button>
-      </div>
     </div>
   )
 }

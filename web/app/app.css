@@ -44,7 +44,9 @@ iframe {
   padding: 0 !important;
   background: transparent !important;
 }
-
+.tgui-0f5050defacbf813 {
+  box-shadow: 0 0 0 1px var(--tgui--outline) !important;
+}
 .tgui-9f9a52f695b85cc9 {
   background: var(--tg-theme-secondary-bg-color) !important;
   top: -14px !important;
@@ -52,6 +54,11 @@ iframe {
 
 .tgui-d9de1f32aee12a15 {
   gap: 6px !important;
+  padding: 9px 16px !important;
+}
+
+.tgui-8ca550c2fc85eff5.tgui-89277928456f0e30 .tgui-0f5050defacbf813 {
+  box-shadow: 0 0 0 2px var(--tgui--link_color) !important;
 }
 
 /* Make small button full rounded */
@@ -67,6 +74,11 @@ iframe {
   color: var(--tg-theme-text-color) !important;
   display: block !important;
   height: 100% !important;
+}
+
+/* Add border radius to Tapppable */
+.tgui-8071f6e38c77bc0b {
+  border-radius: 8px !important;
 }
 
 .no-scrollbar::-webkit-scrollbar {

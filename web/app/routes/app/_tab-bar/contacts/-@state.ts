@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { UserContact } from "~/entities/user/user-contact/interface"
+import { JazzListOfContacts } from "~/lib/jazz/schema"
 
 export enum Filter {
   SEARCH_STATE = "searchState",
@@ -15,13 +16,15 @@ const initialFiltersData = {
   lastAdded: false,
 }
 
-export const useContactsState = (data: UserContact[]) => {
+export const useContactsState = (
+  data: JazzListOfContacts | null | undefined,
+) => {
   const [filtersState, setFiltersData] = useState(initialFiltersData)
   const [graphMode, setGraphMode] = useState(false)
 
   const updateFilterState = (
     filter: Filter,
-    value: string | boolean | null
+    value: string | boolean | null,
   ) => {
     setFiltersData((prev) => ({
       ...prev,
@@ -32,52 +35,48 @@ export const useContactsState = (data: UserContact[]) => {
   const toggleGraphMode = () => setGraphMode(!graphMode)
 
   const uniqueTags = Array.from(
-    new Set(
-      data.flatMap((contact) => contact.tags?.map((tag) => tag.title) || [])
-    )
+    new Set(data?.flatMap((contact) => contact?.tags?.map((tag) => tag) || [])),
   )
 
   const uniqueTopics = Array.from(
-    new Set(data.flatMap((contact) => contact.topic!))
+    new Set(data?.flatMap((contact) => contact?.topic || [])),
   )
 
   const filteredData = data
-    .filter((contact) => {
+    ?.filter((contact) => {
       if (filtersState.selectedTag) {
-        return contact.tags?.some(
-          (tag) => tag.title === filtersState.selectedTag
-        )
+        return contact?.tags?.some((tag) => tag === filtersState.selectedTag)
       }
       return true
     })
     .filter((contact) => {
       if (filtersState.selectedTopic) {
-        return contact.topic === filtersState.selectedTopic
+        return contact?.topic === filtersState.selectedTopic
       }
       return true
     })
     .filter((contact) => {
       if (filtersState.searchState) {
         return (
-          contact.id
+          contact?.firstName
             .toLowerCase()
             .includes(filtersState.searchState.toLowerCase()) ||
-          contact.username
+          contact?.username
             .toLowerCase()
             .includes(filtersState.searchState.toLowerCase()) ||
-          contact.description
+          contact?.description
             ?.toLowerCase()
             .includes(filtersState.searchState.toLowerCase())
         )
       }
       return true
     })
-    .sort((a, b) => {
+  /* .sort((a, b) => {
       if (filtersState.lastAdded) {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       }
       return 0
-    })
+    }) */
 
   return {
     filteredData,

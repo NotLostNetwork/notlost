@@ -1,33 +1,40 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
-import mockData from "~/lib/utils/graph-demo-data.json"
-import { UserContact } from "~/entities/user/user-contact/interface"
 import { Button } from "@telegram-apps/telegram-ui"
 import { destroyLocalDB } from "~/lib/utils/local-db"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
-import { Filter, useContactsState } from "./-$state"
+import { Filter, useContactsState } from "./-@state"
 import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
-import ContactsGraph from "./-graph"
 import ContactsList from "./-list"
-import { useLaunchParams } from "@telegram-apps/sdk-react"
+import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import {
+  JazzAccount,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
+import { Route as OnboardingRoute } from "../../onboarding"
+import TagIcon from "@/assets/icons/tag.svg?react"
+import LinkIcon from "@/assets/icons/link.svg?react"
 
 const ContactsPage = () => {
-  const lp = useLaunchParams()
-  console.log(lp.platform)
-  const data = [...mockData.nodes] as UserContact[]
+  const { me } = useAccount()
+
+  const user = useCoState(JazzAccount, me?.id)
+  const profile = useCoState(RootUserProfile, user?.profile?.id)
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
 
+  const navigate = useNavigate()
+
   const {
     filteredData,
-    graphMode,
     toggleGraphMode,
     filtersState,
     updateFilterState,
     uniqueTags,
     uniqueTopics,
-  } = useContactsState(data)
+  } = useContactsState(profile?.contacts)
 
   useEffect(() => {
     if (filtersBlock.current) {
@@ -62,22 +69,36 @@ const ContactsPage = () => {
           }
         >
           <SingleSelectFilter
+            items={uniqueTopics}
+            setSelected={(topic: string | null) =>
+              updateFilterState(Filter.TOPIC, topic)
+            }
+            selected={filtersState.selectedTopic}
+            placeholder={
+              <div className="flex w-full justify-between gap-2 items-center">
+                <div className="w-[18px] h-[18px]">
+                  <LinkIcon />
+                </div>
+                Topic
+              </div>
+            }
+            modalTitle="Filter by topic"
+          />
+          <SingleSelectFilter
             items={uniqueTags}
             setSelected={(tag: string | null) =>
               updateFilterState(Filter.TAG, tag)
             }
             selected={filtersState.selectedTag}
-            placeholder="No tag selected"
-            modalTitle="Filter by tag"
-          />
-          <SingleSelectFilter
-            items={uniqueTopics!}
-            setSelected={(topic: string | null) =>
-              updateFilterState(Filter.TOPIC, topic)
+            placeholder={
+              <div className="flex w-full justify-between gap-2 items-center">
+                <div className="w-4 h-4 text-white">
+                  <TagIcon />
+                </div>
+                Tag
+              </div>
             }
-            selected={filtersState.selectedTopic}
-            placeholder="No topic selected"
-            modalTitle="Filter by topic"
+            modalTitle="Filter by tag"
           />
           <FilterByLatest
             enable={() => {
@@ -89,24 +110,17 @@ const ContactsPage = () => {
             }}
           />
           <Button onClick={destroyLocalDB}>Destroy LDB</Button>
+          <Button onClick={() => navigate({ to: OnboardingRoute.to })}>
+            Onboarding
+          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-auto">
-        {graphMode ? (
-          <ContactsGraph
-            data={filteredData}
-            toggleGraphMode={toggleGraphMode}
-            selectTopic={(topic: string) =>
-              updateFilterState(Filter.TOPIC, topic)
-            }
-          />
-        ) : (
-          <ContactsList
-            filtersBlockHeight={filtersBlockHeight}
-            data={filteredData}
-            toggleGraphMode={toggleGraphMode}
-          />
-        )}
+        <ContactsList
+          filtersBlockHeight={filtersBlockHeight}
+          data={filteredData as JazzListOfContacts}
+          toggleGraphMode={toggleGraphMode}
+        />
       </div>
     </div>
   )

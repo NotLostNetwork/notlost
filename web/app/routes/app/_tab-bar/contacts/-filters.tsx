@@ -2,6 +2,7 @@ import BottomModal from "~/ui/modals/bottom-modal"
 import { useState } from "react"
 import { Button, Input } from "@telegram-apps/telegram-ui"
 import searchIcon from "~/assets/icons/search.svg"
+import calendarIcon from "@/assets/icons/calendar.svg"
 
 export const FilterBySearch = ({
   value,
@@ -35,23 +36,23 @@ export const SingleSelectFilter = ({
   items: string[]
   setSelected: (tag: string | null) => void
   selected: string | null
-  placeholder: string
+  placeholder: React.ReactElement
   modalTitle: string
 }) => {
   const [open, setOpen] = useState(false)
-  const [buttonText, setButtonText] = useState(placeholder)
+  const [buttonText, setButtonText] = useState(<div>{placeholder}</div>)
   const [buttonMode, setButtonMode] = useState("outline")
 
   const handleSet = (item: string) => {
     setSelected(item)
-    setButtonText(item)
+    setButtonText(<div>{item}</div>)
     setButtonMode("filled")
     setOpen(false)
   }
 
   const handleReset = () => {
     setSelected(null)
-    setButtonText(placeholder)
+    setButtonText(<div>{placeholder}</div>)
     setOpen(false)
     setButtonMode("outline")
   }
@@ -116,7 +117,12 @@ export const FilterByLatest = ({
   return (
     <div>
       <Button mode={enabled ? "filled" : "outline"} onClick={handleToggle}>
-        Filter by latest
+        <div className="flex w-full justify-between gap-2 items-center">
+          <div className="w-6 h-6">
+            <img src={calendarIcon} />
+          </div>
+          Date
+        </div>
       </Button>
     </div>
   )

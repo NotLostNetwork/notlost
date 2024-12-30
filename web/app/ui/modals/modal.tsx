@@ -6,9 +6,16 @@ interface ModalProps {
   onClose: () => void
   children: React.ReactNode
   title: string
+  cancelable?: boolean
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  cancelable = true,
+}: ModalProps) => {
   // Resize viewport in the case of keyboard appearing to not overlaying content of a modal
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
 
@@ -48,9 +55,14 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         >
           <div className="text-2xl font-semibold text-center mb-2">{title}</div>
           {children}
-          <button className="absolute top-2 right-2 text-xl" onClick={onClose}>
-            <Icon28CloseAmbient />
-          </button>
+          {cancelable && (
+            <button
+              className="absolute top-2 right-2 text-xl"
+              onClick={onClose}
+            >
+              <Icon28CloseAmbient />
+            </button>
+          )}
         </div>
       </div>
     </div>

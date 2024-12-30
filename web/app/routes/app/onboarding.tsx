@@ -1,28 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { Button } from "@telegram-apps/telegram-ui"
-import { $createUser } from "~/entities/user/api"
 import utyaCool from "@/assets/utya-cool.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { $validateInitData } from "~/actions/telegram"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
-import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
+import {
+  JazzAccount,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
+import { Route as ContactsRoute } from "./_tab-bar/contacts/index"
 
 function OnboardingPage() {
   const { me } = useAccount()
 
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
-  console.log(profile)
-  //profile?.telegramId = 1
-
-  const navigate = useNavigate()
 
   const lp = useLaunchParams()
-  const telegramId = lp.initData!.user!.id.toString()
+  const navigate = useNavigate()
 
   if (process.env.NODE_ENV !== "development") {
     try {
@@ -32,23 +29,18 @@ function OnboardingPage() {
     }
   }
 
-  const { mutate: mutateCreateUser, isError } = useMutation({
-    mutationKey: ["/"],
-    mutationFn: async () => {
-      const user = await $createUser({
-        data: {
-          telegramId,
-        },
-      })
-
-      navigate({ to: ContactsRoute.to })
-
-      return user
-    },
-  })
-
   const handleOnClick = () => {
-    mutateCreateUser()
+    if (profile) {
+      profile.telegramId = lp.initData?.user?.id!
+      profile.firstName = lp.initData?.user?.firstName!
+      profile.lastName = lp.initData?.user?.lastName!
+      profile.telegramSync = false
+      profile.username = lp.initData?.user?.username!
+      profile.contacts = JazzListOfContacts.create([], {
+        owner: profile._owner,
+      })
+      navigate({ to: ContactsRoute.to })
+    }
   }
 
   return (

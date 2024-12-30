@@ -1,12 +1,13 @@
 import { defineConfig } from "@tanstack/start/config"
 import tsconfigPaths from "vite-tsconfig-paths"
+import svgr from "vite-plugin-svgr"
 
 export default defineConfig({
   vite: {
     ssr: {
       noExternal: ["@telegram-apps/telegram-ui"],
     },
-    plugins: [tsconfigPaths()],
+    plugins: [tsconfigPaths(), svgr()],
   },
   server: {
     preset: "vercel",

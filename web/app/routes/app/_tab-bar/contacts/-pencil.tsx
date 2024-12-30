@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { Button, Input } from "@telegram-apps/telegram-ui"
 import personIcon from "~/assets/icons/person-icon.svg"
 import connectionIcon from "~/assets/icons/connection-icon.svg"
-import PencilIcon from "~/assets/icons/iconsAsComponent/pencil-icon"
+import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 
-import CreateContactModal from "./-create-contact-modal"
+import CreateContactModal from "./(modals)/-create-contact-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
@@ -63,13 +63,14 @@ export const Pencil = () => {
           style={{ borderRadius: "50% !important" }}
           onClick={toggleShowToolTip}
         >
-          <div className="h-6 w-6">
-            <PencilIcon color={"#fff"} />
+          <div className="text-white h-6 w-6">
+            <PencilIcon />
           </div>
         </Button>
       </div>
       <CreateContactModal
         isOpen={showCreateContactModal}
+        closeModal={() => setShowCreateContactModal(false)}
         onClose={() => {
           setShowToolTip(false)
           setShowCreateContactModal(false)
