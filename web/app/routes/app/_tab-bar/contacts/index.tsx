@@ -12,6 +12,7 @@ import {
 } from "~/lib/jazz/schema"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import LinkIcon from "@/assets/icons/link.svg?react"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
 
 const ContactsPage = () => {
   const { me } = useAccount()
@@ -21,6 +22,8 @@ const ContactsPage = () => {
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
+
+  const lp = useLaunchParams()
 
   const {
     filteredData,
@@ -42,7 +45,9 @@ const ContactsPage = () => {
       <div
         ref={filtersBlock}
         style={{
-          paddingTop: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
+          paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+            ? 40
+            : `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
         }}
         className="pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
       >
