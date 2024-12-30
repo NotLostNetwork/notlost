@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { Button } from "@telegram-apps/telegram-ui"
 import { destroyLocalDB } from "~/lib/utils/local-db"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
-import { Filter, useContactsState } from "./-$state"
+import { Filter, useContactsState } from "./-@state"
 import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
@@ -76,7 +76,7 @@ const ContactsPage = () => {
             selected={filtersState.selectedTopic}
             placeholder={
               <div className="flex w-full justify-between gap-2 items-center">
-                <div className="w-4 h-4">
+                <div className="w-[18px] h-[18px]">
                   <img src={linkIcon} />
                 </div>
                 Topic

@@ -1,14 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@telegram-apps/telegram-ui"
-import { AnimatePresence, motion } from "framer-motion"
-import { Suspense } from "react"
-import lazyWithPreload from "react-lazy-with-preload"
 import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import TgWallpaper from "~/ui/tg-wallpaper"
-import { useContactsState } from "../contacts/-$state"
+import { useContactsState } from "../contacts/-@state"
+import ForceGraph from "./-force-graph"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
@@ -16,12 +14,9 @@ const ContactsGraph = () => {
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
-  const LazyForceGraph = lazyWithPreload(
-    () => import("~/routes/app/_tab-bar/graph/-force-graph"),
-  )
-  LazyForceGraph.preload()
-
   const { uniqueTopics } = useContactsState(profile?.contacts)
+
+  if (!profile?.contacts) return
 
   return (
     <div>
@@ -29,29 +24,7 @@ const ContactsGraph = () => {
         <TgWallpaper opacity={0.5} />
       </div>
       <div>
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{
-              type: "spring",
-              damping: 50,
-              stiffness: 500,
-              delay: 0.1,
-            }}
-          >
-            <Suspense>
-              <LazyForceGraph
-                data={profile?.contacts!}
-                uniqueTopics={uniqueTopics}
-              />
-            </Suspense>
-          </motion.div>
-        </AnimatePresence>
+        <ForceGraph data={profile?.contacts!} uniqueTopics={uniqueTopics} />
         <div className="fixed bottom-20 left-6">
           <Button
             size={"s"}

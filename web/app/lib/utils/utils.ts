@@ -10,7 +10,7 @@
  */
 export const getEnvVariable = (
   name: string,
-  defaultVaue: string = ""
+  defaultVaue: string = "",
 ): string => {
   // Node envs
   if (
