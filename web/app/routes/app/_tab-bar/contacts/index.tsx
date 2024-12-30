@@ -22,10 +22,10 @@ const ContactsPage = () => {
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
+  console.log("CONTACTS", profile?.contacts)
+
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
-
-  const navigate = useNavigate()
 
   const {
     filteredData,
@@ -109,10 +109,6 @@ const ContactsPage = () => {
               updateFilterState(Filter.LAST_ADDED, false)
             }}
           />
-          <Button onClick={destroyLocalDB}>Destroy LDB</Button>
-          <Button onClick={() => navigate({ to: OnboardingRoute.to })}>
-            Onboarding
-          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-auto">

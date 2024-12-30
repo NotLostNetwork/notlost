@@ -63,7 +63,7 @@ const CreateContactModal = ({
     setTelegramUserSearchLoading(true)
     $getTelegramUserByUsername({ data: telegramUserValue })
       .then((res) => {
-        if (res[0]) {
+        if (res && res[0]) {
           setTelegramUserSearch(res[0] as TelegramUser)
         }
       })

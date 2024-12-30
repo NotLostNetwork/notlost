@@ -30,28 +30,25 @@ export const drawTopicNode = (
   const textWidth = ctx.measureText(titleText).width
   const textHeight = usernameFontSize
 
-  // Draw the background rectangle with rounded corners
-  const padding = 1 // padding around the text
-  const cornerRadius = 1 // radius for rounded corners
-  ctx.fillStyle = hexToRgba("#232e3c", 1) // background color
+  // text background
+  const padding = 1
+  const cornerRadius = 1
+  ctx.fillStyle = hexToRgba("#232e3c", 1)
 
-  // Start drawing the rounded rectangle
   ctx.beginPath()
   const x = node.x! - textWidth / 2 - padding * 2
   const y = node.y! + 8 - padding
   const width = textWidth + padding * 4
   const height = textHeight + padding * 2
 
-  // Draw rounded corners
-  ctx.moveTo(x + cornerRadius, y) // top-left corner
-  ctx.arcTo(x + width, y, x + width, y + height, cornerRadius) // top-right corner
-  ctx.arcTo(x + width, y + height, x, y + height, cornerRadius) // bottom-right corner
-  ctx.arcTo(x, y + height, x, y, cornerRadius) // bottom-left corner
-  ctx.arcTo(x, y, x + width, y, cornerRadius) // top-left corner
+  ctx.moveTo(x + cornerRadius, y)
+  ctx.arcTo(x + width, y, x + width, y + height, cornerRadius)
+  ctx.arcTo(x + width, y + height, x, y + height, cornerRadius)
+  ctx.arcTo(x, y + height, x, y, cornerRadius)
+  ctx.arcTo(x, y, x + width, y, cornerRadius)
   ctx.closePath()
   ctx.fill()
 
-  // Draw the text over the background
   ctx.fillStyle = hexToRgba("#6ab3f3", 1)
   ctx.fillText(titleText, node.x!, node.y! + 8)
 
@@ -65,7 +62,6 @@ export const drawTopicNode = (
     const imgSize = 6
 
     ctx.save()
-    // Directly draw the image without circular clipping
     ctx.drawImage(
       img,
       node.x! - imgSize / 2,

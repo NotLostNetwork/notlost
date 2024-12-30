@@ -22,7 +22,8 @@ export const $getTelegramUserByUsername = createServerFn({
 })
   .validator((data: string) => data)
   .handler(async (ctx) => {
-    const response = await axiosInstance.get(`getUserByUsername/${ctx.data}`)
-
-    return response.data
+    try {
+      const response = await axiosInstance.get(`getUserByUsername/${ctx.data}`)
+      return response.data
+    } catch (e) {}
   })
