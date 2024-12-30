@@ -33,7 +33,7 @@ export const drawTopicNode = (
 
   // text background
   const padding = 1
-  const cornerRadius = 1
+  const cornerRadius = 3
   ctx.fillStyle = hexToRgba("#232e3c", 1)
 
   ctx.beginPath()

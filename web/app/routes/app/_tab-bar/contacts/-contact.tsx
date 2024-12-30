@@ -166,24 +166,24 @@ const Contact = ({
 
               {withActions && (
                 <div className="flex justify-end gap-2 rounded-lg pr-2">
-                  <Tappable onClick={() => setIsOpenModifyModal(true)}>
-                    <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
-                      <div className="h-6 w-6 text-[#6ab2f2]">
+                  <Tappable
+                    onClick={() => setIsOpenModifyModal(true)}
+                    className="rounded-2xl"
+                  >
+                    <div className="flex items-center gap-1 py-1 px-6 rounded-2xl bg-[#5288c1] border-[#5288c1] border-[1px] ">
+                      <div className="h-6 w-6">
                         <PencilIcon />
-                      </div>
-                      <div className="text-xs text-link font-medium">
-                        Modify
                       </div>
                     </div>
                   </Tappable>
 
-                  <Tappable onClick={() => setIsOpenDeleteModal(true)}>
-                    <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
-                      <div className="h-6 w-6">
+                  <Tappable
+                    onClick={() => setIsOpenDeleteModal(true)}
+                    className="rounded-2xl"
+                  >
+                    <div className="flex items-center gap-1 py-1.5 px-4 bg-[#ff4059] rounded-2xl border-primary border-[1px]">
+                      <div className="h-[20px] w-[20px]">
                         <img src={TrashBinIcon} alt="" />
-                      </div>
-                      <div className="text-xs font-medium text-[#ff4059]">
-                        Remove
                       </div>
                     </div>
                   </Tappable>

@@ -1,6 +1,6 @@
 import BottomModal from "~/ui/modals/bottom-modal"
 import { useState } from "react"
-import { Button, Input } from "@telegram-apps/telegram-ui"
+import { Button, Input, Tappable } from "@telegram-apps/telegram-ui"
 import searchIcon from "~/assets/icons/search.svg"
 import calendarIcon from "@/assets/icons/calendar.svg"
 
@@ -61,13 +61,19 @@ export const SingleSelectFilter = ({
 
   return (
     <div>
-      <Button
-        mode={buttonMode as "outline"}
+      <Tappable
         onClick={() => setOpen(true)}
-        className={"text-xs"}
+        style={{
+          boxShadow: "0 0 0 1px var(--tgui--outline)",
+          background:
+            buttonMode === "filled"
+              ? "var(--tg-theme-button-color)"
+              : "transparent",
+        }}
+        className={"py-2 px-4 font-semibold rounded-2xl"}
       >
         {buttonText}
-      </Button>
+      </Tappable>
       <BottomModal
         isOpen={open}
         onClose={() => setOpen(false)}
@@ -116,14 +122,19 @@ export const FilterByLatest = ({
 
   return (
     <div>
-      <Button mode={enabled ? "filled" : "outline"} onClick={handleToggle}>
-        <div className="flex w-full justify-between gap-2 items-center">
-          <div className="w-6 h-6">
-            <img src={calendarIcon} />
-          </div>
-          Date
+      <Tappable
+        onClick={() => handleToggle}
+        style={{
+          boxShadow: "0 0 0 1px var(--tgui--outline)",
+          background: enabled ? "var(--tg-theme-button-color)" : "transparent",
+        }}
+        className={"py-2 px-4 font-semibold rounded-2xl flex gap-2"}
+      >
+        <div className="h-6 w-6">
+          <img src={calendarIcon} />
         </div>
-      </Button>
+        Date
+      </Tappable>
     </div>
   )
 }
