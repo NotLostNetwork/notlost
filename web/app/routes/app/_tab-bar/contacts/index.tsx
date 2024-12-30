@@ -1,7 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
-import { Button } from "@telegram-apps/telegram-ui"
-import { destroyLocalDB } from "~/lib/utils/local-db"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Filter, useContactsState } from "./-@state"
 import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
@@ -12,7 +10,6 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
-import { Route as OnboardingRoute } from "../../onboarding"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import LinkIcon from "@/assets/icons/link.svg?react"
 
@@ -21,8 +18,6 @@ const ContactsPage = () => {
 
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
-
-  console.log("CONTACTS", profile?.contacts)
 
   const filtersBlock = useRef<HTMLDivElement>(null)
   const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)

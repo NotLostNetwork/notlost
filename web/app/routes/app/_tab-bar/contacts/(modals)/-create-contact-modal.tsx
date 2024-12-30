@@ -72,23 +72,6 @@ const CreateContactModal = ({
       })
   }, [telegramUserValue])
 
-  const StepButton = ({
-    stepTitle,
-    toStep,
-  }: {
-    stepTitle: string
-    toStep: number
-  }) => {
-    return (
-      <div
-        className={`transition-all duration-300 ease-in-out text-xs text-center border-t-2 p-2 relative bottom-[4px] flex-grow ${step === toStep ? "border-accent text-white" : "border-transparent text-gray-500"}`}
-        onClick={() => setStep(toStep)}
-      >
-        {stepTitle}
-      </div>
-    )
-  }
-
   const createNewContact = () => {
     if (profile) {
       profile.contacts!.push(
@@ -124,6 +107,7 @@ const CreateContactModal = ({
         >
           {telegramUser && (
             <Contact
+              withActions={false}
               contact={
                 {
                   username: telegramUser.username!,

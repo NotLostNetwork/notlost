@@ -1,4 +1,4 @@
-import { Avatar, Button, Tappable } from "@telegram-apps/telegram-ui"
+import { Avatar, Tappable } from "@telegram-apps/telegram-ui"
 import { memo, useEffect, useRef, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
@@ -12,13 +12,23 @@ import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 import TrashBinIcon from "@/assets/icons/rubbish-bin.svg"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import DeleteContactModal from "./(modals)/-delete-contact-modal"
+import ModifyContactModal from "./(modals)/-modify-contact-modal"
 
-const Contact = ({ contact }: { contact: JazzContact }) => {
+const Contact = ({
+  contact,
+  withActions = true,
+}: {
+  contact: JazzContact
+  withActions?: boolean
+}) => {
   const { me } = useAccount()
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
   const [avatarUrl, setAvatarUrl] = useState("")
+
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+  const [isOpenModifyModal, setIsOpenModifyModal] = useState(false)
 
   useEffect(() => {
     TelegramHelper.getProfileAvatar(contact.username).then((avatarBlobUrl) => {
@@ -57,8 +67,6 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
       isLongPress.current = true
     }
   }
-
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
   const removeContact = () => {
     setHidden(true)
@@ -154,27 +162,31 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
                 </div>
               )}
 
-              <div className="flex justify-end gap-2 rounded-lg pr-2">
-                <Tappable onClick={() => {}}>
-                  <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
-                    <div className="h-6 w-6 text-[#6ab2f2]">
-                      <PencilIcon />
+              {withActions && (
+                <div className="flex justify-end gap-2 rounded-lg pr-2">
+                  <Tappable onClick={() => setIsOpenModifyModal(true)}>
+                    <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
+                      <div className="h-6 w-6 text-[#6ab2f2]">
+                        <PencilIcon />
+                      </div>
+                      <div className="text-xs text-link font-medium">
+                        Modify
+                      </div>
                     </div>
-                    <div className="text-xs text-link font-medium">Modify</div>
-                  </div>
-                </Tappable>
+                  </Tappable>
 
-                <Tappable onClick={() => setIsOpenDeleteModal(true)}>
-                  <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
-                    <div className="h-6 w-6">
-                      <img src={TrashBinIcon} alt="" />
+                  <Tappable onClick={() => setIsOpenDeleteModal(true)}>
+                    <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
+                      <div className="h-6 w-6">
+                        <img src={TrashBinIcon} alt="" />
+                      </div>
+                      <div className="text-xs font-medium text-[#ff4059]">
+                        Remove
+                      </div>
                     </div>
-                    <div className="text-xs font-medium text-[#ff4059]">
-                      Remove
-                    </div>
-                  </div>
-                </Tappable>
-              </div>
+                  </Tappable>
+                </div>
+              )}
             </div>
             <div className="w-full pl-20">
               <div className="bg-divider h-[1px]"></div>
@@ -182,11 +194,23 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
           </div>
         </motion.div>
       </AnimatePresence>
-      <DeleteContactModal
-        isOpen={isOpenDeleteModal}
-        closeModal={() => setIsOpenDeleteModal(false)}
-        deleteContact={removeContact}
-      />
+      {withActions && (
+        <div>
+          <DeleteContactModal
+            isOpen={isOpenDeleteModal}
+            closeModal={() => setIsOpenDeleteModal(false)}
+            deleteContact={removeContact}
+          />
+          <ModifyContactModal
+            contact={contact}
+            isOpen={isOpenModifyModal}
+            closeModal={() => {
+              setIsOpenModifyModal(false)
+              setLongPressTriggered(false)
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }
