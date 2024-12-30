@@ -3,12 +3,16 @@ import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 
 const toastConfig = {
   style: {
+    borderRadius: "32px",
     paddingLeft: "8px",
     paddingRight: "8px",
-    paddingTop: "4px",
-    paddingBottom: "4px",
+    paddingTop: "2px",
+    top: "0px !important",
+    paddingBottom: "2px",
+    fontWeight: "500",
     color: getCssVariableValue("--tg-theme-accent-text-color"),
     background: "#232e3c",
+    marginTop: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")} - 52px)`,
   },
   iconTheme: {
     primary: "#232e3c",
