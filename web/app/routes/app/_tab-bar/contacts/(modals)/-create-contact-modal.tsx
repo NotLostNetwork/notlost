@@ -127,7 +127,7 @@ const CreateContactModal = ({
           )}
         </div>
         {step === 0 && (
-          <div className="relative z-10">
+          <div className="relative z-10 pb-2">
             <Input
               onFocus={() => setTelegramUserInputFocused(true)}
               onBlur={() => setTelegramUserInputFocused(false)}
@@ -217,7 +217,7 @@ const CreateContactModal = ({
               </div>
             )}
             <div
-              className={`absolute top-[12px] right-[12px] transition-all duration-100 ease-in-out bg-gray-800 pointer-events-none ${telegramUserSearchLoading ? "opacity-100 h-6" : "opacity-0 h-0"}`}
+              className={`absolute top-[9px] right-[12px] transition-all duration-100 ease-in-out bg-gray-800 pointer-events-none ${telegramUserSearchLoading ? "opacity-100 h-6" : "opacity-0 h-0"}`}
             >
               <Spinner size="s" />
             </div>
@@ -225,39 +225,45 @@ const CreateContactModal = ({
         )}
 
         {step === 1 && (
-          <Input
-            autoFocus={true}
-            className=" p-0 text-white bg-gray-800"
-            style={{ color: "white" }}
-            type="text"
-            placeholder="Description"
-            value={descriptionValue}
-            onChange={(e) => setDescriptionValue(e.target.value)}
-          />
+          <div className="pb-2">
+            <Input
+              autoFocus={true}
+              className=" p-0 text-white bg-gray-800"
+              style={{ color: "white" }}
+              type="text"
+              placeholder="Description"
+              value={descriptionValue}
+              onChange={(e) => setDescriptionValue(e.target.value)}
+            />
+          </div>
         )}
 
         {step === 2 && (
-          <Input
-            autoFocus={true}
-            className=" p-0 text-white bg-gray-800"
-            style={{ color: "white" }}
-            type="text"
-            placeholder="Tags"
-            value={tagsValue}
-            onChange={(e) => setTagsValue(e.target.value)}
-          />
+          <div className="pb-2">
+            <Input
+              autoFocus={true}
+              className=" p-0 text-white bg-gray-800"
+              style={{ color: "white" }}
+              type="text"
+              placeholder="Tags"
+              value={tagsValue}
+              onChange={(e) => setTagsValue(e.target.value)}
+            />
+          </div>
         )}
 
         {step === 3 && (
-          <Input
-            autoFocus={true}
-            className=" p-0 text-white bg-gray-800"
-            style={{ color: "white" }}
-            type="text"
-            placeholder="Topic"
-            value={topicValue}
-            onChange={(e) => setTopicValue(e.target.value)}
-          />
+          <div className="pb-2">
+            <Input
+              autoFocus={true}
+              className=" p-0 text-white bg-gray-800"
+              style={{ color: "white" }}
+              type="text"
+              placeholder="Topic"
+              value={topicValue}
+              onChange={(e) => setTopicValue(e.target.value)}
+            />
+          </div>
         )}
         {!telegramUser && (
           <Button stretched={true} disabled={true}>
