@@ -2,8 +2,8 @@ import { useState } from "react"
 import { GraphNode, GraphNodeImageCache, GraphNodeType } from "../-@interface"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { NodeObject } from "react-force-graph-2d"
-import topicIcon from "@/assets/icons/link.svg"
-import tagIcon from "@/assets/icons/tag.svg"
+import topicIcon from "@/assets/icons/graph/link.svg"
+import tagIcon from "@/assets/icons/graph/tag.svg"
 
 export const useImageCache = (nodes: GraphNode[]) => {
   const [imageCache, setImageCache] = useState<GraphNodeImageCache>({})

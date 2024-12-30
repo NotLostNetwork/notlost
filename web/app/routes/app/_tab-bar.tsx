@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { Link } from "@tanstack/react-router"
-import { SearchIcon } from "~/assets/icons/iconsAsComponent/search-icon"
-import { GraphIcon } from "~/assets/icons/iconsAsComponent/graph-icon"
+import SearchIcon from "~/assets/icons/search-icon.svg?react"
+import GraphIcon from "~/assets/icons/graph-icon.svg?react"
 import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
@@ -27,7 +27,7 @@ export default function TabBar() {
 interface BottomBarLinkProps {
   to: string
   title: string
-  Icon: React.FC<{ color: string }>
+  Icon: React.FC
 }
 
 const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
@@ -42,15 +42,15 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
             className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${isActive ? "bg-buttonBezeled" : "bg-transparent "}`}
           >
             <div
-              className={`transition-all duration-150 ease-in-out ${isActive ? "p-1" : "p-[3px]"}`}
+              style={{
+                color: isActive
+                  ? getCssVariableValue("--tg-theme-accent-text-color")
+                  : "white",
+                padding: isActive ? 6 : 4,
+              }}
+              className="transition-all duration-150 ease-in-out"
             >
-              <Icon
-                color={
-                  isActive
-                    ? getCssVariableValue("--tg-theme-accent-text-color")
-                    : "white"
-                }
-              />
+              <Icon />
             </div>
           </div>
           <span

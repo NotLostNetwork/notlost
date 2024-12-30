@@ -53,6 +53,7 @@ export const drawTagNode = (
   ctx.fillText(titleText, node.x!, node.y! + 8)
 
   // icon
+  ctx.fillStyle = "#fff"
   if (img) {
     const imgSize = 4
 

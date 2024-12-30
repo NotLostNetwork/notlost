@@ -13,8 +13,8 @@ import {
   RootUserProfile,
 } from "~/lib/jazz/schema"
 import { Route as OnboardingRoute } from "../../onboarding"
-import tagIcon from "@/assets/icons/tag.svg"
-import linkIcon from "@/assets/icons/link.svg"
+import TagIcon from "@/assets/icons/tag.svg?react"
+import LinkIcon from "@/assets/icons/link.svg?react"
 
 const ContactsPage = () => {
   const { me } = useAccount()
@@ -77,7 +77,7 @@ const ContactsPage = () => {
             placeholder={
               <div className="flex w-full justify-between gap-2 items-center">
                 <div className="w-[18px] h-[18px]">
-                  <img src={linkIcon} />
+                  <LinkIcon />
                 </div>
                 Topic
               </div>
@@ -92,8 +92,8 @@ const ContactsPage = () => {
             selected={filtersState.selectedTag}
             placeholder={
               <div className="flex w-full justify-between gap-2 items-center">
-                <div className="w-4 h-4">
-                  <img src={tagIcon} />
+                <div className="w-4 h-4 text-white">
+                  <TagIcon />
                 </div>
                 Tag
               </div>

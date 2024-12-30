@@ -8,7 +8,7 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
-import PencilIcon from "~/assets/icons/iconsAsComponent/pencil-icon"
+import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 import TrashBinIcon from "@/assets/icons/rubbish-bin.svg"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import DeleteContactModal from "./(modals)/-delete-contact-modal"
@@ -157,8 +157,8 @@ const Contact = ({ contact }: { contact: JazzContact }) => {
               <div className="flex justify-end gap-2 rounded-lg pr-2">
                 <Tappable onClick={() => {}}>
                   <div className="flex items-center gap-2 p-2 rounded-lg border-primary border-[1px]">
-                    <div className="h-6 w-6">
-                      <PencilIcon color="#6ab2f2" />
+                    <div className="h-6 w-6 text-[#6ab2f2]">
+                      <PencilIcon />
                     </div>
                     <div className="text-xs text-link font-medium">Modify</div>
                   </div>

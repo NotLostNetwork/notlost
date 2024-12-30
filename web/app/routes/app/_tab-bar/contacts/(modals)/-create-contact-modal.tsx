@@ -21,6 +21,8 @@ import {
   JazzListOfTags,
 } from "~/lib/jazz/schema"
 import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
+import TagIcon from "@/assets/icons/tag.svg?react"
+import LinkIcon from "@/assets/icons/link.svg?react"
 
 const CreateContactModal = ({
   isOpen,
@@ -150,7 +152,7 @@ const CreateContactModal = ({
                     : "default"
               }
               type="text"
-              placeholder="username"
+              header="Telegram username"
               value={telegramUserValue}
               before={<div className="text-gray-500">@</div>}
               after={
@@ -237,7 +239,8 @@ const CreateContactModal = ({
             className=" p-0 text-white bg-gray-800"
             style={{ color: "white" }}
             type="text"
-            placeholder="Tags"
+            header="Tags(s)"
+            placeholder="Skill, job..."
             value={tagsValue}
             onChange={(e) => setTagsValue(e.target.value)}
           />
@@ -249,7 +252,8 @@ const CreateContactModal = ({
             className=" p-0 text-white bg-gray-800"
             style={{ color: "white" }}
             type="text"
-            placeholder="Topic"
+            header="Topic"
+            placeholder="Event, place, city..."
             value={topicValue}
             onChange={(e) => setTopicValue(e.target.value)}
           />
@@ -264,7 +268,7 @@ const CreateContactModal = ({
         <div
           style={
             telegramUser
-              ? { overflow: "visible", height: "100%", paddingTop: 8 }
+              ? { overflow: "visible", height: "100%" }
               : { overflow: "hidden", height: 0 }
           }
           className="w-full px-2 transition-all duration-300 ease-in-out"
@@ -274,10 +278,18 @@ const CreateContactModal = ({
               @
             </TabsItem>
             <TabsItem onClick={() => setStep(1)} selected={step === 1}>
-              <Icon24QR />
+              <div className="flex items-center justify-center">
+                <div className="w-4 h-4 text-center">
+                  <TagIcon />
+                </div>
+              </div>
             </TabsItem>
             <TabsItem onClick={() => setStep(2)} selected={step === 2}>
-              Topic
+              <div className="flex items-center justify-center">
+                <div className="w-6 h-6 text-center">
+                  <LinkIcon />
+                </div>
+              </div>
             </TabsItem>
           </TabsList>
         </div>
