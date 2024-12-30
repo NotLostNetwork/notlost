@@ -1,4 +1,10 @@
-import { Button, Input, Spinner, Tappable } from "@telegram-apps/telegram-ui"
+import {
+  Button,
+  Input,
+  Spinner,
+  TabsList,
+  Tappable,
+} from "@telegram-apps/telegram-ui"
 import { useEffect, useState } from "react"
 import Modal from "~/ui/modals/modal"
 import Contact from "../-contact"
@@ -14,6 +20,7 @@ import {
   JazzContact,
   JazzListOfTags,
 } from "~/lib/jazz/schema"
+import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
 
 const CreateContactModal = ({
   isOpen,
@@ -127,7 +134,7 @@ const CreateContactModal = ({
           )}
         </div>
         {step === 0 && (
-          <div className="relative z-10 pb-2">
+          <div className="relative z-10">
             <Input
               onFocus={() => setTelegramUserInputFocused(true)}
               onBlur={() => setTelegramUserInputFocused(false)}
@@ -225,50 +232,34 @@ const CreateContactModal = ({
         )}
 
         {step === 1 && (
-          <div className="pb-2">
-            <Input
-              autoFocus={true}
-              className=" p-0 text-white bg-gray-800"
-              style={{ color: "white" }}
-              type="text"
-              placeholder="Description"
-              value={descriptionValue}
-              onChange={(e) => setDescriptionValue(e.target.value)}
-            />
-          </div>
+          <Input
+            autoFocus={true}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: "white" }}
+            type="text"
+            placeholder="Tags"
+            value={tagsValue}
+            onChange={(e) => setTagsValue(e.target.value)}
+          />
         )}
 
         {step === 2 && (
-          <div className="pb-2">
-            <Input
-              autoFocus={true}
-              className=" p-0 text-white bg-gray-800"
-              style={{ color: "white" }}
-              type="text"
-              placeholder="Tags"
-              value={tagsValue}
-              onChange={(e) => setTagsValue(e.target.value)}
-            />
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="pb-2">
-            <Input
-              autoFocus={true}
-              className=" p-0 text-white bg-gray-800"
-              style={{ color: "white" }}
-              type="text"
-              placeholder="Topic"
-              value={topicValue}
-              onChange={(e) => setTopicValue(e.target.value)}
-            />
-          </div>
+          <Input
+            autoFocus={true}
+            className=" p-0 text-white bg-gray-800"
+            style={{ color: "white" }}
+            type="text"
+            placeholder="Topic"
+            value={topicValue}
+            onChange={(e) => setTopicValue(e.target.value)}
+          />
         )}
         {!telegramUser && (
-          <Button stretched={true} disabled={true}>
-            Add from my dialogs
-          </Button>
+          <div className="pt-2">
+            <Button stretched={true} disabled={true}>
+              Add from my dialogs
+            </Button>
+          </div>
         )}
         <div
           style={
@@ -278,15 +269,19 @@ const CreateContactModal = ({
           }
           className="w-full px-2 transition-all duration-300 ease-in-out"
         >
-          <div className={" border-primary border-t-2 flex"}>
-            <div className="flex w-full relative top-[2px]">
-              <StepButton stepTitle="Username" toStep={0} />
-              <StepButton stepTitle="Description" toStep={1} />
-              <StepButton stepTitle="Tags" toStep={2} />
-              <StepButton stepTitle="Topic" toStep={3} />
-            </div>
-          </div>
+          <TabsList>
+            <TabsItem onClick={() => setStep(0)} selected={step === 0}>
+              @
+            </TabsItem>
+            <TabsItem onClick={() => setStep(1)} selected={step === 1}>
+              <Icon24QR />
+            </TabsItem>
+            <TabsItem onClick={() => setStep(2)} selected={step === 2}>
+              Topic
+            </TabsItem>
+          </TabsList>
         </div>
+
         <div className="pt-2 space-y-2">
           <Button
             stretched={true}
