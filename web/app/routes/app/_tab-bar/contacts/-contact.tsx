@@ -13,6 +13,7 @@ import TrashBinIcon from "@/assets/icons/rubbish-bin.svg"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import DeleteContactModal from "./(modals)/-delete-contact-modal"
 import ModifyContactModal from "./(modals)/-modify-contact-modal"
+import { toastSuccess } from "~/ui/toast"
 
 const Contact = ({
   contact,
@@ -79,6 +80,7 @@ const Contact = ({
           owner: profile._owner,
         })
       }
+      toastSuccess("Contact removed")
     }, 300)
   }
 

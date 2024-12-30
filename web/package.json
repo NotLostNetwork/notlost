@@ -32,6 +32,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-force-graph-2d": "^1.26.1",
+    "react-hot-toast": "^2.4.1",
     "react-lazy-with-preload": "^2.2.1",
     "redaxios": "^0.5.1",
     "ronin": "^5.2.0",

@@ -23,6 +23,8 @@ import {
 import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import LinkIcon from "@/assets/icons/link.svg?react"
+import toast from "react-hot-toast"
+import { toastSuccess } from "~/ui/toast"
 
 const CreateContactModal = ({
   isOpen,
@@ -94,6 +96,7 @@ const CreateContactModal = ({
       setDescriptionValue("")
       setTopicValue("")
       closeModal()
+      toastSuccess("Contact created")
     }
   }
 

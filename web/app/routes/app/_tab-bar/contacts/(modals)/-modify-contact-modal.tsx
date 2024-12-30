@@ -12,6 +12,7 @@ import LinkIcon from "@/assets/icons/link.svg?react"
 import { useEffect, useState } from "react"
 import Contact from "../-contact"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
+import { toastSuccess } from "~/ui/toast"
 
 const ModifyContactModal = ({
   isOpen,
@@ -126,6 +127,7 @@ const ModifyContactModal = ({
 
             resetForm()
             closeModal()
+            toastSuccess("Contact saved")
           }}
         >
           Save
