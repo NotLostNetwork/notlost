@@ -6,6 +6,7 @@ export const drawTopicNode = (
   ctx: CanvasRenderingContext2D,
   globalScale: number,
   img: HTMLImageElement,
+  platform: string,
 ) => {
   const titleText = node.id!.toString()
   const usernameFontSize = Math.min(5, (24 * globalScale) / 8)
@@ -50,7 +51,13 @@ export const drawTopicNode = (
   ctx.fill()
 
   ctx.fillStyle = hexToRgba("#6ab3f3", 1)
-  ctx.fillText(titleText, node.x!, node.y! + 8)
+
+  // on ios / mac os text is lower than should be
+  if (["macos", "ios"].includes(platform)) {
+    ctx.fillText(titleText, node.x!, node.y! + 7)
+  } else {
+    ctx.fillText(titleText, node.x!, node.y! + 8)
+  }
 
   // text outline
   /* ctx.strokeStyle = hexToRgba("#ffffff", 0.2)

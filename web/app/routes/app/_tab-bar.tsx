@@ -12,11 +12,19 @@ export default function TabBar() {
     <div className="bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
-          <BottomBarLink to={GraphRoute.to} title="Network" Icon={GraphIcon} />
+          <BottomBarLink
+            to={GraphRoute.to}
+            title="Network"
+            Icon={<GraphIcon />}
+          />
           <BottomBarLink
             to={ContactsRoute.to}
             title="Search"
-            Icon={SearchIcon}
+            Icon={
+              <div className="p-[2px]">
+                <SearchIcon />
+              </div>
+            }
           />
         </div>
       </div>
@@ -27,7 +35,7 @@ export default function TabBar() {
 interface BottomBarLinkProps {
   to: string
   title: string
-  Icon: React.FC
+  Icon: React.ReactElement
 }
 
 const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
@@ -50,7 +58,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
               }}
               className="transition-all duration-150 ease-in-out"
             >
-              <Icon />
+              <div>{Icon}</div>
             </div>
           </div>
           <span

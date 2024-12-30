@@ -10,6 +10,7 @@ import { drawContactNode } from "./(nodes)/-draw-contact-node"
 import { drawTopicNode } from "./(nodes)/-draw-topic-node"
 import { useImageCache } from "./(nodes)/-use-image-cache"
 import { drawTagNode } from "./(nodes)/-draw-tag-node"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
 
 const ForceGraph = ({
   data,
@@ -19,9 +20,8 @@ const ForceGraph = ({
   uniqueTopics: string[]
 }) => {
   const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
-  const [clickedNodeTimeStamp, setClickedNodeTimeStamp] = useState<
-    number | null
-  >(null)
+
+  const lp = useLaunchParams()
 
   const nodes = initializeNodes(data, uniqueTopics)
   const links = initializeLinks(nodes)
@@ -41,10 +41,10 @@ const ForceGraph = ({
           drawContactNode(node, ctx, globalScale, img)
           break
         case GraphNodeType.TOPIC:
-          drawTopicNode(node, ctx, globalScale, img)
+          drawTopicNode(node, ctx, globalScale, img, lp.platform)
           break
         case GraphNodeType.TAG:
-          drawTagNode(node, ctx, globalScale, img)
+          drawTagNode(node, ctx, globalScale, img, lp.platform)
           break
       }
     },

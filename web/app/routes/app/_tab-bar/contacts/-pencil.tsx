@@ -34,7 +34,7 @@ export const Pencil = () => {
 
   return (
     <div>
-      <div className="fixed bottom-20 right-6">
+      <div className="fixed bottom-24 right-6">
         <div
           className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         ></div>
