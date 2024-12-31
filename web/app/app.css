@@ -46,6 +46,7 @@ iframe {
 }
 .tgui-0f5050defacbf813 {
   box-shadow: 0 0 0 1px var(--tgui--outline) !important;
+  border-radius: 24px !important;
 }
 .tgui-9f9a52f695b85cc9 {
   background: var(--tg-theme-secondary-bg-color) !important;

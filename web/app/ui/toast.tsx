@@ -12,7 +12,7 @@ const toastConfig = {
     fontWeight: "500",
     color: getCssVariableValue("--tg-theme-accent-text-color"),
     background: "#232e3c",
-    marginTop: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")} - 52px)`,
+    marginBottom: 84,
   },
   iconTheme: {
     primary: "#232e3c",

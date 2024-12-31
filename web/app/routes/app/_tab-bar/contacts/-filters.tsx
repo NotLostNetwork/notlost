@@ -20,7 +20,7 @@ export const FilterBySearch = ({
         placeholder="Search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        after={<img className="h-6 w-6" src={searchIcon} alt="" />}
+        before={<img className="h-4 w-4 mr-2" src={searchIcon} alt="" />}
       />
     </div>
   )
