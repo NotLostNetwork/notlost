@@ -30,8 +30,6 @@ const ModifyContactModal = ({
 
   const [step, setStep] = useState(0)
 
-  console.log(contact.topic)
-
   const [tags, setTags] = useState<string | null>(null)
   const [topic, setTopic] = useState(contact.topic)
 

@@ -4,19 +4,19 @@ import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 const toastConfig = {
   style: {
     borderRadius: "32px",
-    paddingLeft: "8px",
-    paddingRight: "8px",
+    paddingLeft: "0px",
+    paddingRight: "12px",
     paddingTop: "2px",
     top: "0px !important",
     paddingBottom: "2px",
     fontWeight: "500",
     color: getCssVariableValue("--tg-theme-accent-text-color"),
-    background: "#232e3c",
+    background: "rgba(41, 144, 255, .15)",
     marginBottom: 84,
   },
   iconTheme: {
-    primary: "#232e3c",
-    secondary: getCssVariableValue("--tg-theme-accent-text-color"),
+    primary: "rgba(41, 144, 255, 0)",
+    secondary: "rgba(41, 144, 255, 0)",
   },
 }
 

@@ -51,11 +51,11 @@ export const Pencil = () => {
             }}
           />
           <div className="h-[2px] bg-divider"></div>
-          <ToolTipItem
+          {/* <ToolTipItem
             icon={connectionIcon}
             title={`New topic`}
             action={() => {}}
-          />
+          /> */}
         </div>
         <Button
           size={"s"}

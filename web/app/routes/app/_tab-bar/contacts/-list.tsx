@@ -6,6 +6,7 @@ import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
 import { JazzListOfContacts } from "~/lib/jazz/schema"
+import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -16,6 +17,9 @@ const ContactsList = ({
   toggleGraphMode: () => void
 }) => {
   let animationDelay = -0.05
+
+  const jazzProfile = useJazzProfile()
+
   return (
     <div>
       <div className="h-screen absolute">
@@ -49,21 +53,37 @@ const ContactsList = ({
             )
           })}
       </div>
-
-      {data && data.length === 0 && (
-        <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0">
-          <img
-            src={utyaLoading}
-            alt={"Utya sticker"}
-            height={150}
-            width={150}
-          />
-          <div className="mt-2 text-2xl font-medium">Nobody found</div>
-          <div className="text-center mt-2 opacity-60">
-            It's seems you don't have that person in your network.
+      {jazzProfile?.contacts === null ||
+        (jazzProfile?.contacts.length === 0 && (
+          <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0">
+            <div className="mt-2 text-2xl font-medium">
+              Time to create your first contact!
+            </div>
+            <div className="text-center mt-4 opacity-60 ">
+              Click on "Pencil" button to create first contact, add tag and
+              topic and then go to "Network" tab to see the magic happen
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+
+      {data &&
+        jazzProfile?.contacts &&
+        jazzProfile?.contacts.length > 0 &&
+        data.length === 0 && (
+          <div className="flex flex-col items-center justify-center pr-4 pl-4 top-0">
+            <img
+              src={utyaLoading}
+              alt={"Utya sticker"}
+              height={150}
+              width={150}
+            />
+            <div className="mt-2 text-2xl font-medium">Nobody found</div>
+            <div className="text-center mt-2 opacity-60">
+              It's seems you don't have that person in your network.
+            </div>
+          </div>
+        )}
+
       <Pencil />
     </div>
   )
