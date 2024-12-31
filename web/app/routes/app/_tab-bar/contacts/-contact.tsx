@@ -168,20 +168,22 @@ const Contact = ({
                 <div className="flex justify-end gap-2 rounded-lg pr-2">
                   <Tappable
                     onClick={() => setIsOpenModifyModal(true)}
-                    className="rounded-2xl"
+                    style={{
+                      boxShadow: "0 0 0 1px var(--tgui--outline)",
+                    }}
+                    className={"py-2 px-4 font-semibold rounded-2xl flex gap-2"}
                   >
-                    <div className="flex items-center gap-1 py-1 px-6 rounded-2xl bg-[#5288c1] border-[#5288c1] border-[1px] ">
-                      <div className="h-6 w-6">
-                        <PencilIcon />
-                      </div>
+                    <div className="h-6 w-6">
+                      <PencilIcon />
                     </div>
+                    Edit
                   </Tappable>
 
                   <Tappable
                     onClick={() => setIsOpenDeleteModal(true)}
                     className="rounded-2xl"
                   >
-                    <div className="flex items-center gap-1 py-1.5 px-4 bg-[#ff4059] rounded-2xl border-primary border-[1px]">
+                    <div className="flex items-center gap-1 py-2 px-4 bg-[#ff4059] rounded-2xl border-primary border-[2px]">
                       <div className="h-[20px] w-[20px]">
                         <img src={TrashBinIcon} alt="" />
                       </div>
