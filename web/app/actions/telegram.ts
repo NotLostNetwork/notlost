@@ -54,6 +54,12 @@ export const $validateInitData = createServerFn({ method: "GET" })
     validate(ctx.data, process.env.TELEGRAM_API_KEY!)
   })
 
+export const $validateBetaTestPassword = createServerFn({ method: "GET" })
+  .validator((data: string) => data)
+  .handler(async (ctx) => {
+    return ctx.data === process.env.BETA_TEST_PASSWORD
+  })
+
 interface SignInData {
   phone: string
   phoneCode: string
