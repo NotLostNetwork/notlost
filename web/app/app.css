@@ -33,6 +33,13 @@ body {
   --tg-theme-text-color: #f5f5f5 !important;
 }
 
+.no-select {
+  -webkit-user-select: none; /* Safari and iOS */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard syntax */
+}
+
 iframe {
   overscroll-behavior: none; /* Disable overscroll in the iframe container */
 }

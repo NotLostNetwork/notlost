@@ -1,10 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { Route as AppRoute } from "@/routes/app"
 
 function RouteComponent() {
+  const navigate = useNavigate()
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
@@ -33,6 +36,18 @@ function RouteComponent() {
           @not_lost_bot
         </a>
       </div>
+
+      <button
+        style={{
+          color: "#4da6ff",
+          textDecoration: "none",
+          fontWeight: "bold",
+          marginTop: 20,
+        }}
+        onClick={() => navigate({ to: AppRoute.to })}
+      >
+        redirect to app
+      </button>
     </div>
   )
 }
