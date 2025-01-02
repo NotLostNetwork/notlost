@@ -5,13 +5,38 @@ import { $validateBetaTestPassword } from "~/actions/telegram"
 import Modal from "~/ui/modals/modal"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
 
-export function BetaTest() {
+type DemoAuthState = (
+  | {
+      state: "uninitialized"
+    }
+  | {
+      state: "loading"
+    }
+  | {
+      state: "ready"
+      existingUsers: string[]
+      signUp: (username: string) => void
+      logInAs: (existingUser: string) => void
+    }
+  | {
+      state: "signedIn"
+      logOut: () => void
+    }
+) & {
+  errors: string[]
+}
+
+export function BetaTest({ state }: { state: DemoAuthState }) {
+  if (!state) return
+
   const [passwordModalOpen, setPasswordModalOpen] = useState(false)
   const [passwordValue, setPasswordValue] = useState("")
   const [invalidPassword, setInvalidPassword] = useState(false)
 
   const navigate = useNavigate()
+  const lp = useLaunchParams()
 
   const validate = async () => {
     const validated = await $validateBetaTestPassword({ data: passwordValue })
@@ -19,11 +44,16 @@ export function BetaTest() {
       setInvalidPassword(true)
     } else {
       localStorage.setItem("betaTestPassword", passwordValue)
-      navigate({ to: ContactsRoute.to })
-      // remove reload after finding a fix
-      window.location.reload()
+      if (state.state === "ready") {
+        state.signUp(
+          lp.initData?.user?.username! || lp.initData?.user?.id.toString()!,
+        )
+        navigate({ to: ContactsRoute.to })
+      }
     }
   }
+
+  if (state.state === "loading") return <div>Loading</div>
 
   return (
     <div className="flex flex-col items-center justify-center p-4 h-screen">
