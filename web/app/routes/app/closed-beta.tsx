@@ -6,7 +6,7 @@ import Modal from "~/ui/modals/modal"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts"
 
-function RouteComponent() {
+export function BetaTest() {
   const [passwordModalOpen, setPasswordModalOpen] = useState(false)
   const [passwordValue, setPasswordValue] = useState("")
   const [invalidPassword, setInvalidPassword] = useState(false)
@@ -73,5 +73,5 @@ function RouteComponent() {
 }
 
 export const Route = createFileRoute("/app/closed-beta")({
-  component: RouteComponent,
+  component: BetaTest,
 })

@@ -1,5 +1,6 @@
 import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
 import { JazzAccount } from "./schema"
+import { BetaTest } from "@/routes/app/closed-beta"
 
 const Jazz = createJazzReactApp({
   AccountSchema: JazzAccount,
@@ -9,6 +10,12 @@ export const { useAccount, useCoState } = Jazz
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   const [auth, state] = useDemoAuth()
+  const betaTestPassword = localStorage.getItem("betaTestPassword")
+
+  if (!betaTestPassword) {
+    return <BetaTest />
+  }
+
   return (
     <>
       <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
