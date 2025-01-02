@@ -35,7 +35,6 @@
     "react-hot-toast": "^2.4.1",
     "react-lazy-with-preload": "^2.2.1",
     "redaxios": "^0.5.1",
-    "ronin": "^5.2.0",
     "tailwind-merge": "^2.5.5",
     "telegram": "^2.26.8",
     "vinxi": "0.5.1",
@@ -43,7 +42,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@ronin-types/notlost": "^0.0.0-3467553999232",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
