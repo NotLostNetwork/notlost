@@ -85,7 +85,7 @@ const Contact = ({
   }
 
   return (
-    <div>
+    <div className="no-select">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
