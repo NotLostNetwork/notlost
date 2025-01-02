@@ -1,4 +1,4 @@
-import { CoMap, co, Account, Profile, CoList } from "jazz-tools"
+import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools"
 
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
@@ -37,9 +37,21 @@ export class JazzAccount extends Account {
   /** The account migration is run on account creation and on every log-in.
    *  You can use it to set up the account root and any other initial CoValues you need.
    */
-  async migrate() {
-    if (this.profile!.contacts === undefined) {
-      this.profile!.contacts! = JazzListOfContacts.create([], {
+  async migrate(creationProps?: { name: string }) {
+    super.migrate(creationProps)
+
+    const profile = await RootUserProfile.load(
+      this._refs.profile!.id as ID<RootUserProfile>,
+      this,
+      {},
+    )
+
+    if (!profile) {
+      throw new Error("Account profile missing, not able to run the migration")
+    }
+
+    if (!profile._refs.contacts) {
+      profile.contacts = JazzListOfContacts.create([], {
         owner: this.profile!._owner,
       })
     }
