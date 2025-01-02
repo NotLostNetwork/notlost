@@ -15,12 +15,13 @@ export function BetaTest() {
 
   const validate = async () => {
     const validated = await $validateBetaTestPassword({ data: passwordValue })
-    console.log()
     if (!validated) {
       setInvalidPassword(true)
     } else {
       localStorage.setItem("betaTestPassword", passwordValue)
       navigate({ to: ContactsRoute.to })
+      // remove reload after finding a fix
+      window.location.reload()
     }
   }
 
