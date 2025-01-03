@@ -9,45 +9,49 @@ export const useImageCache = (nodes: GraphNode[]) => {
   const [imageCache, setImageCache] = useState<GraphNodeImageCache>({})
 
   const loadImage = (url: string) =>
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
       const img = new Image()
       img.src = url
       img.onload = () => resolve(img)
+      img.onerror = (err) => reject(err)
     })
 
   const fetchImages = async () => {
-    for (const node of nodes) {
+    const imageLoadPromises = nodes.map(async (node) => {
       if (!imageCache[node.id]) {
-        switch (node.type) {
-          case GraphNodeType.CONTACT:
-            const avatarUrl = await TelegramHelper.getProfileAvatar(
-              node.username,
-            )
-            const contactImg = await loadImage(avatarUrl)
-            setImageCache((prev) => ({
-              ...prev,
-              [node.id]: contactImg as HTMLImageElement,
-            }))
-            break
+        try {
+          let img: HTMLImageElement | null = null
 
-          case GraphNodeType.TOPIC:
-            const topicImg = await loadImage(topicIcon)
-            setImageCache((prev) => ({
-              ...prev,
-              [node.id]: topicImg as HTMLImageElement,
-            }))
-            break
+          switch (node.type) {
+            case GraphNodeType.CONTACT:
+              const avatarUrl = await TelegramHelper.getProfileAvatar(
+                node.username,
+              )
+              img = (await loadImage(avatarUrl)) as HTMLImageElement
+              break
 
-          case GraphNodeType.TAG:
-            const tagImg = await loadImage(tagIcon)
+            case GraphNodeType.TOPIC:
+              img = (await loadImage(topicIcon)) as HTMLImageElement
+              break
+
+            case GraphNodeType.TAG:
+              img = (await loadImage(tagIcon)) as HTMLImageElement
+              break
+          }
+
+          if (img) {
             setImageCache((prev) => ({
               ...prev,
-              [node.id]: tagImg as HTMLImageElement,
+              [node.id]: img,
             }))
-            break
+          }
+        } catch (error) {
+          console.error(`Error loading image for node ${node.id}:`, error)
         }
       }
-    }
+    })
+
+    await Promise.all(imageLoadPromises)
   }
 
   const addStaticImage = async (url: string, node: NodeObject) => {
