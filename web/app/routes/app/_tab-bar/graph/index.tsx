@@ -4,10 +4,10 @@ import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { useContactsState } from "../contacts/-@state"
 import ForceGraph from "./-force-graph"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
-
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
