@@ -9,13 +9,13 @@ const toastConfig = {
     paddingTop: "2px",
     top: "0px !important",
     paddingBottom: "2px",
-    fontWeight: "500",
-    color: getCssVariableValue("--tg-theme-accent-text-color"),
-    background: "rgba(41, 144, 255, .15)",
+    fontWeight: "400",
+    color: "white",
+    background: getCssVariableValue("--tg-theme-button-color"),
     marginBottom: 84,
   },
   iconTheme: {
-    primary: "rgba(41, 144, 255, 0)",
+    primary: "white",
     secondary: "rgba(41, 144, 255, 0)",
   },
 }
