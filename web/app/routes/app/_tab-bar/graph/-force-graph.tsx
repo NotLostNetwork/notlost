@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  memo,
+  useRef,
+} from "react"
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
@@ -11,6 +18,8 @@ import { drawTopicNode } from "./(nodes)/-draw-topic-node"
 import { useImageCache } from "./(nodes)/-use-image-cache"
 import { drawTagNode } from "./(nodes)/-draw-tag-node"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
+import { SelectedContact } from "./-selected-contact"
+import { AnimatePresence, motion } from "framer-motion"
 
 const ForceGraph = ({
   data,
@@ -19,18 +28,25 @@ const ForceGraph = ({
   data: JazzListOfContacts
   uniqueTopics: string[]
 }) => {
-  const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
+  const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
 
   const lp = useLaunchParams()
 
-  const nodes = initializeNodes(data, uniqueTopics)
-  const links = initializeLinks(nodes)
+  const nodes = useMemo(
+    () => initializeNodes(data, uniqueTopics),
+    [data, uniqueTopics],
+  )
+  const links = useMemo(() => initializeLinks(nodes), [nodes])
 
-  const { imageCache, fetchImages, addStaticImage } = useImageCache(nodes)
+  const { imageCache, fetchImages } = useImageCache(nodes)
 
   useEffect(() => {
     fetchImages()
   }, [nodes, imageCache])
+
+  useEffect(() => {
+    console.log(selectedContact)
+  }, [selectedContact])
 
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -48,17 +64,14 @@ const ForceGraph = ({
           break
       }
     },
-    [imageCache, clickedNodeId],
+    [imageCache],
   )
 
   const fgRef = React.useRef<
     ForceGraphMethods<{ id: string | number }, {}> | undefined
   >(undefined)
 
-  const graphData = {
-    nodes,
-    links,
-  }
+  const graphData = useMemo(() => ({ nodes, links }), [nodes, links])
 
   useEffect(() => {
     fgRef?.current?.d3Force("charge")!.distanceMax(50)
@@ -67,50 +80,61 @@ const ForceGraph = ({
   }, [])
 
   return (
-    <ForceGraph2D
-      ref={fgRef}
-      graphData={graphData}
-      nodeAutoColorBy="group"
-      onNodeClick={(node) => {
-        /* // simulate double click
-        if (
-          clickedNodeId === node.id!.toString() &&
-          Date.now() - clickedNodeTimeStamp! <= 500
-        ) {
-          window.open(`https://t.me/${node.username}`)
-        } else {
-          setClickedNodeId(node.id!.toString())
-          setClickedNodeTimeStamp(Date.now())
-          console.log(clickedNodeTimeStamp)
-        } */
-      }}
-      onBackgroundClick={() => {
-        setClickedNodeId(null)
-      }}
-      nodeCanvasObject={drawNode}
-      nodePointerAreaPaint={(node, color, ctx) => {
-        const imgSize = 10
-        ctx.fillStyle = color
-        ctx.beginPath()
-        ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
-        ctx.fill()
-      }}
-      linkCanvasObject={(link, ctx) => {
-        ctx.strokeStyle = getCssVariableValue("--tg-theme-button-color")
-        ctx.lineWidth = 0.5
+    <div>
+      <AnimatePresence>
+        {selectedContact && (
+          <SelectedContact selectedContact={selectedContact} />
+        )}
+      </AnimatePresence>
 
-        ctx.beginPath()
-        ctx.moveTo(
-          (link.source as { x: number; y: number }).x,
-          (link.source as { x: number; y: number }).y,
-        )
-        ctx.lineTo(
-          (link.target as { x: number; y: number }).x,
-          (link.target as { x: number; y: number }).y,
-        )
-        ctx.stroke()
-      }}
-    />
+      <ForceGraph2D
+        ref={fgRef}
+        graphData={graphData}
+        nodeAutoColorBy="group"
+        onBackgroundClick={() => {
+          setSelectedContact(null)
+        }}
+        onNodeClick={(node) => {
+          if (selectedContact !== node) {
+            setSelectedContact(null)
+            setTimeout(() => {
+              setSelectedContact(node as GraphNode)
+            }, 150)
+          }
+        }}
+        onNodeDrag={(node) => {
+          if (selectedContact !== node) {
+            setSelectedContact(null)
+            setTimeout(() => {
+              setSelectedContact(node as GraphNode)
+            }, 150)
+          }
+        }}
+        nodeCanvasObject={drawNode}
+        nodePointerAreaPaint={(node, color, ctx) => {
+          const imgSize = 10
+          ctx.fillStyle = color
+          ctx.beginPath()
+          ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
+          ctx.fill()
+        }}
+        linkCanvasObject={(link, ctx) => {
+          ctx.strokeStyle = getCssVariableValue("--tg-theme-button-color")
+          ctx.lineWidth = 0.5
+
+          ctx.beginPath()
+          ctx.moveTo(
+            (link.source as { x: number; y: number }).x,
+            (link.source as { x: number; y: number }).y,
+          )
+          ctx.lineTo(
+            (link.target as { x: number; y: number }).x,
+            (link.target as { x: number; y: number }).y,
+          )
+          ctx.stroke()
+        }}
+      />
+    </div>
   )
 }
 
