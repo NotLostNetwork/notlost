@@ -1,6 +1,7 @@
 import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
 import { JazzAccount } from "./schema"
 import { BetaTest } from "@/routes/app/closed-beta"
+import { useState } from "react"
 
 const Jazz = createJazzReactApp({
   AccountSchema: JazzAccount,
@@ -10,10 +11,19 @@ export const { useAccount, useCoState } = Jazz
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   const [auth, state] = useDemoAuth()
-  const betaTestPassword = localStorage.getItem("betaTestPassword")
+  const [betaTestPassword, setBetaTestPassword] = useState<string | null>(
+    localStorage.getItem("betaTestPassword"),
+  )
 
   if (!betaTestPassword) {
-    return <BetaTest />
+    return (
+      <BetaTest
+        setBetaTestPassword={(pass) => {
+          setBetaTestPassword(pass)
+          localStorage.setItem("betaTestPassword", pass)
+        }}
+      />
+    )
   }
 
   return (
