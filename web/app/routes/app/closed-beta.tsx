@@ -21,7 +21,7 @@ export function BetaTest() {
       localStorage.setItem("betaTestPassword", passwordValue)
       navigate({ to: ContactsRoute.to })
       // remove reload after finding a fix
-      window.location.reload()
+      // window.location.reload()
     }
   }
 
