@@ -91,11 +91,7 @@ const Wrapper = ({ children }: { children: ReactElement }) => {
       exit={{ opacity: 0, y: 10, filter: "blur(2px)" }}
       transition={{ duration: 0.15 }}
     >
-      <div
-        style={{
-          top: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
-        }}
-      >
+      <div>
         <div className="w-screen p-4 pt-2">
           <div
             className="bg-secondary rounded-xl"

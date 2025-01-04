@@ -73,6 +73,8 @@ const ForceGraph = ({
 
   const graphData = useMemo(() => ({ nodes, links }), [nodes, links])
 
+  console.log(graphData)
+
   useEffect(() => {
     fgRef?.current?.d3Force("charge")!.distanceMax(50)
     fgRef?.current?.centerAt(0, 0)
@@ -81,7 +83,12 @@ const ForceGraph = ({
 
   return (
     <div>
-      <div className="absolute top-0 left-0 w-full z-10">
+      <div
+        style={{
+          top: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
+        }}
+        className="absolute left-0 w-full z-10"
+      >
         <AnimatePresence>
           {selectedContact && (
             <SelectedContact selectedContact={selectedContact} />
