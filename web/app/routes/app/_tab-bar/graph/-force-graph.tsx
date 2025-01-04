@@ -81,11 +81,13 @@ const ForceGraph = ({
 
   return (
     <div>
-      <AnimatePresence>
-        {selectedContact && (
-          <SelectedContact selectedContact={selectedContact} />
-        )}
-      </AnimatePresence>
+      <div className="absolute top-0 left-0 w-full z-10">
+        <AnimatePresence>
+          {selectedContact && (
+            <SelectedContact selectedContact={selectedContact} />
+          )}
+        </AnimatePresence>
+      </div>
 
       <ForceGraph2D
         ref={fgRef}
