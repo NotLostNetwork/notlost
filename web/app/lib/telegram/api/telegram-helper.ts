@@ -8,14 +8,8 @@ import notLostBotAvatar from "~/assets/trialAvatars/not_lost_bot.jpeg"
 import { $getTelegramPhoto } from "./telegram-api-server"
 
 class TelegramHelper {
-  private trialUsernames = [
-    "shestaya_liniya",
-    "PiraJoke",
-    "nikivi",
-    "skywl_k",
-    "vladbyelik",
-  ]
   private sessionAvatarBlobs = new Map<string, string>()
+  private downloadQueue = new Set<string>()
 
   getProfileAvatar = async (username: string): Promise<string> => {
     let avatarBlobUrl
@@ -30,28 +24,32 @@ class TelegramHelper {
     if (cachedAvatar) {
       avatarBlobUrl = URL.createObjectURL(cachedAvatar)
     } else {
+      if (this.downloadQueue.has(username)) {
+        return new Promise((resolve) => {
+          const interval = setInterval(() => {
+            const completedBlob = this.getSessionBlob(username)
+            if (completedBlob) {
+              clearInterval(interval)
+              resolve(completedBlob)
+            }
+          }, 100)
+        })
+      }
+
       try {
+        this.downloadQueue.add(username)
+
         const avatarBufferRes = await $getTelegramPhoto({ data: username })
         await setCachedAvatar(username, avatarBufferRes.data)
       } catch (e) {
         if (
           Object.values(TrialUsernames).includes(username as TrialUsernames)
         ) {
-          switch (username) {
-            case TrialUsernames.ShestayaLiniya:
-              return shestayaLiniyaAvatar
-            case TrialUsernames.PiraJoke:
-              return piraJokeAvatar
-            case TrialUsernames.VladByelik:
-              return vladbyelikAvatar
-            case TrialUsernames.Nikivi:
-              return nikiviAvatar
-            case TrialUsernames.SkywlK:
-              return skywlkAvatar
-            case TrialUsernames.NotLostBot:
-              return notLostBotAvatar
-          }
+          this.downloadQueue.delete(username)
+          return this.getTrialAvatar(username)
         }
+      } finally {
+        this.downloadQueue.delete(username)
       }
 
       const avatarBlob = await getCachedAvatar(username)
@@ -61,6 +59,25 @@ class TelegramHelper {
     this.setSessionBlob(username, avatarBlobUrl)
 
     return avatarBlobUrl
+  }
+
+  private getTrialAvatar(username: string): string {
+    switch (username) {
+      case TrialUsernames.ShestayaLiniya:
+        return shestayaLiniyaAvatar
+      case TrialUsernames.PiraJoke:
+        return piraJokeAvatar
+      case TrialUsernames.VladByelik:
+        return vladbyelikAvatar
+      case TrialUsernames.Nikivi:
+        return nikiviAvatar
+      case TrialUsernames.SkywlK:
+        return skywlkAvatar
+      case TrialUsernames.NotLostBot:
+        return notLostBotAvatar
+      default:
+        throw new Error(`Trial avatar not found for username: ${username}`)
+    }
   }
 
   private setSessionBlob = (key: string, blobUrl: string) => {

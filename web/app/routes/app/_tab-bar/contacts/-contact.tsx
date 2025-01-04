@@ -35,7 +35,7 @@ const Contact = ({
     TelegramHelper.getProfileAvatar(contact.username).then((avatarBlobUrl) => {
       setAvatarUrl(avatarBlobUrl)
     })
-  }, [contact])
+  }, [])
 
   const [longPressTriggered, setLongPressTriggered] = useState(false)
   const [hidden, setHidden] = useState(false)
