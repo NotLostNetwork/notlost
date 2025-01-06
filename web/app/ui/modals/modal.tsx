@@ -44,7 +44,7 @@ const Modal = ({
       onClick={onClose}
     >
       <div
-        className="absolute top-0 left-0 flex items-center justify-center transition-all ease-in-out duration-300"
+        className="absolute top-0 left-0 flex items-center justify-center transition-all ease-in-out duration-75"
         style={{ height: viewportHeight, width: "100%" }}
       >
         <div
