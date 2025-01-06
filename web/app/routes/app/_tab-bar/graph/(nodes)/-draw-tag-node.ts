@@ -9,7 +9,7 @@ export const drawTagNode = (
   img: HTMLImageElement,
   platform: string,
 ) => {
-  const titleText = node.id!.toString()
+  const titleText = node.title?.toString()
   const usernameFontSize = Math.min(4, (24 * globalScale) / 8)
 
   // circle
