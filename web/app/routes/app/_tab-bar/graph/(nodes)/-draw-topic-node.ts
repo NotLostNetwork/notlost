@@ -8,7 +8,7 @@ export const drawTopicNode = (
   img: HTMLImageElement,
   platform: string,
 ) => {
-  const titleText = node.id!.toString()
+  const titleText = node.title!.toString()
   const usernameFontSize = Math.min(5, (24 * globalScale) / 8)
 
   // circle

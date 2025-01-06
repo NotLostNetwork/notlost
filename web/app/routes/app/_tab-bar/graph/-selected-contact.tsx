@@ -75,7 +75,7 @@ export const SelectedContact = ({
             </div>
           )}
           <div className="pl-2">
-            <div className="font-medium">{selectedContact.firstName}</div>
+            <div className="font-medium">{selectedContact.title}</div>
           </div>
         </div>
       </Tappable>
