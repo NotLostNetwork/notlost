@@ -24,6 +24,9 @@ import { AnimatePresence } from "framer-motion"
 
 const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
+  const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
+    null | number
+  >(null)
 
   const lp = useLaunchParams()
 
@@ -81,11 +84,19 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
         }}
         onNodeClick={(node) => {
           if (selectedContact !== node) {
+            setSelectedContactTimestamp(Date.now())
             setSelectedContact(null)
             setTimeout(() => {
               setSelectedContact(node as GraphNode)
             }, 150)
+          } else if (
+            selectedContactTimestamp &&
+            selectedContact.type === GraphNodeType.CONTACT &&
+            Date.now() - selectedContactTimestamp < 500
+          ) {
+            window.open(`https://t.me/${selectedContact.username}`)
           }
+          setSelectedContactTimestamp(Date.now())
         }}
         onNodeDrag={(node) => {
           if (selectedContact !== node) {
