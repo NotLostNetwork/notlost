@@ -141,7 +141,7 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
         type: GraphNodeType.CONTACT,
       }
 
-      if (contact.tags?.length && contact.topic) {
+      if (contact.topic) {
         let contactTopic = topicsWithTagsAndContacts.find(
           (topic) => topic.title === contact.topic,
         ) as GraphNodeTopic
@@ -156,40 +156,29 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
           topicsWithTagsAndContacts.push(contactTopic)
         }
 
-        const primaryTag = contact.tags[0] // use first tag as link
+        if (contact.tags?.length) {
+          const primaryTag = contact.tags[0] // use first tag as link
 
-        const existantTagInTopic = contactTopic.targets.find(
-          (target) =>
-            target.type === GraphNodeType.TAG && target.title === primaryTag,
-        )
+          const existantTagInTopic = contactTopic.targets.find(
+            (target) =>
+              target.type === GraphNodeType.TAG && target.title === primaryTag,
+          )
 
-        if (!existantTagInTopic) {
-          contactTopic.targets.push({
-            id: `${contactTopic.title}-${primaryTag}-tag`,
-            title: primaryTag,
-            source: `${contactTopic.title}-topic`,
-            targets: [newNodeContact],
-            type: GraphNodeType.TAG,
-          })
-        } else if (existantTagInTopic.type !== GraphNodeType.CONTACT) {
-          existantTagInTopic.targets.push(newNodeContact)
-        }
-      } else if (contact.topic) {
-        const existantTopic = topicsWithTagsAndContacts.find(
-          (topic) => topic.title === contact.topic,
-        )
-
-        if (existantTopic) {
-          existantTopic.targets.push(newNodeContact)
+          if (!existantTagInTopic) {
+            contactTopic.targets.push({
+              id: `${contactTopic.title}-${primaryTag}-tag`,
+              title: primaryTag,
+              source: `${contactTopic.title}-topic`,
+              targets: [newNodeContact],
+              type: GraphNodeType.TAG,
+            })
+          } else if (existantTagInTopic.type !== GraphNodeType.CONTACT) {
+            existantTagInTopic.targets.push(newNodeContact)
+          }
         } else {
-          topicsWithContacts.push({
-            id: `${contact.topic}-topic`,
-            title: contact.topic,
-            targets: [newNodeContact],
-            type: GraphNodeType.TOPIC,
-          })
+          contactTopic.targets.push(newNodeContact)
         }
-      } else if (contact.tags) {
+      } else if (contact.tags?.length) {
         const primaryTag = contact.tags[0] // use first tag as link
 
         const existantTag = tagsWithContacts.find(
@@ -207,6 +196,8 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
             type: GraphNodeType.TAG,
           })
         }
+      } else {
+        nodes.push(newNodeContact)
       }
     })
 
