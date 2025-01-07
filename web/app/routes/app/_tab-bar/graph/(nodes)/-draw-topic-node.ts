@@ -9,10 +9,12 @@ export const drawTopicNode = (
   platform: string,
 ) => {
   const titleText = node.title!.toString()
-  const usernameFontSize = Math.min(5, (24 * globalScale) / 8)
 
   // circle
-  const radius = 6
+  const radius = getTopicRadius(globalScale)
+
+  const usernameFontSize = radius
+
   ctx.beginPath()
   ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false)
   ctx.fillStyle = hexToRgba("#5288c1", 1)
@@ -38,7 +40,7 @@ export const drawTopicNode = (
 
   ctx.beginPath()
   const x = node.x! - textWidth / 2 - padding * 2
-  const y = node.y! + 8 - padding
+  const y = node.y! + (radius + 2) - padding
   const width = textWidth + padding * 4
   const height = textHeight + padding * 2
 
@@ -54,9 +56,9 @@ export const drawTopicNode = (
 
   // on ios / mac os text is lower than should be
   if (["macos", "ios"].includes(platform)) {
-    ctx.fillText(titleText, node.x!, node.y! + 7)
+    ctx.fillText(titleText, node.x!, node.y! + radius + 1)
   } else {
-    ctx.fillText(titleText, node.x!, node.y! + 8)
+    ctx.fillText(titleText, node.x!, node.y! + radius + 2)
   }
 
   // text outline
@@ -66,7 +68,7 @@ export const drawTopicNode = (
  */
   // icon
   if (img) {
-    const imgSize = 6
+    const imgSize = radius
 
     ctx.save()
     ctx.drawImage(
@@ -78,4 +80,23 @@ export const drawTopicNode = (
     )
     ctx.restore()
   }
+}
+
+export const getTopicRadius = (globalScale: number): number => {
+  const minScale = 0.5 // Smallest global scale (e.g., zoomed out)
+  const maxScale = 1.0 // Largest global scale (e.g., zoomed in)
+  const minRadius = 36 // Radius when global scale is small
+  const maxRadius = 8 // Radius when global scale is large
+
+  const radius = Math.max(
+    maxRadius,
+    Math.min(
+      minRadius,
+      maxRadius +
+        ((maxScale - globalScale) / (maxScale - minScale)) *
+          (minRadius - maxRadius),
+    ),
+  )
+
+  return radius
 }

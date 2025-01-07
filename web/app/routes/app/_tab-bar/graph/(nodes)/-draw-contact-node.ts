@@ -1,6 +1,7 @@
 import { NodeObject } from "react-force-graph-2d"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
+import { getTopicRadius } from "./-draw-topic-node"
 
 export const drawContactNode = (
   node: NodeObject,
@@ -8,7 +9,10 @@ export const drawContactNode = (
   globalScale: number,
   img: HTMLImageElement | null,
 ) => {
-  const imgSize = 20
+  let imgSize = 20
+
+  if (getTopicRadius(globalScale) >= 36) return
+
   const firstNameFontSize = Math.min(3, (12 * globalScale) / 8)
   const usernameFontSize = Math.min(2, (12 * globalScale) / 8)
 

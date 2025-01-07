@@ -1,6 +1,7 @@
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { NodeObject } from "react-force-graph-2d"
 import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
+import { getTopicRadius } from "./-draw-topic-node"
 
 export const drawTagNode = (
   node: NodeObject,
@@ -9,6 +10,8 @@ export const drawTagNode = (
   img: HTMLImageElement,
   platform: string,
 ) => {
+  if (getTopicRadius(globalScale) >= 36) return
+
   const titleText = node.title?.toString()
   const usernameFontSize = Math.min(4, (24 * globalScale) / 8)
 

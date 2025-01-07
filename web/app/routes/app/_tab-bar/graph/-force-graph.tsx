@@ -15,7 +15,7 @@ import {
 } from "./-@interface"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { drawContactNode } from "./(nodes)/-draw-contact-node"
-import { drawTopicNode } from "./(nodes)/-draw-topic-node"
+import { drawTopicNode, getTopicRadius } from "./(nodes)/-draw-topic-node"
 import { useImageCache } from "./(nodes)/-use-image-cache"
 import { drawTagNode } from "./(nodes)/-draw-tag-node"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
@@ -41,6 +41,7 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!]
+      setGlobalScale(globalScale)
 
       switch (node.type) {
         case GraphNodeType.CONTACT:
@@ -67,6 +68,8 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
     fgRef?.current?.zoom(1)
   }, [])
 
+  const [globalScale, setGlobalScale] = useState<number | null>(null)
+
   return (
     <div>
       <AnimatePresence>
@@ -83,6 +86,13 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
           setSelectedContact(null)
         }}
         onNodeClick={(node) => {
+          fgRef?.current?.zoomToFit(
+            500,
+            // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
+            175,
+            (filterNode) => filterNode.id === node.id,
+          )
+
           if (selectedContact !== node) {
             setSelectedContactTimestamp(Date.now())
             setSelectedContact(null)
@@ -108,7 +118,14 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
         }}
         nodeCanvasObject={drawNode}
         nodePointerAreaPaint={(node, color, ctx) => {
-          const imgSize = 10
+          // clickable node zone
+          let imgSize
+          if (node.type === GraphNodeType.TOPIC) {
+            imgSize = getTopicRadius(globalScale ? globalScale : 0)
+          } else {
+            imgSize = 20
+          }
+          console.log()
           ctx.fillStyle = color
           ctx.beginPath()
           ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
