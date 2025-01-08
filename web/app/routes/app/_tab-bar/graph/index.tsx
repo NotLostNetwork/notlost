@@ -4,9 +4,8 @@ import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import ForceGraph from "./-force-graph"
 import { PlusButton } from "./-plus-button"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Input } from "@telegram-apps/telegram-ui"
-import useViewportSize from "./-window-hook"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
@@ -15,29 +14,6 @@ const ContactsGraph = () => {
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [value, setValue] = useState("")
-
-  if ("virtualKeyboard" in navigator) {
-    const virtualKeyboard = (navigator as any).virtualKeyboard
-
-    // Check if the virtual keyboard overlays content
-    console.log("Overlays Content:", virtualKeyboard.overlaysContent)
-
-    // Add an event listener to detect geometry changes
-    virtualKeyboard.addEventListener("geometrychange", () => {
-      const boundingRect = virtualKeyboard.boundingRect
-
-      console.log("Keyboard Bounding Rect:", boundingRect)
-
-      // Adjust UI based on the keyboard dimensions
-      if (boundingRect.height > 0) {
-        // Keyboard is visible
-        document.body.style.paddingBottom = `${boundingRect.height}px`
-      } else {
-        // Keyboard is hidden
-        document.body.style.paddingBottom = "0px"
-      }
-    })
-  }
 
   if (!profile?.contacts) return
 

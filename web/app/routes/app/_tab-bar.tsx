@@ -6,7 +6,6 @@ import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
-import useViewportSize from "./_tab-bar/graph/-window-hook"
 
 export default function TabBar() {
   return (
@@ -74,8 +73,6 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
 }
 
 function LayoutComponent() {
-  const viewportHeight = useViewportSize()
-
   return (
     <div className="flex flex-col" style={{ height: "100vh" }}>
       <div className="flex-1 overflow-auto">
