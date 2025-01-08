@@ -83,8 +83,6 @@ const ContactsList = ({
             </div>
           </div>
         )}
-
-      <Pencil />
     </div>
   )
 }

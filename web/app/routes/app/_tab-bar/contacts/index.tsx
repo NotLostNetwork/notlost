@@ -100,7 +100,7 @@ const ContactsPage = () => {
             }
             modalTitle="Filter by tag"
           />
-          <FilterByLatest
+          {/* <FilterByLatest
             enable={() => {
               updateFilterState(Filter.LAST_ADDED, true)
               updateFilterState(Filter.TAG, null)
@@ -108,7 +108,7 @@ const ContactsPage = () => {
             disable={() => {
               updateFilterState(Filter.LAST_ADDED, false)
             }}
-          />
+          /> */}
         </div>
       </div>
       <div className="flex-1 overflow-auto">
