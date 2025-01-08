@@ -42,7 +42,7 @@ const ContactsGraph = () => {
   if (!profile?.contacts) return
 
   return (
-    <div className="relative">
+    <div className="">
       <div className="">
         <TgWallpaper opacity={0.5} />
       </div>
@@ -57,6 +57,9 @@ const ContactsGraph = () => {
             className="text-white"
             style={{ color: "white" }}
             type="text"
+            onFocus={() => {
+              window.scrollTo(0, 0)
+            }}
             onBlur={() => {
               window.scrollTo(0, 0)
               setCreateModalOpen(false)
