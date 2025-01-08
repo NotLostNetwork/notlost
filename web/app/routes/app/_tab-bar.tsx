@@ -6,6 +6,7 @@ import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
+import useViewportSize from "./_tab-bar/graph/-window-height"
 
 export default function TabBar() {
   return (
