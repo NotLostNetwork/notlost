@@ -40,13 +40,13 @@ export const AboveKeyboardModal = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 flex transition-all ease-in-out delay-500 duration-0 ${isOpen ? "opacity-100" : "opacity-20 pointer-events-none"}"`}
+      className={`fixed top-0 left-0 transition-all ease-in-out delay-500 duration-0 ${isOpen ? "opacity-100" : "opacity-20 pointer-events-none"}"`}
       style={{ height: viewportHeight, width: "100vw" }}
       onClick={(e) => e.stopPropagation()}
     >
       <div>
         <div
-          className={`bg-secondary shadow-lg pt-2 transform transition-all ease-in-out  absolute left-0 w-full ${focused ? "duration-1000 delay-1000 bottom-0" : "duration-300 bottom-1/2 "}`}
+          className={`bg-secondary shadow-lg pt-2 transform transition-all ease-in-out  absolute left-0  w-full ${focused ? "duration-1000 delay-1000 bottom-0" : "duration-300 bottom-1/2 top-20"}`}
           onClick={(e) => e.stopPropagation()}
         >
           {children}
