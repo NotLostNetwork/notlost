@@ -53,11 +53,8 @@ const ContactsGraph = () => {
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.relatedTarget === null) {
-      // Refocus the input if no other element is gaining focus
-      setTimeout(() => {
-        window.scrollTo(0, 0)
-        inputRef.current?.focus()
-      }, 0)
+      window.scrollTo(0, 0)
+      inputRef.current?.focus()
     }
   }
 
