@@ -38,9 +38,24 @@ export const AboveKeyboardModal = ({
     }
   }, [])
 
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      // Show modal with a delay
+      const timer = setTimeout(() => {
+        setIsVisible(true)
+      }, 1000)
+
+      return () => clearTimeout(timer)
+    } else {
+      setIsVisible(false)
+    }
+  }, [isOpen])
+
   return (
     <div
-      className={`fixed top-0 left-0 transition-all ease-in-out delay-500 duration-0 ${isOpen ? "opacity-100" : "opacity-20 pointer-events-none"}"`}
+      className={`fixed top-0 left-0 transition-all ease-in-out duration-300 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}"`}
       style={{ height: viewportHeight, width: "100vw" }}
       onClick={(e) => e.stopPropagation()}
     >
