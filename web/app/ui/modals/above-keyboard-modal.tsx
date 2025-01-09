@@ -55,7 +55,7 @@ export const AboveKeyboardModal = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 transition-all ease-in-out duration-300 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}"`}
+      className={`fixed top-0 left-0 transition-all ease-in-out duration-1000 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}"`}
       style={{ height: viewportHeight, width: "100vw" }}
       onClick={(e) => e.stopPropagation()}
     >
