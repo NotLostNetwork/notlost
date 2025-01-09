@@ -82,7 +82,7 @@ const ContactsGraph = () => {
                 <Input
                   ref={inputRef}
                   autoFocus={true}
-                  className="text-white bg-primary"
+                  className="text-white bg-primary "
                   style={{ color: "white", flex: "1 !important" }}
                   type="text"
                   onFocus={() => {
