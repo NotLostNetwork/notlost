@@ -21,14 +21,44 @@ const ContactsGraph = () => {
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [value, setValue] = useState({
+    username: "",
+    tag: "",
+    group: "",
+  })
   const [step, setStep] = useState(0)
 
-  const modalRef = useRef<HTMLDivElement | null>(null)
-
-  const height = useViewportSize()
-
   const [focused, setFocused] = useState(false)
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setCreateModalOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (event.relatedTarget === null) {
+      // Refocus the input if no other element is gaining focus
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+        inputRef.current?.focus()
+      }, 0)
+    }
+  }
 
   if (!profile?.contacts) return
 
@@ -52,6 +82,7 @@ const ContactsGraph = () => {
             {step === 0 && (
               <div className="flex items-center gap-2">
                 <Input
+                  ref={inputRef}
                   autoFocus={true}
                   className="text-white bg-primary"
                   style={{ color: "white", flex: "1 !important" }}
@@ -60,17 +91,17 @@ const ContactsGraph = () => {
                     setFocused(true)
                     window.scrollTo(20, 20)
                   }}
-                  onBlur={() => {
-                    window.scrollTo(0, 0)
-                  }}
+                  onBlur={handleBlur}
                   placeholder="Username"
-                  value={value}
+                  value={value.username}
                   before={
                     <div className="h-4 w-4 text-gray-500">
                       <AtSign />
                     </div>
                   }
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={(e) =>
+                    setValue((prev) => ({ ...prev, username: e.target.value }))
+                  }
                 />
                 <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
                   <div className="text-white h-6 w-6">
@@ -86,21 +117,26 @@ const ContactsGraph = () => {
             )}
 
             {step === 1 && (
-              <Input
-                autoFocus={true}
-                className="text-white bg-primary"
-                style={{ color: "white" }}
-                type="text"
-                onFocus={() => {
-                  window.scrollTo(0, 0)
-                }}
-                onBlur={() => {
-                  window.scrollTo(0, 0)
-                }}
-                placeholder="Group"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              />
+              <div className="flex items-center gap-2">
+                <Input
+                  autoFocus={true}
+                  className="text-white bg-primary"
+                  style={{ color: "white" }}
+                  type="text"
+                  onFocus={() => {
+                    window.scrollTo(0, 0)
+                  }}
+                  onBlur={() => {
+                    window.scrollTo(0, 0)
+                  }}
+                  placeholder="Group"
+                  value={value.group}
+                  onChange={(e) =>
+                    setValue((prev) => ({ ...prev, group: e.target.value }))
+                  }
+                />
+                <Tappable className="py-1 px-2">Add</Tappable>
+              </div>
             )}
 
             {step === 2 && (
@@ -116,8 +152,10 @@ const ContactsGraph = () => {
                   window.scrollTo(0, 0)
                 }}
                 placeholder="Tag"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                value={value.tag}
+                onChange={(e) =>
+                  setValue((prev) => ({ ...prev, tag: e.target.value }))
+                }
               />
             )}
 
