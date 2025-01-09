@@ -49,6 +49,7 @@ iframe {
 /* Input: remove padding, remove bg */
 .tgui-8ca550c2fc85eff5 {
   padding: 0 !important;
+  flex: 1 !important;
   background: transparent !important;
 }
 .tgui-0f5050defacbf813 {
