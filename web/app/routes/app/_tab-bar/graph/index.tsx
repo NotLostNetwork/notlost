@@ -38,6 +38,7 @@ const ContactsGraph = () => {
         !modalRef.current.contains(event.target as Node)
       ) {
         setCreateModalOpen(false)
+        setFocused(false)
       }
     }
 
