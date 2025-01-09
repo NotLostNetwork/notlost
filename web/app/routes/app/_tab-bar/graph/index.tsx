@@ -12,6 +12,7 @@ import TagIcon from "@/assets/icons/tag.svg?react"
 import useViewportSize from "./-window-height"
 import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
 import TelegramIcon from "@/assets/icons/telegram.svg?react"
+import AtSign from "@/assets/icons/at-sign.svg?react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 
 const ContactsGraph = () => {
@@ -64,7 +65,11 @@ const ContactsGraph = () => {
                   }}
                   placeholder="Username"
                   value={value}
-                  before={<div>@</div>}
+                  before={
+                    <div className="h-4 w-4 text-gray-500">
+                      <AtSign />
+                    </div>
+                  }
                   onChange={(e) => setValue(e.target.value)}
                 />
                 <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
@@ -76,7 +81,6 @@ const ContactsGraph = () => {
                   <div className="text-white h-6 w-6">
                     <TelegramIcon />
                   </div>
-                  Contacts
                 </Tappable>
               </div>
             )}
@@ -118,12 +122,12 @@ const ContactsGraph = () => {
             )}
 
             <TabsList className="mb-2 mt-2">
-              <TabsItem
-                className="text-xl"
-                onClick={() => setStep(0)}
-                selected={step === 0}
-              >
-                <span className="text-2xl">@</span>
+              <TabsItem onClick={() => setStep(0)} selected={step === 0}>
+                <div className="flex items-center justify-center">
+                  <div className="w-5 h-5 text-center">
+                    <AtSign />
+                  </div>
+                </div>
               </TabsItem>
               <TabsItem onClick={() => setStep(1)} selected={step === 1}>
                 <div className="flex items-center justify-center">
