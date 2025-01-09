@@ -42,7 +42,7 @@ export const AboveKeyboardModal = ({
     if (isOpen) {
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 600)
+      }, 0)
 
       return () => clearTimeout(timer)
     } else {
