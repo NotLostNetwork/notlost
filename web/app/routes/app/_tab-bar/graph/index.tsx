@@ -64,6 +64,7 @@ const ContactsGraph = () => {
                   }}
                   placeholder="Username"
                   value={value}
+                  before={<div>@</div>}
                   onChange={(e) => setValue(e.target.value)}
                 />
                 <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
@@ -71,7 +72,7 @@ const ContactsGraph = () => {
                     <Icon24QR />
                   </div>
                 </Tappable>
-                <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
+                <Tappable className="flex text-xs font-semibold items-center justify-center gap-1 py-2 px-1 rounded-xl">
                   <div className="text-white h-6 w-6">
                     <TelegramIcon />
                   </div>
@@ -117,19 +118,23 @@ const ContactsGraph = () => {
             )}
 
             <TabsList className="mb-2 mt-2">
-              <TabsItem onClick={() => setStep(0)} selected={step === 0}>
-                @
+              <TabsItem
+                className="text-xl"
+                onClick={() => setStep(0)}
+                selected={step === 0}
+              >
+                <span className="text-2xl">@</span>
               </TabsItem>
               <TabsItem onClick={() => setStep(1)} selected={step === 1}>
                 <div className="flex items-center justify-center">
-                  <div className="w-4 h-4 text-center">
+                  <div className="w-5 h-5 text-center">
                     <TagIcon />
                   </div>
                 </div>
               </TabsItem>
               <TabsItem onClick={() => setStep(2)} selected={step === 2}>
                 <div className="flex items-center justify-center">
-                  <div className="w-6 h-6 text-center">
+                  <div className="w-7 h-7 text-center">
                     <LinkIcon />
                   </div>
                 </div>
