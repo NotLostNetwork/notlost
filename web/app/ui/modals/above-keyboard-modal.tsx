@@ -40,7 +40,7 @@ export const AboveKeyboardModal = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 flex items-center justify-center transition-all ease-in-out delay-500 duration-0 ${isOpen ? "opacity-100" : "opacity-20 pointer-events-none"}"`}
+      className={`fixed top-0 left-0 flex transition-all ease-in-out delay-500 duration-0 ${isOpen ? "opacity-100" : "opacity-20 pointer-events-none"}"`}
       style={{ height: viewportHeight, width: "100vw" }}
       onClick={(e) => e.stopPropagation()}
     >
