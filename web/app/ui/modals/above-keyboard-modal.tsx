@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { Icon28CloseAmbient } from "@telegram-apps/telegram-ui/dist/icons/28/close_ambient"
 
 interface ModalProps {
   isOpen: boolean
@@ -18,7 +17,6 @@ export const AboveKeyboardModal = ({
   cancelable = true,
   focused,
 }: ModalProps) => {
-  // Resize viewport in the case of keyboard appearing to not overlaying content of a modal
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
 
   useEffect(() => {
@@ -42,10 +40,9 @@ export const AboveKeyboardModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Show modal with a delay
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 500)
+      }, 600)
 
       return () => clearTimeout(timer)
     } else {
