@@ -46,7 +46,7 @@ export const AboveKeyboardModal = ({
     >
       <div>
         <div
-          className={`bg-secondary shadow-lg pt-2 transform transition-all ease-in-out  absolute left-0 w-full ${focused ? "duration-1000 delay-1000 translate-y-0 bottom-0" : "duration-300 translate-y-1/2 bottom-1/2 "}`}
+          className={`bg-secondary shadow-lg pt-2 transform transition-all ease-in-out  absolute left-0 w-full ${focused ? "duration-1000 delay-1000 bottom-0" : "duration-300 bottom-1/2 "}`}
           onClick={(e) => e.stopPropagation()}
         >
           {children}
