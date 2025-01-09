@@ -42,7 +42,7 @@ export const AboveKeyboardModal = ({
     if (isOpen) {
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 0)
+      }, 300)
 
       return () => clearTimeout(timer)
     } else {
@@ -52,7 +52,7 @@ export const AboveKeyboardModal = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 transition-all ease-in-out duration-500 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}"`}
+      className={`fixed top-0 left-0 transition-all ease-in-out duration-500 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}"`}
       style={{ height: viewportHeight, width: "100vw" }}
       onClick={(e) => e.stopPropagation()}
     >
