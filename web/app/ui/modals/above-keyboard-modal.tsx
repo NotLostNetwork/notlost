@@ -1,3 +1,4 @@
+import { useLaunchParams } from "@telegram-apps/sdk-react"
 import React, { useEffect, useState } from "react"
 
 interface ModalProps {
@@ -18,6 +19,8 @@ export const AboveKeyboardModal = ({
   focused,
 }: ModalProps) => {
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
+
+  const lp = useLaunchParams()
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,6 +43,9 @@ export const AboveKeyboardModal = ({
 
   useEffect(() => {
     if (isOpen) {
+      if (lp.platform === "android") {
+        setIsVisible(true)
+      }
       const timer = setTimeout(() => {
         setIsVisible(true)
       }, 300)
