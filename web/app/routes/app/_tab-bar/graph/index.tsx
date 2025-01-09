@@ -5,12 +5,14 @@ import TgWallpaper from "~/ui/tg-wallpaper"
 import ForceGraph from "./-force-graph"
 import { PlusButton } from "./-plus-button"
 import { useEffect, useRef, useState } from "react"
-import { Input, TabsList } from "@telegram-apps/telegram-ui"
+import { Input, TabsList, Tappable } from "@telegram-apps/telegram-ui"
 import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
 import LinkIcon from "@/assets/icons/link.svg?react"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import useViewportSize from "./-window-height"
 import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
+import TelegramIcon from "@/assets/icons/telegram.svg?react"
+import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
@@ -47,22 +49,35 @@ const ContactsGraph = () => {
         >
           <div ref={modalRef} className="bg-secondary p-2">
             {step === 0 && (
-              <Input
-                autoFocus={true}
-                className="text-white bg-primary"
-                style={{ color: "white" }}
-                type="text"
-                onFocus={() => {
-                  setFocused(true)
-                  window.scrollTo(20, 20)
-                }}
-                onBlur={() => {
-                  window.scrollTo(0, 0)
-                }}
-                placeholder="Username"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              />
+              <div className="flex items-center gap-2">
+                <Input
+                  autoFocus={true}
+                  className="text-white bg-primary"
+                  style={{ color: "white", flex: "1 !important" }}
+                  type="text"
+                  onFocus={() => {
+                    setFocused(true)
+                    window.scrollTo(20, 20)
+                  }}
+                  onBlur={() => {
+                    window.scrollTo(0, 0)
+                  }}
+                  placeholder="Username"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+                <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
+                  <div className="text-white h-6 w-6">
+                    <Icon24QR />
+                  </div>
+                </Tappable>
+                <Tappable className="flex text-xs font-medium items-center justify-center gap-1 py-2 px-1 rounded-xl">
+                  <div className="text-white h-6 w-6">
+                    <TelegramIcon />
+                  </div>
+                  Contacts
+                </Tappable>
+              </div>
             )}
 
             {step === 1 && (
@@ -101,7 +116,7 @@ const ContactsGraph = () => {
               />
             )}
 
-            <TabsList className="mb-2">
+            <TabsList className="mb-2 mt-2">
               <TabsItem onClick={() => setStep(0)} selected={step === 0}>
                 @
               </TabsItem>
