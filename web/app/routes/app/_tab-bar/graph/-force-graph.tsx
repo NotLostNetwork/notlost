@@ -29,6 +29,7 @@ import { SelectedContact } from "./-selected-contact"
 import { AnimatePresence } from "framer-motion"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { profile } from "console"
+import useViewportSize from "./-window-height"
 
 const ForceGraph = ({
   jazzProfile,
@@ -114,6 +115,8 @@ const ForceGraph = ({
     }
   }, [selectedContact])
 
+  const viewportHeight = useViewportSize()?.[1]
+
   return (
     <div>
       <AnimatePresence>
@@ -124,6 +127,7 @@ const ForceGraph = ({
 
       <ForceGraph2D
         ref={fgRef}
+        height={viewportHeight}
         graphData={graphData}
         nodeAutoColorBy="group"
         onBackgroundClick={() => {
