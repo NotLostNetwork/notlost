@@ -79,7 +79,7 @@ const ContactsGraph = () => {
       <div>
         <TgWallpaper opacity={0.5} />
       </div>
-      <div>
+      <div className="h-dvh">
         <ForceGraph data={profile?.contacts!} />
       </div>
       <PlusButton createAction={() => setCreateModalOpen((prev) => !prev)} />
