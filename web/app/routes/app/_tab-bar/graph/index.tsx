@@ -111,9 +111,12 @@ const ContactsGraph = () => {
       <div>
         <TgWallpaper opacity={0.5} />
       </div>
-      <div className="h-dvh">
-        <ForceGraph jazzProfile={profile} linkMode={linkMode} />
-      </div>
+      {!createModalOpen && (
+        <div className="h-dvh">
+          <ForceGraph jazzProfile={profile} linkMode={linkMode} />
+        </div>
+      )}
+
       <PlusButton
         setLinkMode={(linkMode) => setLinkMode(linkMode)}
         createAction={() => setCreateModalOpen((prev) => !prev)}

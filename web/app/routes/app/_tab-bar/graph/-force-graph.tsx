@@ -118,7 +118,7 @@ const ForceGraph = ({
   const viewportHeight = useViewportSize()?.[1]
 
   return (
-    <div>
+    <div className="">
       <AnimatePresence>
         {selectedContact && (
           <SelectedContact selectedContact={selectedContact} />
