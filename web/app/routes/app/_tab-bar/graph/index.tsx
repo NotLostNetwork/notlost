@@ -79,6 +79,15 @@ const ContactsGraph = () => {
     }
   }
 
+  const disableEditModeOnEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Enter") {
+      setCreateModalOpen(false)
+      setFocused(false)
+    }
+  }
+
   if (!profile) return
 
   return (
@@ -103,7 +112,10 @@ const ContactsGraph = () => {
             <div className="flex gap-2 items-center">
               <EntityTooltip step={step} setStep={(step) => setStep(step)} />
               {step === 0 && (
-                <TelegramUserField setFocused={() => setFocused(true)} />
+                <TelegramUserField
+                  disableEditModeOnEnter={disableEditModeOnEnter}
+                  setFocused={() => setFocused(true)}
+                />
               )}
 
               {step === 1 && (
@@ -118,6 +130,7 @@ const ContactsGraph = () => {
                       window.scrollTo(0, 0)
                     }}
                     onBlur={handleBlur}
+                    onKeyDown={disableEditModeOnEnter}
                     placeholder="Tag"
                     value={inputValues.tag}
                     onChange={(e) =>
@@ -144,6 +157,7 @@ const ContactsGraph = () => {
                     className="opacity-0 absolute"
                     style={{ color: "white" }}
                     type="text"
+                    onKeyDown={disableEditModeOnEnter}
                     onFocus={() => {
                       window.scrollTo(0, 0)
                     }}
@@ -160,7 +174,13 @@ const ContactsGraph = () => {
   )
 }
 
-const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
+const TelegramUserField = ({
+  setFocused,
+  disableEditModeOnEnter,
+}: {
+  setFocused: () => void
+  disableEditModeOnEnter: () => void
+}) => {
   const profile = useJazzProfile()
 
   const [usernameValue, setUsernameValue] = useState("")
@@ -240,6 +260,7 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
             window.scrollTo(0, 0)
             setLocalFocused(true)
           }}
+          onKeyDown={disableEditModeOnEnter}
           onBlur={handleBlur}
           placeholder="username"
           value={usernameValue}
