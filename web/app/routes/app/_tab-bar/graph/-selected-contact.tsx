@@ -7,12 +7,21 @@ import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
 import { motion } from "framer-motion"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import TopicIcon from "@/assets/icons/link.svg?react"
+import TrashIcon from "@/assets/icons/rubbish-bin.svg?react"
+import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
+import {
+  JazzListOfContacts,
+  JazzListOfLinks,
+  JazzListOfTags,
+  JazzListOfTopics,
+} from "~/lib/jazz/schema"
 
 export const SelectedContact = ({
   selectedContact,
 }: {
   selectedContact: GraphNode
 }) => {
+  const profile = useJazzProfile()
   const [avatarUrl, setAvatarUrl] = useState("")
 
   useEffect(() => {
@@ -26,59 +35,120 @@ export const SelectedContact = ({
     }
   }, [selectedContact])
 
+  const removeNode = () => {
+    if (profile) {
+      const filteredLinks = profile.links!.filter(
+        (link) =>
+          link?.source !== link?.source || link?.target !== link?.target,
+      )
+      profile.links! = JazzListOfLinks.create(filteredLinks, {
+        owner: profile._owner,
+      })
+      switch (selectedContact.type) {
+        case GraphNodeType.CONTACT:
+          const filteredContacts = profile.contacts!.filter(
+            (profileContact) =>
+              profileContact?.username !== selectedContact.username,
+          )
+          profile.contacts! = JazzListOfContacts.create(filteredContacts, {
+            owner: profile._owner,
+          })
+          break
+        case GraphNodeType.TOPIC:
+          const filteredTopics = profile.topics!.filter(
+            (profileTopic) => profileTopic?.id !== selectedContact.id,
+          )
+          profile.topics! = JazzListOfTopics.create(filteredTopics, {
+            owner: profile._owner,
+          })
+          break
+        case GraphNodeType.TAG:
+          const filteredTags = profile.tags!.filter(
+            (profileTag) => profileTag?.id !== selectedContact.id,
+          )
+          profile.tags! = JazzListOfTags.create(filteredTags, {
+            owner: profile._owner,
+          })
+          break
+      }
+    }
+  }
+
   if (selectedContact.type === GraphNodeType.CONTACT) {
     return (
       <Wrapper>
-        <Tappable
-          className="rounded-xl"
-          onClick={() =>
-            window.open(`https://t.me/${selectedContact.username}`)
-          }
-        >
-          <div className="flex items-center p-2">
-            {avatarUrl ? (
-              <img
-                loading="lazy"
-                src={avatarUrl}
-                className="h-12 min-w-12 rounded-full"
-                decoding="async"
-                alt=""
-              />
-            ) : (
-              <Avatar acronym={selectedContact.firstName[0]} size={48} />
-            )}
-            <div className="pl-2">
-              <div className="text-xs font-medium">
-                {selectedContact.firstName}
+        <div className="rounded-xl">
+          <div className="flex items-center pr-2">
+            <Tappable
+              className="flex items-center p-2 flex-1"
+              onClick={() =>
+                window.open(`https://t.me/${selectedContact.username}`)
+              }
+            >
+              {avatarUrl ? (
+                <img
+                  loading="lazy"
+                  src={avatarUrl}
+                  className="h-12 min-w-12 rounded-full"
+                  decoding="async"
+                  alt=""
+                />
+              ) : (
+                <Avatar acronym={selectedContact.firstName[0]} size={48} />
+              )}
+              <div className="pl-2">
+                <div className="text-xs font-medium">
+                  {selectedContact.firstName}
+                </div>
+                <div className="text-xs text-link font-medium">
+                  @{selectedContact.username}
+                </div>
               </div>
-              <div className="text-xs text-link font-medium">
-                @{selectedContact.username}
+            </Tappable>
+
+            <Tappable
+              onClick={removeNode}
+              className="ml-auto bg-[#ff4059] p-2 rounded-xl absolute"
+            >
+              <div className="h-6 w-6">
+                <TrashIcon />
               </div>
-            </div>
+            </Tappable>
           </div>
-        </Tappable>
+        </div>
       </Wrapper>
     )
   }
 
   return (
     <Wrapper>
-      <Tappable className="rounded-xl">
-        <div className="flex items-center p-2">
-          {selectedContact.type === GraphNodeType.TAG ? (
-            <div className="h-6 w-6 m-2">
-              <TagIcon />
+      <div className="rounded-xl">
+        <div className="flex items-center p-2 pr-2">
+          <div className="flex items-center">
+            {selectedContact.type === GraphNodeType.TAG ? (
+              <div className="h-6 w-6 m-2">
+                <TagIcon />
+              </div>
+            ) : (
+              <div className="h-6 w-6 m-2">
+                <TopicIcon />
+              </div>
+            )}
+            <div className="pl-2">
+              <div className="font-medium">{selectedContact.title}</div>
             </div>
-          ) : (
-            <div className="h-6 w-6 m-2">
-              <TopicIcon />
-            </div>
-          )}
-          <div className="pl-2">
-            <div className="font-medium">{selectedContact.title}</div>
           </div>
+
+          <Tappable
+            onClick={removeNode}
+            className="ml-auto bg-[#ff4059] p-2 rounded-xl absolute"
+          >
+            <div className="h-6 w-6">
+              <TrashIcon />
+            </div>
+          </Tappable>
         </div>
-      </Tappable>
+      </div>
     </Wrapper>
   )
 }

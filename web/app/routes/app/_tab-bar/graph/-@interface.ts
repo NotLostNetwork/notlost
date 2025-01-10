@@ -18,15 +18,12 @@ export enum GraphNodeType {
 export interface GraphNodeTopic {
   id: string
   title: string
-  targets: (GraphNodeContact | GraphNodeTag)[] // as topic can links to tag or to contact
   type: GraphNodeType.TOPIC
 }
 
 export type GraphNodeTag = {
   id: string
   title: string
-  source: string
-  targets: (GraphNodeContact | GraphNodeTag)[] // as tag can be sub-tag (dev tag -> front tag -> contact)
   type: GraphNodeType.TAG
 }
 
@@ -34,8 +31,6 @@ export interface GraphNodeContact {
   id: string
   username: string
   firstName: string
-  topic: string
-  tags: string[]
   type: GraphNodeType.CONTACT
 }
 

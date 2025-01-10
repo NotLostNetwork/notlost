@@ -4,7 +4,13 @@ import Link from "~/assets/icons/link.svg?react"
 import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 import PlusIcon from "~/assets/icons/add-plus-circle.svg?react"
 
-export const PlusButton = ({ createAction }: { createAction: () => void }) => {
+export const PlusButton = ({
+  createAction,
+  setLinkMode,
+}: {
+  createAction: () => void
+  setLinkMode: (linkMode: boolean) => void
+}) => {
   const [showToolTip, setShowToolTip] = useState(false)
   const tooltipRef = useRef<HTMLDivElement>(null)
 
@@ -53,6 +59,7 @@ export const PlusButton = ({ createAction }: { createAction: () => void }) => {
             Icon={<Link />}
             title={"Link"}
             action={() => {
+              setLinkMode(true)
               setShowToolTip(false)
             }}
           />

@@ -3,7 +3,13 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from "react-force-graph-2d"
-import { JazzListOfContacts } from "~/lib/jazz/schema"
+import {
+  JazzAccount,
+  JazzContact,
+  JazzLink,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
 import {
   GraphData,
   GraphLink,
@@ -21,8 +27,16 @@ import { drawTagNode } from "./(nodes)/-draw-tag-node"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { SelectedContact } from "./-selected-contact"
 import { AnimatePresence } from "framer-motion"
+import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
+import { profile } from "console"
 
-const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
+const ForceGraph = ({
+  jazzProfile,
+  linkMode,
+}: {
+  jazzProfile: RootUserProfile
+  linkMode: boolean
+}) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
   const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
     null | number
@@ -30,7 +44,10 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
 
   const lp = useLaunchParams()
 
-  const graphData = useMemo(() => initializeGraphData(data), [data])
+  const graphData = useMemo(
+    () => initializeGraphData(jazzProfile),
+    [jazzProfile],
+  )
 
   const { imageCache, fetchImages } = useImageCache(graphData.nodes)
 
@@ -69,6 +86,33 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   }, [])
 
   const [globalScale, setGlobalScale] = useState<number | null>(null)
+
+  const [nodesToLink, setNodesToLink] = useState<GraphNode[]>([])
+
+  useEffect(() => {
+    if (linkMode && selectedContact) {
+      console.log(1, nodesToLink)
+
+      if (nodesToLink.length === 2) {
+        console.log(2, nodesToLink)
+
+        if (jazzProfile) {
+          console.log(jazzProfile)
+          jazzProfile.links?.push(
+            JazzLink.create(
+              {
+                source: nodesToLink[0].id,
+                target: nodesToLink[1].id,
+              },
+              { owner: jazzProfile._owner },
+            ),
+          )
+        }
+      } else {
+        setNodesToLink((prev) => [...prev, selectedContact!])
+      }
+    }
+  }, [selectedContact])
 
   return (
     <div>
@@ -151,119 +195,48 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   )
 }
 
-const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
+const initializeGraphData = (jazzProfile: RootUserProfile): GraphData => {
   let nodes: GraphNode[] = []
   let links: GraphLink[] = []
 
-  let topicsWithTagsAndContacts: GraphNodeTopic[] = [] // topic: paris -> tag: dev -> contact
-  let tagsWithContacts: GraphNodeTag[] = [] // tag: dev -> contact
-  let topicsWithContacts: GraphNodeTopic[] = [] // topic: paris -> contact
-
-  contacts
-    .filter((contact) => contact !== undefined && contact !== null)
-    .forEach((contact) => {
-      const newNodeContact: GraphNodeContact = {
-        ...contact,
-        id: contact.username,
-        tags: contact.tags?.map((tag) => tag && tag.toString()) || [],
+  jazzProfile?.contacts?.forEach((contact) => {
+    if (contact) {
+      nodes.push({
+        id: contact?.username,
+        username: contact?.username,
+        firstName: contact?.firstName,
         type: GraphNodeType.CONTACT,
-      }
-
-      if (contact.topic) {
-        let contactTopic = topicsWithTagsAndContacts.find(
-          (topic) => topic.title === contact.topic,
-        ) as GraphNodeTopic
-
-        if (!contactTopic) {
-          contactTopic = {
-            id: `${contact.topic}-topic`,
-            title: contact.topic,
-            targets: [],
-            type: GraphNodeType.TOPIC,
-          }
-          topicsWithTagsAndContacts.push(contactTopic)
-        }
-
-        if (contact.tags?.length) {
-          const primaryTag = contact.tags[0] // use first tag as link
-
-          const existantTagInTopic = contactTopic.targets.find(
-            (target) =>
-              target.type === GraphNodeType.TAG && target.title === primaryTag,
-          )
-
-          if (!existantTagInTopic) {
-            contactTopic.targets.push({
-              id: `${contactTopic.title}-${primaryTag}-tag`,
-              title: primaryTag,
-              source: `${contactTopic.title}-topic`,
-              targets: [newNodeContact],
-              type: GraphNodeType.TAG,
-            })
-          } else if (existantTagInTopic.type !== GraphNodeType.CONTACT) {
-            existantTagInTopic.targets.push(newNodeContact)
-          }
-        } else {
-          contactTopic.targets.push(newNodeContact)
-        }
-      } else if (contact.tags?.length) {
-        const primaryTag = contact.tags[0] // use first tag as link
-
-        const existantTag = tagsWithContacts.find(
-          (tag) => tag.title === primaryTag,
-        )
-
-        if (existantTag) {
-          existantTag.targets.push(newNodeContact)
-        } else {
-          tagsWithContacts.push({
-            id: `${primaryTag}-tag`,
-            title: primaryTag,
-            source: "",
-            targets: [newNodeContact],
-            type: GraphNodeType.TAG,
-          })
-        }
-      } else {
-        nodes.push(newNodeContact)
-      }
-    })
-
-  // transform objects to nodes and links
-
-  topicsWithTagsAndContacts.forEach((completeTopic) => {
-    nodes.push(completeTopic)
-    completeTopic.targets.forEach((tagOrContact) => {
-      // tag with users -> link topic with tag, and tag with contacts
-      if (tagOrContact.type === GraphNodeType.TAG) {
-        nodes.push(tagOrContact) // tag
-        links.push({ source: completeTopic.id, target: tagOrContact.id })
-
-        tagOrContact.targets.forEach((contact) => {
-          nodes.push(contact)
-          links.push({ source: tagOrContact.id, target: contact.id })
-        })
-      } else {
-        nodes.push(tagOrContact) // contact
-        links.push({ source: completeTopic.id, target: tagOrContact.id })
-      }
-    })
+      })
+    }
   })
 
-  topicsWithContacts.forEach((topic) => {
-    nodes.push(topic)
-    topic.targets.forEach((contact) => {
-      nodes.push(contact)
-      links.push({ source: topic.id, target: contact.id })
-    })
+  jazzProfile?.topics?.forEach((topic) => {
+    if (topic) {
+      nodes.push({
+        id: topic?.id,
+        title: topic.title,
+        type: GraphNodeType.TOPIC,
+      })
+    }
   })
 
-  tagsWithContacts.forEach((tag) => {
-    nodes.push(tag)
-    tag.targets.forEach((contact) => {
-      nodes.push(contact)
-      links.push({ source: tag.id, target: contact.id })
-    })
+  jazzProfile?.tags?.forEach((tag) => {
+    if (tag) {
+      nodes.push({
+        id: tag?.id,
+        title: tag.title,
+        type: GraphNodeType.TAG,
+      })
+    }
+  })
+
+  jazzProfile?.links?.forEach((link) => {
+    if (link) {
+      links.push({
+        source: link.source,
+        target: link.target,
+      })
+    }
   })
 
   return { nodes, links }

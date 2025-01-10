@@ -4,6 +4,8 @@ import {
   JazzAccount,
   JazzContact,
   JazzListOfTags,
+  JazzTag,
+  JazzTopic,
   RootUserProfile,
 } from "~/lib/jazz/schema"
 import TgWallpaper from "~/ui/tg-wallpaper"
@@ -70,9 +72,39 @@ const ContactsGraph = () => {
     }
   }
 
+  const createNewTopic = () => {
+    if (profile) {
+      profile.topics!.push(
+        JazzTopic.create(
+          {
+            title: inputValues.group,
+          },
+          { owner: profile._owner },
+        ),
+      )
+      setInputValues((prev) => ({ ...prev, group: "" }))
+    }
+  }
+
+  const createNewTag = () => {
+    if (profile) {
+      profile.tags!.push(
+        JazzTag.create(
+          {
+            title: inputValues.tag,
+          },
+          { owner: profile._owner },
+        ),
+      )
+      setInputValues((prev) => ({ ...prev, tag: "" }))
+    }
+  }
+
+  const [linkMode, setLinkMode] = useState(false)
+
   // get telegram user
 
-  if (!profile?.contacts) return
+  if (!profile) return
 
   return (
     <div>
@@ -80,9 +112,12 @@ const ContactsGraph = () => {
         <TgWallpaper opacity={0.5} />
       </div>
       <div className="h-dvh">
-        <ForceGraph data={profile?.contacts!} />
+        <ForceGraph jazzProfile={profile} linkMode={linkMode} />
       </div>
-      <PlusButton createAction={() => setCreateModalOpen((prev) => !prev)} />
+      <PlusButton
+        setLinkMode={(linkMode) => setLinkMode(linkMode)}
+        createAction={() => setCreateModalOpen((prev) => !prev)}
+      />
       {createModalOpen && (
         <AboveKeyboardModal
           isOpen={createModalOpen}
@@ -117,7 +152,10 @@ const ContactsGraph = () => {
                       }))
                     }
                   />
-                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary">
+                  <Tappable
+                    onClick={createNewTopic}
+                    className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary"
+                  >
                     <span className="font-semibold">Add</span>
                   </Tappable>
                 </div>
@@ -144,7 +182,10 @@ const ContactsGraph = () => {
                       }))
                     }
                   />
-                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary">
+                  <Tappable
+                    onClick={createNewTag}
+                    className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary"
+                  >
                     <span className="font-semibold">Add</span>
                   </Tappable>
                 </div>
@@ -201,10 +242,6 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
           {
             username: telegramUser!.username!,
             firstName: telegramUser?.firstName!,
-            lastName: telegramUser?.lastName!,
-            topic: "",
-            description: "",
-            tags: JazzListOfTags.create([], { owner: profile._owner }),
           },
           { owner: profile._owner },
         ),
