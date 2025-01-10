@@ -95,6 +95,7 @@ const ContactsGraph = () => {
             {step === 1 && (
               <div className="flex items-center justify-center gap-4">
                 <Input
+                  ref={inputRef}
                   autoFocus={true}
                   className="text-white bg-primary"
                   style={{ color: "white" }}
@@ -123,6 +124,7 @@ const ContactsGraph = () => {
             {step === 2 && (
               <div className="flex items-center justify-center gap-4">
                 <Input
+                  ref={inputRef}
                   autoFocus={true}
                   className="text-white bg-primary"
                   style={{ color: "white" }}
@@ -136,7 +138,10 @@ const ContactsGraph = () => {
                   placeholder="Group"
                   value={inputValues.group}
                   onChange={(e) =>
-                    setInputValues((prev) => ({ ...prev, tag: e.target.value }))
+                    setInputValues((prev) => ({
+                      ...prev,
+                      group: e.target.value,
+                    }))
                   }
                 />
                 <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
@@ -156,17 +161,17 @@ const ContactsGraph = () => {
                   </div>
                 </div>
               </TabsItem>
-              <TabsItem onClick={() => setStep(1)} selected={step === 1}>
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 text-center">
-                    <TagIcon />
-                  </div>
-                </div>
-              </TabsItem>
               <TabsItem onClick={() => setStep(2)} selected={step === 2}>
                 <div className="flex items-center justify-center">
                   <div className="w-7 h-7 text-center">
                     <LinkIcon />
+                  </div>
+                </div>
+              </TabsItem>
+              <TabsItem onClick={() => setStep(1)} selected={step === 1}>
+                <div className="flex items-center justify-center">
+                  <div className="w-5 h-5 text-center">
+                    <TagIcon />
                   </div>
                 </div>
               </TabsItem>

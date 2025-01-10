@@ -48,7 +48,7 @@ const Contact = ({
                     alt=""
                   />
                 ) : (
-                  <Avatar acronym={firstName} size={48} />
+                  <Avatar acronym={firstName[0]} size={48} />
                 )}
               </div>
               <div className="h-full ml-4 w-full ">
