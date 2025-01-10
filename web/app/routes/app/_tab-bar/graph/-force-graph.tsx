@@ -30,14 +30,9 @@ import { AnimatePresence } from "framer-motion"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { profile } from "console"
 import useViewportSize from "./-window-height"
+import useAppStore from "~/lib/app-store/app-store"
 
-const ForceGraph = ({
-  jazzProfile,
-  linkMode,
-}: {
-  jazzProfile: RootUserProfile
-  linkMode: boolean
-}) => {
+const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
   const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
     null | number
@@ -88,30 +83,10 @@ const ForceGraph = ({
 
   const [globalScale, setGlobalScale] = useState<number | null>(null)
 
-  const [nodesToLink, setNodesToLink] = useState<GraphNode[]>([])
-
+  const { linkNodesModeEnabled, selectNodeToLink } = useAppStore()
   useEffect(() => {
-    if (linkMode && selectedContact) {
-      console.log(1, nodesToLink)
-
-      if (nodesToLink.length === 2) {
-        console.log(2, nodesToLink)
-
-        if (jazzProfile) {
-          console.log(jazzProfile)
-          jazzProfile.links?.push(
-            JazzLink.create(
-              {
-                source: nodesToLink[0].id,
-                target: nodesToLink[1].id,
-              },
-              { owner: jazzProfile._owner },
-            ),
-          )
-        }
-      } else {
-        setNodesToLink((prev) => [...prev, selectedContact!])
-      }
+    if (linkNodesModeEnabled && selectedContact) {
+      selectNodeToLink(selectedContact)
     }
   }, [selectedContact])
 

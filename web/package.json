@@ -38,7 +38,8 @@
     "tailwind-merge": "^2.6.0",
     "telegram": "^2.26.16",
     "vinxi": "0.5.1",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

@@ -3,6 +3,7 @@ import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import {
   JazzAccount,
   JazzContact,
+  JazzLink,
   JazzListOfTags,
   JazzTag,
   JazzTopic,
@@ -12,7 +13,14 @@ import TgWallpaper from "~/ui/tg-wallpaper"
 import ForceGraph from "./-force-graph"
 import { PlusButton } from "./-plus-button"
 import { useEffect, useRef, useState } from "react"
-import { Input, Spinner, TabsList, Tappable } from "@telegram-apps/telegram-ui"
+import {
+  Avatar,
+  Divider,
+  Input,
+  Spinner,
+  TabsList,
+  Tappable,
+} from "@telegram-apps/telegram-ui"
 import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
 import LinkIcon from "@/assets/icons/link.svg?react"
 import TagIcon from "@/assets/icons/tag.svg?react"
@@ -28,6 +36,9 @@ import { Icon16Chevron } from "@telegram-apps/telegram-ui/dist/icons/16/chevron"
 import { AnimatePresence, motion } from "framer-motion"
 import GraphIcon from "@/assets/icons/graph-icon.svg?react"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
+import { GraphNode, GraphNodeType } from "./-@interface"
+import useAppStore from "~/lib/app-store/app-store"
+import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
@@ -100,8 +111,6 @@ const ContactsGraph = () => {
     }
   }
 
-  const [linkMode, setLinkMode] = useState(false)
-
   // get telegram user
 
   if (!profile) return
@@ -113,14 +122,11 @@ const ContactsGraph = () => {
       </div>
       {!createModalOpen && (
         <div className="h-dvh">
-          <ForceGraph jazzProfile={profile} linkMode={linkMode} />
+          <ForceGraph jazzProfile={profile} />
         </div>
       )}
 
-      <PlusButton
-        setLinkMode={(linkMode) => setLinkMode(linkMode)}
-        createAction={() => setCreateModalOpen((prev) => !prev)}
-      />
+      <PlusButton createAction={() => setCreateModalOpen((prev) => !prev)} />
       {createModalOpen && (
         <AboveKeyboardModal
           isOpen={createModalOpen}
@@ -128,43 +134,13 @@ const ContactsGraph = () => {
           focused={focused}
         >
           <div ref={modalRef} className="bg-secondary p-2 relative">
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <EntityTooltip step={step} setStep={(step) => setStep(step)} />
               {step === 0 && (
                 <TelegramUserField setFocused={() => setFocused(true)} />
               )}
 
               {step === 1 && (
-                <div className="flex items-center justify-center gap-2 flex-1">
-                  <Input
-                    ref={inputRef}
-                    autoFocus={true}
-                    className="text-white bg-primary"
-                    style={{ color: "white" }}
-                    type="text"
-                    onFocus={() => {
-                      window.scrollTo(0, 0)
-                    }}
-                    onBlur={handleBlur}
-                    placeholder="Topic"
-                    value={inputValues.group}
-                    onChange={(e) =>
-                      setInputValues((prev) => ({
-                        ...prev,
-                        group: e.target.value,
-                      }))
-                    }
-                  />
-                  <Tappable
-                    onClick={createNewTopic}
-                    className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary"
-                  >
-                    <span className="font-semibold">Add</span>
-                  </Tappable>
-                </div>
-              )}
-
-              {step === 2 && (
                 <div className="flex items-center justify-center gap-2 flex-1">
                   <Input
                     ref={inputRef}
@@ -193,6 +169,8 @@ const ContactsGraph = () => {
                   </Tappable>
                 </div>
               )}
+
+              {step === 2 && <LinkNodes />}
             </div>
           </div>
         </AboveKeyboardModal>
@@ -345,6 +323,133 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
   )
 }
 
+const LinkNodes = () => {
+  const jazzProfile = useJazzProfile()
+
+  const { nodesToLink, clearNodesToLink, setLinkNodesModeEnabled } =
+    useAppStore()
+
+  useEffect(() => {
+    setLinkNodesModeEnabled(true)
+    return () => {
+      clearNodesToLink()
+      setLinkNodesModeEnabled(false)
+    }
+  }, [])
+
+  if (nodesToLink.length < 1) {
+    return (
+      <div className="flex items-center justify-center text-hint text-center pl-2">
+        Select 2 nodes to create a link
+      </div>
+    )
+  }
+
+  const drawNodeToLink = (node: GraphNode) => {
+    if (node.type === GraphNodeType.CONTACT) {
+      return (
+        <ContactToLink username={node.username} firstName={node.firstName} />
+      )
+    } else if (node.type === GraphNodeType.TAG) {
+      return (
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-4">
+            <TagIcon />
+          </div>
+          <div className="font-medium text-link">{node.title}</div>
+        </div>
+      )
+    }
+  }
+
+  const addLink = () => {
+    if (jazzProfile) {
+      jazzProfile.links?.push(
+        JazzLink.create(
+          {
+            source: nodesToLink[0].id,
+            target: nodesToLink[1].id,
+          },
+          { owner: jazzProfile._owner },
+        ),
+      )
+      clearNodesToLink()
+    }
+  }
+
+  return (
+    <div className="flex gap-4 px-2 items-center flex-1">
+      <div>{drawNodeToLink(nodesToLink[0])}</div>
+      {nodesToLink[0] && nodesToLink[1] && (
+        <div className="h-[2px] bg-link w-4 flex-1 rounded-full"></div>
+      )}
+      {nodesToLink[1] && <div>{drawNodeToLink(nodesToLink[1])}</div>}
+      {nodesToLink[0] && nodesToLink[1] && (
+        <Tappable
+          onClick={addLink}
+          className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary"
+        >
+          <span className="font-semibold">Link</span>
+        </Tappable>
+      )}
+    </div>
+  )
+}
+
+const ContactToLink = ({
+  username,
+  firstName,
+}: {
+  username: string
+  firstName: string
+}) => {
+  const [avatarUrl, setAvatarUrl] = useState("")
+
+  useEffect(() => {
+    TelegramHelper.getProfileAvatar(username).then((avatarBlobUrl) => {
+      setAvatarUrl(avatarBlobUrl)
+    })
+  }, [])
+
+  return (
+    <div className="no-select">
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{
+            type: "spring",
+            damping: 20,
+            stiffness: 300,
+          }}
+        >
+          <div className={`transition-all duration-300 ease`}>
+            <Tappable className={`flex justify-center text-sm relative`}>
+              <div className="flex items-center">
+                {avatarUrl ? (
+                  <img
+                    loading="lazy"
+                    src={avatarUrl}
+                    className="h-8 min-w-8 rounded-full"
+                    decoding="async"
+                    alt=""
+                  />
+                ) : (
+                  <Avatar acronym={firstName[0]} size={28} />
+                )}
+              </div>
+            </Tappable>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
 const EntityTooltip = ({
   step,
   setStep,
@@ -381,12 +486,12 @@ const EntityTooltip = ({
         <div className="flex text-white items-center justify-center gap-1">
           <div className="h-6 w-6">
             {step === 0 && <AtSign />}
-            {step === 1 && <LinkIcon />}
-            {step === 2 && (
+            {step === 1 && (
               <div className="p-1">
                 <TagIcon />
               </div>
             )}
+            {step === 2 && <LinkIcon />}
           </div>
           <div
             className={`h-4 w-4 transition-all duration-150 ease-in-out ${showToolTip ? "-rotate-90" : "rotate-90"} `}
@@ -412,17 +517,18 @@ const EntityTooltip = ({
         />
         <div className="h-[1px] bg-divider"></div>
         <ToolTipItem
-          Icon={<LinkIcon />}
-          title={"Group"}
+          Icon={<TagIcon />}
+          title={"Tag"}
           action={() => {
             setStep(1)
             setShowToolTip(false)
           }}
         />
         <div className="h-[1px] bg-divider"></div>
+
         <ToolTipItem
-          Icon={<TagIcon />}
-          title={"Tag"}
+          Icon={<LinkIcon />}
+          title={"Link"}
           action={() => {
             setStep(2)
             setShowToolTip(false)
