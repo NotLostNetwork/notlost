@@ -56,44 +56,12 @@ const ContactsGraph = () => {
   const [focused, setFocused] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        setCreateModalOpen(false)
-        setFocused(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
-
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.relatedTarget === null) {
       window.scrollTo(0, 0)
       inputRef.current?.focus()
-    }
-  }
-
-  const createNewTopic = () => {
-    if (profile) {
-      profile.topics!.push(
-        JazzTopic.create(
-          {
-            title: inputValues.group,
-          },
-          { owner: profile._owner },
-        ),
-      )
-      setInputValues((prev) => ({ ...prev, group: "" }))
     }
   }
 
@@ -110,8 +78,6 @@ const ContactsGraph = () => {
       setInputValues((prev) => ({ ...prev, tag: "" }))
     }
   }
-
-  // get telegram user
 
   if (!profile) return
 
