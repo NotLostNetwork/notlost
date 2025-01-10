@@ -103,9 +103,7 @@ const ContactsGraph = () => {
                   onFocus={() => {
                     window.scrollTo(0, 0)
                   }}
-                  onBlur={() => {
-                    window.scrollTo(0, 0)
-                  }}
+                  onBlur={handleBlur}
                   placeholder="Tag"
                   value={inputValues.tag}
                   onChange={(e) =>
@@ -132,9 +130,7 @@ const ContactsGraph = () => {
                   onFocus={() => {
                     window.scrollTo(0, 0)
                   }}
-                  onBlur={() => {
-                    window.scrollTo(0, 0)
-                  }}
+                  onBlur={handleBlur}
                   placeholder="Group"
                   value={inputValues.group}
                   onChange={(e) =>
