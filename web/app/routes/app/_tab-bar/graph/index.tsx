@@ -25,6 +25,7 @@ import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { Icon16Chevron } from "@telegram-apps/telegram-ui/dist/icons/16/chevron"
 import { AnimatePresence, motion } from "framer-motion"
 import GraphIcon from "@/assets/icons/graph-icon.svg?react"
+import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 
 const ContactsGraph = () => {
   const { me } = useAccount()
@@ -96,7 +97,7 @@ const ContactsGraph = () => {
               )}
 
               {step === 1 && (
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center gap-2 flex-1">
                   <Input
                     ref={inputRef}
                     autoFocus={true}
@@ -107,7 +108,7 @@ const ContactsGraph = () => {
                       window.scrollTo(0, 0)
                     }}
                     onBlur={handleBlur}
-                    placeholder="Group"
+                    placeholder="Topic"
                     value={inputValues.group}
                     onChange={(e) =>
                       setInputValues((prev) => ({
@@ -116,17 +117,14 @@ const ContactsGraph = () => {
                       }))
                     }
                   />
-                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
-                    <div className="text-white h-6 w-6">
-                      <LinkIcon />
-                    </div>
+                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary">
                     <span className="font-semibold">Add</span>
                   </Tappable>
                 </div>
               )}
 
               {step === 2 && (
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center justify-center gap-2 flex-1">
                   <Input
                     ref={inputRef}
                     autoFocus={true}
@@ -146,10 +144,7 @@ const ContactsGraph = () => {
                       }))
                     }
                   />
-                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
-                    <div className="text-white h-6 w-6 p-1">
-                      <TagIcon />
-                    </div>
+                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-4 rounded-xl border-[1px] border-primary">
                     <span className="font-semibold">Add</span>
                   </Tappable>
                 </div>
@@ -163,6 +158,8 @@ const ContactsGraph = () => {
 }
 
 const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
+  const profile = useJazzProfile()
+
   const [usernameValue, setUsernameValue] = useState("")
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
@@ -197,10 +194,33 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
 
   const noTelegramUser = usernameValue.length > 0 && !telegramUser
 
+  const createNewContact = () => {
+    if (profile) {
+      profile.contacts!.push(
+        JazzContact.create(
+          {
+            username: telegramUser!.username!,
+            firstName: telegramUser?.firstName!,
+            lastName: telegramUser?.lastName!,
+            topic: "",
+            description: "",
+            tags: JazzListOfTags.create([], { owner: profile._owner }),
+          },
+          { owner: profile._owner },
+        ),
+      )
+      setTelegramUser(null)
+      setUsernameValue("")
+    }
+  }
+
   return (
     <div>
       {telegramUser && (
-        <div className="absolute -top-28 left-0 w-full ">
+        <div
+          className="absolute -top-28 left-0 w-full"
+          onClick={createNewContact}
+        >
           <div className="bg-secondary m-2 rounded-xl shadow-xl">
             <Contact
               username={telegramUser.username!}
