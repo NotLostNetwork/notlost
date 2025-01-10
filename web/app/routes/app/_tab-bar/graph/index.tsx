@@ -170,7 +170,22 @@ const ContactsGraph = () => {
                 </div>
               )}
 
-              {step === 2 && <LinkNodes />}
+              {step === 2 && (
+                <div className="flex-1">
+                  <Input
+                    ref={inputRef}
+                    autoFocus={true}
+                    className="opacity-0 absolute"
+                    style={{ color: "white" }}
+                    type="text"
+                    onFocus={() => {
+                      window.scrollTo(0, 0)
+                    }}
+                    onBlur={handleBlur}
+                  />
+                  <LinkNodes />
+                </div>
+              )}
             </div>
           </div>
         </AboveKeyboardModal>
@@ -339,7 +354,7 @@ const LinkNodes = () => {
 
   if (nodesToLink.length < 1) {
     return (
-      <div className="flex items-center justify-center text-hint text-center pl-2">
+      <div className="flex items-center text-hint pl-2">
         Select 2 nodes to create a link
       </div>
     )
