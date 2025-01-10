@@ -22,6 +22,7 @@ import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { $getTelegramUserByUsername } from "~/lib/telegram/api/telegram-api-server"
 import Contact from "./-contact"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
+import { Icon16Chevron } from "@telegram-apps/telegram-ui/dist/icons/16/chevron"
 import { AnimatePresence, motion } from "framer-motion"
 import GraphIcon from "@/assets/icons/graph-icon.svg?react"
 
@@ -88,90 +89,72 @@ const ContactsGraph = () => {
           focused={focused}
         >
           <div ref={modalRef} className="bg-secondary p-2 relative">
-            {step === 0 && (
-              <TelegramUserField setFocused={() => setFocused(true)} />
-            )}
+            <div className="flex gap-2">
+              <EntityTooltip step={step} setStep={(step) => setStep(step)} />
+              {step === 0 && (
+                <TelegramUserField setFocused={() => setFocused(true)} />
+              )}
 
-            {step === 1 && (
-              <div className="flex items-center justify-center gap-4">
-                <Input
-                  ref={inputRef}
-                  autoFocus={true}
-                  className="text-white bg-primary"
-                  style={{ color: "white" }}
-                  type="text"
-                  onFocus={() => {
-                    window.scrollTo(0, 0)
-                  }}
-                  onBlur={handleBlur}
-                  placeholder="Tag"
-                  value={inputValues.tag}
-                  onChange={(e) =>
-                    setInputValues((prev) => ({ ...prev, tag: e.target.value }))
-                  }
-                />
-                <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
-                  <div className="text-white h-6 w-6 p-1">
-                    <TagIcon />
-                  </div>
-                  <span className="font-semibold">Add</span>
-                </Tappable>
-              </div>
-            )}
+              {step === 1 && (
+                <div className="flex items-center justify-center gap-4">
+                  <Input
+                    ref={inputRef}
+                    autoFocus={true}
+                    className="text-white bg-primary"
+                    style={{ color: "white" }}
+                    type="text"
+                    onFocus={() => {
+                      window.scrollTo(0, 0)
+                    }}
+                    onBlur={handleBlur}
+                    placeholder="Group"
+                    value={inputValues.group}
+                    onChange={(e) =>
+                      setInputValues((prev) => ({
+                        ...prev,
+                        group: e.target.value,
+                      }))
+                    }
+                  />
+                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
+                    <div className="text-white h-6 w-6">
+                      <LinkIcon />
+                    </div>
+                    <span className="font-semibold">Add</span>
+                  </Tappable>
+                </div>
+              )}
 
-            {step === 2 && (
-              <div className="flex items-center justify-center gap-4">
-                <Input
-                  ref={inputRef}
-                  autoFocus={true}
-                  className="text-white bg-primary"
-                  style={{ color: "white" }}
-                  type="text"
-                  onFocus={() => {
-                    window.scrollTo(0, 0)
-                  }}
-                  onBlur={handleBlur}
-                  placeholder="Group"
-                  value={inputValues.group}
-                  onChange={(e) =>
-                    setInputValues((prev) => ({
-                      ...prev,
-                      group: e.target.value,
-                    }))
-                  }
-                />
-                <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
-                  <div className="text-white h-6 w-6">
-                    <LinkIcon />
-                  </div>
-                  <span className="font-semibold">Add</span>
-                </Tappable>
-              </div>
-            )}
-
-            <TabsList className="mb-2 mt-2">
-              <TabsItem onClick={() => setStep(0)} selected={step === 0}>
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 text-center">
-                    <AtSign />
-                  </div>
+              {step === 2 && (
+                <div className="flex items-center justify-center gap-4">
+                  <Input
+                    ref={inputRef}
+                    autoFocus={true}
+                    className="text-white bg-primary"
+                    style={{ color: "white" }}
+                    type="text"
+                    onFocus={() => {
+                      window.scrollTo(0, 0)
+                    }}
+                    onBlur={handleBlur}
+                    placeholder="Tag"
+                    value={inputValues.tag}
+                    onChange={(e) =>
+                      setInputValues((prev) => ({
+                        ...prev,
+                        tag: e.target.value,
+                      }))
+                    }
+                  />
+                  <Tappable className="flex font-semibold items-center justify-center gap-2 py-2 bg-button px-2 rounded-xl border-[1px] border-primary">
+                    <div className="text-white h-6 w-6 p-1">
+                      <TagIcon />
+                    </div>
+                    <span className="font-semibold">Add</span>
+                  </Tappable>
                 </div>
-              </TabsItem>
-              <TabsItem onClick={() => setStep(2)} selected={step === 2}>
-                <div className="flex items-center justify-center">
-                  <div className="w-7 h-7 text-center">
-                    <LinkIcon />
-                  </div>
-                </div>
-              </TabsItem>
-              <TabsItem onClick={() => setStep(1)} selected={step === 1}>
-                <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 text-center">
-                    <TagIcon />
-                  </div>
-                </div>
-              </TabsItem>
-            </TabsList>
+              )}
+            </div>
           </div>
         </AboveKeyboardModal>
       )}
@@ -239,13 +222,8 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
             setLocalFocused(true)
           }}
           onBlur={handleBlur}
-          placeholder="Username"
+          placeholder="username"
           value={usernameValue}
-          before={
-            <div className={`h-4 w-4 text-gray-500`}>
-              <AtSign />
-            </div>
-          }
           onChange={(e) => setUsernameValue(e.target.value)}
           after={
             <AnimatePresence mode="wait">
@@ -304,6 +282,116 @@ const TelegramUserField = ({ setFocused }: { setFocused: () => void }) => {
         </Tappable>
       </div>
     </div>
+  )
+}
+
+const EntityTooltip = ({
+  step,
+  setStep,
+}: {
+  step: number
+  setStep: (step: number) => void
+}) => {
+  const [showToolTip, setShowToolTip] = useState(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(event.target as Node)
+      ) {
+        setShowToolTip(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  return (
+    <div>
+      <Tappable
+        onClick={() => setShowToolTip((prev) => !prev)}
+        className="flex text-xs font-semibold items-center justify-center gap-2 py-2 px-2 rounded-xl border-[1px] border-primary"
+      >
+        <div className="flex text-white items-center justify-center gap-1">
+          <div className="h-6 w-6">
+            {step === 0 && <AtSign />}
+            {step === 1 && <LinkIcon />}
+            {step === 2 && (
+              <div className="p-1">
+                <TagIcon />
+              </div>
+            )}
+          </div>
+          <div
+            className={`h-4 w-4 transition-all duration-150 ease-in-out ${showToolTip ? "-rotate-90" : "rotate-90"} `}
+          >
+            <Icon16Chevron />
+          </div>
+        </div>
+      </Tappable>
+      <div
+        className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      ></div>
+      <div
+        ref={tooltipRef}
+        className={`p-2 absolute w-32 left-2 bottom-20 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-1`}
+      >
+        <ToolTipItem
+          Icon={<AtSign />}
+          title={"Contact"}
+          action={() => {
+            setStep(0)
+            setShowToolTip(false)
+          }}
+        />
+        <div className="h-[1px] bg-divider"></div>
+        <ToolTipItem
+          Icon={<LinkIcon />}
+          title={"Group"}
+          action={() => {
+            setStep(1)
+            setShowToolTip(false)
+          }}
+        />
+        <div className="h-[1px] bg-divider"></div>
+        <ToolTipItem
+          Icon={<TagIcon />}
+          title={"Tag"}
+          action={() => {
+            setStep(2)
+            setShowToolTip(false)
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
+const ToolTipItem = ({
+  Icon,
+  title,
+  action,
+}: {
+  Icon: React.ReactElement
+  title: string
+  action: () => void
+}) => {
+  return (
+    <Tappable
+      onClick={action}
+      className="pl-2 py-1 rounded-md flex gap-4 items-center"
+    >
+      <div className="h-5 w-5 text-white">
+        <div>{Icon}</div>
+      </div>
+      <div className="text-left font-medium whitespace-nowrap">{title}</div>
+    </Tappable>
   )
 }
 
