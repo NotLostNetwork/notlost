@@ -5,7 +5,6 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
-  title: string
   cancelable?: boolean
   focused: boolean
 }
@@ -13,7 +12,6 @@ interface ModalProps {
 export const AboveKeyboardModal = ({
   isOpen,
   onClose,
-  title,
   children,
   cancelable = true,
   focused,
