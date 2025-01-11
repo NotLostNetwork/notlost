@@ -191,6 +191,7 @@ const TelegramUserField = ({
   const profile = useJazzProfile()
 
   const [usernameValue, setUsernameValue] = useState("")
+  const [showTagsField, setShowTagsField] = useState(false)
   const [selectedTag, setSelectedTag] = useState<JazzTag | null>(null)
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
@@ -268,6 +269,26 @@ const TelegramUserField = ({
           </div>
         </div>
       )}
+      {showTagsField && (
+        <div className="flex-1">
+          <Input
+            ref={inputRef}
+            autoFocus={true}
+            className="text-white bg-primary"
+            style={{ color: "white" }}
+            type="text"
+            onFocus={() => {
+              setFocused()
+              window.scrollTo(0, 0)
+            }}
+            onBlur={handleBlur}
+            onKeyDown={disableEditModeOnEnter}
+            placeholder="Tag"
+            value={""}
+            onChange={(e) => {}}
+          />
+        </div>
+      )}
       <div className="flex items-center gap-2">
         <Input
           ref={inputRef}
@@ -334,10 +355,19 @@ const TelegramUserField = ({
             </AnimatePresence>
           }
         />
-        <ContactTagTooltip
-          selectedTag={selectedTag}
-          setSelectedTag={setSelectedTag}
-        />
+        <Tappable onClick={() => setShowTagsField((prev) => !prev)}>
+          <div className="flex text-white items-center justify-center gap-1">
+            <div className="h-6 w-6">
+              <TagIcon />
+            </div>
+
+            <div
+              className={`h-4 w-4 transition-all duration-150 ease-in-out ${showTagsField ? "-rotate-90" : "rotate-90"} `}
+            >
+              <Icon16Chevron />
+            </div>
+          </div>
+        </Tappable>
       </div>
     </div>
   )
