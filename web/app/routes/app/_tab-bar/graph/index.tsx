@@ -11,7 +11,7 @@ import {
 } from "~/lib/jazz/schema"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import ForceGraph from "./-force-graph"
-import { PlusButton } from "./-plus-button"
+import { EditButton } from "./-edit-button"
 import { useEffect, useRef, useState } from "react"
 import {
   Avatar,
@@ -101,7 +101,7 @@ const ContactsGraph = () => {
         </div>
       )}
 
-      <PlusButton createAction={() => setCreateModalOpen((prev) => !prev)} />
+      <EditButton createAction={() => setCreateModalOpen((prev) => !prev)} />
       {createModalOpen && (
         <AboveKeyboardModal
           isOpen={createModalOpen}

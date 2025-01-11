@@ -18,7 +18,10 @@ export const drawTopicNode = (
 
   ctx.beginPath()
   ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false)
-  ctx.fillStyle = hexToRgba(getCssVariableValue("--tg-theme-bg-color"), 1)
+  ctx.fillStyle = hexToRgba(
+    getCssVariableValue("--tg-theme-secondary-bg-color"),
+    1,
+  )
   ctx.fill()
 
   // circle stroke
