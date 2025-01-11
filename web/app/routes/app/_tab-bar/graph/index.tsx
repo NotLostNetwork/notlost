@@ -127,6 +127,7 @@ const ContactsGraph = () => {
                     style={{ color: "white" }}
                     type="text"
                     onFocus={() => {
+                      setFocused(true)
                       window.scrollTo(0, 0)
                     }}
                     onBlur={handleBlur}
@@ -159,6 +160,7 @@ const ContactsGraph = () => {
                     type="text"
                     onKeyDown={disableEditModeOnEnter}
                     onFocus={() => {
+                      setFocused(true)
                       window.scrollTo(0, 0)
                     }}
                     onBlur={handleBlur}
