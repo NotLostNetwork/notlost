@@ -8,6 +8,8 @@ import { motion } from "framer-motion"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import TopicIcon from "@/assets/icons/link.svg?react"
 import TrashIcon from "@/assets/icons/rubbish-bin.svg?react"
+import StarIcon from "@/assets/icons/star.svg?react"
+import BlueStarIcon from "@/assets/icons/star-blue.svg?react"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import {
   JazzListOfContacts,
@@ -16,24 +18,26 @@ import {
   JazzListOfTopics,
 } from "~/lib/jazz/schema"
 
-export const SelectedContact = ({
-  selectedContact,
+export const SelectedNode = ({
+  selectedNode,
+  setSelectedNode,
 }: {
-  selectedContact: GraphNode
+  selectedNode: GraphNode
+  setSelectedNode: (value: GraphNode | null) => void
 }) => {
   const profile = useJazzProfile()
   const [avatarUrl, setAvatarUrl] = useState("")
 
   useEffect(() => {
     setAvatarUrl("")
-    if (selectedContact.type === GraphNodeType.CONTACT) {
-      TelegramHelper.getProfileAvatar(selectedContact.username).then(
+    if (selectedNode.type === GraphNodeType.CONTACT) {
+      TelegramHelper.getProfileAvatar(selectedNode.username).then(
         (avatarBlobUrl) => {
           setAvatarUrl(avatarBlobUrl)
         },
       )
     }
-  }, [selectedContact])
+  }, [selectedNode])
 
   const removeNode = () => {
     if (profile) {
@@ -44,19 +48,19 @@ export const SelectedContact = ({
       profile.links! = JazzListOfLinks.create(filteredLinks, {
         owner: profile._owner,
       })
-      switch (selectedContact.type) {
+      switch (selectedNode.type) {
         case GraphNodeType.CONTACT:
           const filteredContacts = profile.contacts!.filter(
             (profileContact) =>
-              profileContact?.username !== selectedContact.username,
+              profileContact?.username !== selectedNode.username,
           )
           profile.contacts! = JazzListOfContacts.create(filteredContacts, {
             owner: profile._owner,
           })
           break
-        case GraphNodeType.TOPIC:
+        case GraphNodeType.SUPER_TAG:
           const filteredTopics = profile.topics!.filter(
-            (profileTopic) => profileTopic?.id !== selectedContact.id,
+            (profileTopic) => profileTopic?.id !== selectedNode.id,
           )
           profile.topics! = JazzListOfTopics.create(filteredTopics, {
             owner: profile._owner,
@@ -64,7 +68,7 @@ export const SelectedContact = ({
           break
         case GraphNodeType.TAG:
           const filteredTags = profile.tags!.filter(
-            (profileTag) => profileTag?.id !== selectedContact.id,
+            (profileTag) => profileTag?.id !== selectedNode.id,
           )
           profile.tags! = JazzListOfTags.create(filteredTags, {
             owner: profile._owner,
@@ -74,7 +78,22 @@ export const SelectedContact = ({
     }
   }
 
-  if (selectedContact.type === GraphNodeType.CONTACT) {
+  const promoteOrDowngradeTag = (promote: boolean) => {
+    if (
+      selectedNode.type === GraphNodeType.TAG ||
+      selectedNode.type === GraphNodeType.SUPER_TAG
+    ) {
+      const jazzTag = profile?.tags?.find(
+        (tag) => tag && tag.id === selectedNode.id,
+      )
+      if (jazzTag) {
+        jazzTag.superTag = promote
+        setSelectedNode(null)
+      }
+    }
+  }
+
+  if (selectedNode.type === GraphNodeType.CONTACT) {
     return (
       <Wrapper>
         <div className="rounded-xl">
@@ -82,7 +101,7 @@ export const SelectedContact = ({
             <Tappable
               className="flex items-center p-2 flex-1"
               onClick={() =>
-                window.open(`https://t.me/${selectedContact.username}`)
+                window.open(`https://t.me/${selectedNode.username}`)
               }
             >
               {avatarUrl ? (
@@ -94,14 +113,14 @@ export const SelectedContact = ({
                   alt=""
                 />
               ) : (
-                <Avatar acronym={selectedContact.firstName[0]} size={48} />
+                <Avatar acronym={selectedNode.firstName[0]} size={48} />
               )}
               <div className="pl-2">
                 <div className="text-xs font-medium">
-                  {selectedContact.firstName}
+                  {selectedNode.firstName}
                 </div>
                 <div className="text-xs text-link font-medium">
-                  @{selectedContact.username}
+                  @{selectedNode.username}
                 </div>
               </div>
             </Tappable>
@@ -120,37 +139,79 @@ export const SelectedContact = ({
     )
   }
 
-  return (
-    <Wrapper>
-      <div className="rounded-xl">
-        <div className="flex items-center p-2 pr-2">
-          <div className="flex items-center">
-            {selectedContact.type === GraphNodeType.TAG ? (
+  if (selectedNode.type === GraphNodeType.TAG) {
+    return (
+      <Wrapper>
+        <div className="rounded-xl">
+          <div className="flex items-center p-2 pr-2">
+            <div className="flex items-center">
               <div className="h-6 w-6 m-2">
                 <TagIcon />
               </div>
-            ) : (
-              <div className="h-6 w-6 m-2">
-                <TopicIcon />
+              <div className="pl-2">
+                <div className="font-medium">{selectedNode.title}</div>
               </div>
-            )}
-            <div className="pl-2">
-              <div className="font-medium">{selectedContact.title}</div>
             </div>
-          </div>
 
-          <Tappable
-            onClick={removeNode}
-            className="ml-auto bg-[#ff4059] p-2 rounded-xl absolute"
-          >
-            <div className="h-6 w-6">
-              <TrashIcon />
-            </div>
-          </Tappable>
+            <Tappable
+              onClick={() => promoteOrDowngradeTag(true)}
+              className="ml-auto border-[1px] border-primary p-2 rounded-xl absolute"
+            >
+              <div className="h-6 w-6">
+                <StarIcon />
+              </div>
+            </Tappable>
+
+            <Tappable
+              onClick={removeNode}
+              className="ml-4 bg-[#ff4059] p-2 rounded-xl absolute"
+            >
+              <div className="h-6 w-6">
+                <TrashIcon />
+              </div>
+            </Tappable>
+          </div>
         </div>
-      </div>
-    </Wrapper>
-  )
+      </Wrapper>
+    )
+  }
+
+  if (selectedNode.type === GraphNodeType.SUPER_TAG) {
+    return (
+      <Wrapper>
+        <div className="rounded-xl">
+          <div className="flex items-center p-2 pr-2">
+            <div className="flex items-center">
+              <div className="h-8 w-8">
+                <BlueStarIcon />
+              </div>
+              <div className="pl-2">
+                <div className="font-medium">{selectedNode.title}</div>
+              </div>
+            </div>
+
+            <Tappable
+              onClick={() => promoteOrDowngradeTag(false)}
+              className="ml-auto border-[1px] border-primary p-2 rounded-xl absolute"
+            >
+              <div className="h-6 w-6">
+                <BlueStarIcon />
+              </div>
+            </Tappable>
+
+            <Tappable
+              onClick={removeNode}
+              className="ml-4 bg-[#ff4059] p-2 rounded-xl absolute"
+            >
+              <div className="h-6 w-6">
+                <TrashIcon />
+              </div>
+            </Tappable>
+          </div>
+        </div>
+      </Wrapper>
+    )
+  }
 }
 
 const Wrapper = ({ children }: { children: ReactElement }) => {

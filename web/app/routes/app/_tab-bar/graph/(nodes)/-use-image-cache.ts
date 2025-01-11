@@ -2,8 +2,8 @@ import { useState } from "react"
 import { GraphNode, GraphNodeImageCache, GraphNodeType } from "../-@interface"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { NodeObject } from "react-force-graph-2d"
-import topicIcon from "@/assets/icons/graph/link.svg"
 import tagIcon from "@/assets/icons/graph/tag.svg"
+import starIcon from "@/assets/icons/star-blue.svg"
 
 export const useImageCache = (nodes: GraphNode[]) => {
   const [imageCache, setImageCache] = useState<GraphNodeImageCache>({})
@@ -16,9 +16,9 @@ export const useImageCache = (nodes: GraphNode[]) => {
       img.onerror = (err) => reject(err)
     })
 
-  const fetchImages = async () => {
+  const fetchImages = async (nodesChange: boolean = false) => {
     const imageLoadPromises = nodes.map(async (node) => {
-      if (!imageCache[node.id]) {
+      if (!imageCache[node.id] || nodesChange) {
         try {
           let img: HTMLImageElement | null = null
 
@@ -30,8 +30,8 @@ export const useImageCache = (nodes: GraphNode[]) => {
               img = (await loadImage(avatarUrl)) as HTMLImageElement
               break
 
-            case GraphNodeType.TOPIC:
-              img = (await loadImage(topicIcon)) as HTMLImageElement
+            case GraphNodeType.SUPER_TAG:
+              img = (await loadImage(starIcon)) as HTMLImageElement
               break
 
             case GraphNodeType.TAG:

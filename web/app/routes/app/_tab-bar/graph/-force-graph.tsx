@@ -10,31 +10,22 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
-import {
-  GraphData,
-  GraphLink,
-  GraphNode,
-  GraphNodeContact,
-  GraphNodeTag,
-  GraphNodeTopic,
-  GraphNodeType,
-} from "./-@interface"
+import { GraphData, GraphLink, GraphNode, GraphNodeType } from "./-@interface"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { drawContactNode } from "./(nodes)/-draw-contact-node"
 import { drawTopicNode, getTopicRadius } from "./(nodes)/-draw-topic-node"
 import { useImageCache } from "./(nodes)/-use-image-cache"
 import { drawTagNode } from "./(nodes)/-draw-tag-node"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
-import { SelectedContact } from "./-selected-contact"
+import { SelectedNode } from "./-selected-node"
 import { AnimatePresence } from "framer-motion"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { profile } from "console"
 import useViewportSize from "./-window-height"
 import useAppStore from "~/lib/app-store/app-store"
 
 const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
-  const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
-  const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
+  const [selectedNode, setSelectedNode] = useState<null | GraphNode>(null)
+  const [selectedNodeTimestamp, setSelectedNodeTimestamp] = useState<
     null | number
   >(null)
 
@@ -51,6 +42,11 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
     fetchImages()
   }, [graphData.nodes, imageCache])
 
+  useEffect(() => {
+    // case when promoting tag to super tag, need to refresh image cache as image changes
+    fetchImages(true)
+  }, [graphData.nodes])
+
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!]
@@ -60,12 +56,11 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
         case GraphNodeType.CONTACT:
           drawContactNode(node, ctx, globalScale, img)
           break
-        case GraphNodeType.TOPIC:
+        case GraphNodeType.SUPER_TAG:
           drawTopicNode(node, ctx, globalScale, img, lp.platform)
           break
         case GraphNodeType.TAG:
           drawTagNode(node, ctx, globalScale, img, lp.platform)
-          break
       }
     },
     [imageCache],
@@ -85,18 +80,23 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
 
   const { linkNodesModeEnabled, selectNodeToLink } = useAppStore()
   useEffect(() => {
-    if (linkNodesModeEnabled && selectedContact) {
-      selectNodeToLink(selectedContact)
+    if (linkNodesModeEnabled && selectedNode) {
+      selectNodeToLink(selectedNode)
     }
-  }, [selectedContact])
+  }, [selectedNode])
 
   const viewportHeight = useViewportSize()?.[1]
 
   return (
     <div className="">
       <AnimatePresence>
-        {selectedContact && (
-          <SelectedContact selectedContact={selectedContact} />
+        {selectedNode && (
+          <SelectedNode
+            selectedNode={selectedNode}
+            setSelectedNode={(value: GraphNode | null) =>
+              setSelectedNode(value)
+            }
+          />
         )}
       </AnimatePresence>
 
@@ -106,8 +106,9 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
         graphData={graphData}
         nodeAutoColorBy="group"
         onBackgroundClick={() => {
-          setSelectedContact(null)
+          setSelectedNode(null)
         }}
+        minZoom={0.5}
         onNodeClick={(node) => {
           fgRef?.current?.zoomToFit(
             500,
@@ -116,26 +117,26 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
             (filterNode) => filterNode.id === node.id,
           )
 
-          if (selectedContact !== node) {
-            setSelectedContactTimestamp(Date.now())
-            setSelectedContact(null)
+          if (selectedNode !== node) {
+            setSelectedNodeTimestamp(Date.now())
+            setSelectedNode(null)
             setTimeout(() => {
-              setSelectedContact(node as GraphNode)
+              setSelectedNode(node as GraphNode)
             }, 150)
           } else if (
-            selectedContactTimestamp &&
-            selectedContact.type === GraphNodeType.CONTACT &&
-            Date.now() - selectedContactTimestamp < 500
+            selectedNodeTimestamp &&
+            selectedNode.type === GraphNodeType.CONTACT &&
+            Date.now() - selectedNodeTimestamp < 500
           ) {
-            window.open(`https://t.me/${selectedContact.username}`)
+            window.open(`https://t.me/${selectedNode.username}`)
           }
-          setSelectedContactTimestamp(Date.now())
+          setSelectedNodeTimestamp(Date.now())
         }}
         onNodeDrag={(node) => {
-          if (selectedContact !== node) {
-            setSelectedContact(null)
+          if (selectedNode !== node) {
+            setSelectedNode(null)
             setTimeout(() => {
-              setSelectedContact(node as GraphNode)
+              setSelectedNode(node as GraphNode)
             }, 150)
           }
         }}
@@ -143,7 +144,7 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
         nodePointerAreaPaint={(node, color, ctx) => {
           // clickable node zone
           let imgSize
-          if (node.type === GraphNodeType.TOPIC) {
+          if (node.type === GraphNodeType.SUPER_TAG) {
             imgSize = getTopicRadius(globalScale ? globalScale : 0)
           } else {
             imgSize = 20
@@ -189,18 +190,18 @@ const initializeGraphData = (jazzProfile: RootUserProfile): GraphData => {
     }
   })
 
-  jazzProfile?.topics?.forEach((topic) => {
-    if (topic) {
+  jazzProfile?.tags?.forEach((tag) => {
+    if (tag && tag.superTag) {
       nodes.push({
-        id: topic?.id,
-        title: topic.title,
-        type: GraphNodeType.TOPIC,
+        id: tag?.id,
+        title: tag.title,
+        type: GraphNodeType.SUPER_TAG,
       })
     }
   })
 
   jazzProfile?.tags?.forEach((tag) => {
-    if (tag) {
+    if (tag && !tag.superTag) {
       nodes.push({
         id: tag?.id,
         title: tag.title,

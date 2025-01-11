@@ -34,9 +34,8 @@ import Contact from "./-contact"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { Icon16Chevron } from "@telegram-apps/telegram-ui/dist/icons/16/chevron"
 import { AnimatePresence, motion } from "framer-motion"
-import GraphIcon from "@/assets/icons/graph-icon.svg?react"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { GraphNode, GraphNodeTag, GraphNodeType } from "./-@interface"
+import { GraphNode, GraphNodeType } from "./-@interface"
 import useAppStore from "~/lib/app-store/app-store"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 
@@ -71,6 +70,7 @@ const ContactsGraph = () => {
         JazzTag.create(
           {
             title: inputValues.tag,
+            superTag: false,
           },
           { owner: profile._owner },
         ),
@@ -108,7 +108,7 @@ const ContactsGraph = () => {
           onClose={() => setCreateModalOpen(false)}
           focused={focused}
         >
-          <div ref={modalRef} className="bg-secondary px-1 py-2 relative">
+          <div ref={modalRef} className="bg-secondary px-2 py-1 relative">
             <div className="flex gap-2 items-center">
               <EntityTooltip step={step} setStep={(step) => setStep(step)} />
               {step === 0 && (

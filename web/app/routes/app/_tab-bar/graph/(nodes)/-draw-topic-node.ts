@@ -1,4 +1,5 @@
 import { NodeObject } from "react-force-graph-2d"
+import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
 
 export const drawTopicNode = (
@@ -17,13 +18,13 @@ export const drawTopicNode = (
 
   ctx.beginPath()
   ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false)
-  ctx.fillStyle = hexToRgba("#5288c1", 1)
+  ctx.fillStyle = hexToRgba(getCssVariableValue("--tg-theme-bg-color"), 1)
   ctx.fill()
 
   // circle stroke
-  /* ctx.lineWidth = 1.5
+  ctx.lineWidth = 1
   ctx.strokeStyle = hexToRgba("#6ab2f2", 1)
-  ctx.stroke() */
+  ctx.stroke()
 
   // topic title
   ctx.textAlign = "center"
@@ -40,7 +41,7 @@ export const drawTopicNode = (
 
   ctx.beginPath()
   const x = node.x! - textWidth / 2 - padding * 2
-  const y = node.y! + (radius + 2) - padding
+  const y = node.y! + (radius + 2) - padding + 2
   const width = textWidth + padding * 4
   const height = textHeight + padding * 2
 
@@ -56,9 +57,9 @@ export const drawTopicNode = (
 
   // on ios / mac os text is lower than should be
   if (["macos", "ios"].includes(platform)) {
-    ctx.fillText(titleText, node.x!, node.y! + radius + 1)
+    ctx.fillText(titleText, node.x!, node.y! + radius + 1 + 2)
   } else {
-    ctx.fillText(titleText, node.x!, node.y! + radius + 2)
+    ctx.fillText(titleText, node.x!, node.y! + radius + 2 + 2)
   }
 
   // text outline

@@ -10,15 +10,15 @@ export interface GraphLink {
 }
 
 export enum GraphNodeType {
-  TOPIC = "topic",
+  SUPER_TAG = "super-tag",
   TAG = "tag",
   CONTACT = "contact",
 }
 
-export interface GraphNodeTopic {
+export interface GraphNodeSuperTag {
   id: string
   title: string
-  type: GraphNodeType.TOPIC
+  type: GraphNodeType.SUPER_TAG
 }
 
 export type GraphNodeTag = {
@@ -34,7 +34,7 @@ export interface GraphNodeContact {
   type: GraphNodeType.CONTACT
 }
 
-export type GraphNode = GraphNodeContact | GraphNodeTag | GraphNodeTopic
+export type GraphNode = GraphNodeContact | GraphNodeTag | GraphNodeSuperTag
 
 export interface GraphData {
   links: GraphLink[]

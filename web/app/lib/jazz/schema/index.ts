@@ -14,6 +14,7 @@ export class JazzContact extends CoMap {
 }
 export class JazzTag extends CoMap {
   title = co.string
+  superTag = co.boolean
 }
 export class JazzTopic extends CoMap {
   title = co.string
