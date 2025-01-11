@@ -36,7 +36,7 @@ import { Icon16Chevron } from "@telegram-apps/telegram-ui/dist/icons/16/chevron"
 import { AnimatePresence, motion } from "framer-motion"
 import GraphIcon from "@/assets/icons/graph-icon.svg?react"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { GraphNode, GraphNodeType } from "./-@interface"
+import { GraphNode, GraphNodeTag, GraphNodeType } from "./-@interface"
 import useAppStore from "~/lib/app-store/app-store"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 
@@ -108,14 +108,16 @@ const ContactsGraph = () => {
           onClose={() => setCreateModalOpen(false)}
           focused={focused}
         >
-          <div ref={modalRef} className="bg-secondary p-2 relative">
+          <div ref={modalRef} className="bg-secondary px-1 py-2 relative">
             <div className="flex gap-2 items-center">
               <EntityTooltip step={step} setStep={(step) => setStep(step)} />
               {step === 0 && (
-                <TelegramUserField
-                  disableEditModeOnEnter={disableEditModeOnEnter}
-                  setFocused={() => setFocused(true)}
-                />
+                <div className="flex-1">
+                  <TelegramUserField
+                    disableEditModeOnEnter={disableEditModeOnEnter}
+                    setFocused={() => setFocused(true)}
+                  />
+                </div>
               )}
 
               {step === 1 && (
@@ -186,6 +188,7 @@ const TelegramUserField = ({
   const profile = useJazzProfile()
 
   const [usernameValue, setUsernameValue] = useState("")
+  const [selectedTag, setSelectedTag] = useState<JazzTag | null>(null)
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
   const [telegramSearchLoading, setTelegramSearchLoading] = useState(false)
@@ -230,7 +233,19 @@ const TelegramUserField = ({
           { owner: profile._owner },
         ),
       )
+      if (selectedTag) {
+        profile.links!.push(
+          JazzLink.create(
+            {
+              source: selectedTag.id,
+              target: telegramUser?.username!,
+            },
+            { owner: profile._owner },
+          ),
+        )
+      }
       setTelegramUser(null)
+      setSelectedTag(null)
       setUsernameValue("")
     }
   }
@@ -316,12 +331,10 @@ const TelegramUserField = ({
             </AnimatePresence>
           }
         />
-        <Tappable className="flex text-xs font-semibold items-center justify-center gap-2 py-2 px-2 rounded-xl border-[1px] border-primary">
-          <div className="text-white h-6 w-6">
-            <TelegramIcon />
-          </div>
-          <span className="text-xs font-bold">Contacts</span>
-        </Tappable>
+        <ContactTagTooltip
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+        />
       </div>
     </div>
   )
@@ -543,12 +556,89 @@ const EntityTooltip = ({
   )
 }
 
+const ContactTagTooltip = ({
+  selectedTag,
+  setSelectedTag,
+}: {
+  selectedTag: JazzTag | null
+  setSelectedTag: (tag: JazzTag) => void
+}) => {
+  const profile = useJazzProfile()
+
+  const [showToolTip, setShowToolTip] = useState(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(event.target as Node)
+      ) {
+        setShowToolTip(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  return (
+    <div>
+      <Tappable
+        onClick={() => setShowToolTip((prev) => !prev)}
+        className="flex font-semibold items-center justify-center gap-2 py-2 px-2 rounded-xl border-[1px] border-primary"
+      >
+        <div className="flex text-white items-center justify-center gap-1">
+          {selectedTag ? (
+            truncateWord(selectedTag.title, 10)
+          ) : (
+            <div className="h-6 w-6">
+              <LinkIcon />
+            </div>
+          )}
+
+          <div
+            className={`h-4 w-4 transition-all duration-150 ease-in-out ${showToolTip ? "-rotate-90" : "rotate-90"} `}
+          >
+            <Icon16Chevron />
+          </div>
+        </div>
+      </Tappable>
+      <div
+        className={`h-screen w-screen fixed top-0 left-0 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      ></div>
+      <div
+        ref={tooltipRef}
+        className={`p-2 h-32 overflow-y-auto absolute w-32 right-2 bottom-20 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-1`}
+      >
+        {profile?.tags?.map((tag) => (
+          <div>
+            <ToolTipItem
+              title={truncateWord(tag?.title || "", 10)}
+              action={() => {
+                if (tag) {
+                  setSelectedTag(tag)
+                }
+                setShowToolTip(false)
+              }}
+            />
+            <div className="h-[1px] bg-divider"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const ToolTipItem = ({
   Icon,
   title,
   action,
 }: {
-  Icon: React.ReactElement
+  Icon?: React.ReactElement
   title: string
   action: () => void
 }) => {
@@ -557,12 +647,22 @@ const ToolTipItem = ({
       onClick={action}
       className="pl-2 py-1 rounded-md flex gap-4 items-center"
     >
-      <div className="h-5 w-5 text-white">
-        <div>{Icon}</div>
-      </div>
+      {Icon && (
+        <div className="h-5 w-5 text-white">
+          <div>{Icon}</div>
+        </div>
+      )}
+
       <div className="text-left font-medium whitespace-nowrap">{title}</div>
     </Tappable>
   )
+}
+
+const truncateWord = (word: string, maxLength: number): string => {
+  if (word.length > maxLength) {
+    return word.slice(0, maxLength) + "..."
+  }
+  return word
 }
 
 export const Route = createFileRoute("/app/_tab-bar/graph/")({
