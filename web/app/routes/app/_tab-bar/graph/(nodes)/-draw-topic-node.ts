@@ -57,7 +57,7 @@ export const drawTopicNode = (
 
   // on ios / mac os text is lower than should be
   if (["macos", "ios"].includes(platform)) {
-    ctx.fillText(titleText, node.x!, node.y! + radius + 1 + 2)
+    ctx.fillText(titleText, node.x!, node.y! + radius + 1 + 1)
   } else {
     ctx.fillText(titleText, node.x!, node.y! + radius + 2 + 2)
   }
