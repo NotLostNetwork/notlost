@@ -355,7 +355,12 @@ const TelegramUserField = ({
             </AnimatePresence>
           }
         />
-        <Tappable onClick={() => setShowTagsField((prev) => !prev)}>
+        <Tappable
+          onClick={() => {
+            setFocused()
+            setShowTagsField((prev) => !prev)
+          }}
+        >
           <div className="flex text-white items-center justify-center gap-1">
             <div className="h-6 w-6">
               <TagIcon />
