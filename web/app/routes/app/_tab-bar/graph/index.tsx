@@ -87,6 +87,8 @@ const ContactsGraph = () => {
       setFocused(false)
     }
   }
+  const { setEditGraphModeEnabled } = useAppStore()
+  useEffect(() => setEditGraphModeEnabled(createModalOpen), [createModalOpen])
 
   if (!profile) return
 

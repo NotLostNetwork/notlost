@@ -78,7 +78,8 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
 
   const [globalScale, setGlobalScale] = useState<number | null>(null)
 
-  const { linkNodesModeEnabled, selectNodeToLink } = useAppStore()
+  const { linkNodesModeEnabled, selectNodeToLink, editGraphModeEnabled } =
+    useAppStore()
   useEffect(() => {
     if (linkNodesModeEnabled && selectedNode) {
       selectNodeToLink(selectedNode)
@@ -110,12 +111,14 @@ const ForceGraph = ({ jazzProfile }: { jazzProfile: RootUserProfile }) => {
         }}
         minZoom={0.5}
         onNodeClick={(node) => {
-          fgRef?.current?.zoomToFit(
-            500,
-            // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
-            175,
-            (filterNode) => filterNode.id === node.id,
-          )
+          if (!editGraphModeEnabled) {
+            fgRef?.current?.zoomToFit(
+              500,
+              // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
+              175,
+              (filterNode) => filterNode.id === node.id,
+            )
+          }
 
           if (selectedNode !== node) {
             setSelectedNodeTimestamp(Date.now())
