@@ -1,14 +1,22 @@
-import { Avatar, Tappable } from "@telegram-apps/telegram-ui"
+import { Avatar, Button, Tappable } from "@telegram-apps/telegram-ui"
 import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
+import StarBlue from "@/assets/icons/star-blue.svg?react"
+import { JazzTopic } from "~/lib/jazz/schema"
 
 const Contact = ({
   username,
   firstName,
+  selectedTags,
+  topic,
+  addContact,
 }: {
   username: string
   firstName: string
+  selectedTags: string[]
+  topic: JazzTopic | null
+  addContact: () => void
 }) => {
   const [avatarUrl, setAvatarUrl] = useState("")
 
@@ -36,9 +44,9 @@ const Contact = ({
         >
           <div className={`transition-all duration-300 ease`}>
             <Tappable
-              className={`flex px-4 min-h-20 justify-center text-sm relative`}
+              className={`flex p-2 min-h-14 justify-center text-sm relative`}
             >
-              <div className="h-20 flex items-center">
+              <div className="h-14 flex items-center">
                 {avatarUrl ? (
                   <img
                     loading="lazy"
@@ -52,7 +60,7 @@ const Contact = ({
                 )}
               </div>
               <div className="h-full ml-4 w-full ">
-                <div className={"h-full flex items-center w-full py-2"}>
+                <div className={"h-full flex items-center w-full"}>
                   <div className="w-full py-2">
                     <div className="flex w-full">
                       <div>
@@ -60,13 +68,36 @@ const Contact = ({
                         <div className="font-medium text-link text-xs text-left">
                           @{username}
                         </div>
+                        <div className="flex gap-1 flex-wrap mt-4">
+                          {selectedTags &&
+                            selectedTags.map((tag) => (
+                              <span
+                                className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                                key={tag}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                        </div>
                       </div>
-                      <div className="ml-auto text-link rounded-xl text-xs flex font-medium mt-[3px]">
-                        <span>Tap to add into graph</span>
+                      <div className="ml-auto">
+                        {topic && (
+                          <div className="ml-auto flex items-center justify-end pr-4 gap-2 font-medium mt-[3px]">
+                            <div className="h-6 w-6">
+                              <StarBlue />
+                            </div>
+                            <span>{topic.title}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="mt-auto text-hint text-xs font-medium absolute -top-2 -translate-y-full">
+                <Button onClick={addContact} mode="bezeled">
+                  Add into graph
+                </Button>
               </div>
             </Tappable>
           </div>

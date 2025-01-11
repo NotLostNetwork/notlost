@@ -28,7 +28,9 @@ import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
 import TelegramIcon from "@/assets/icons/telegram.svg?react"
 import AtSign from "@/assets/icons/at-sign.svg?react"
 import BlueStarIcon from "@/assets/icons/star-blue.svg?react"
+import FilledStarIcon from "@/assets/icons/star-filled.svg?react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
+import { Icon28AddCircle } from "@telegram-apps/telegram-ui/dist/icons/28/add_circle"
 import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { $getTelegramUserByUsername } from "~/lib/telegram/api/telegram-api-server"
 import Contact from "./-contact"
@@ -111,9 +113,11 @@ const ContactsGraph = () => {
           onClose={() => setCreateModalOpen(false)}
           focused={focused}
         >
-          <div ref={modalRef} className="bg-secondary px-2 py-1 relative">
+          <div ref={modalRef} className="bg-secondary px-2 py-1 relative ">
             <div className="flex gap-2 items-center">
-              <EntityTooltip step={step} setStep={(step) => setStep(step)} />
+              <div className="self-end">
+                <EntityTooltip step={step} setStep={(step) => setStep(step)} />
+              </div>
               {step === 0 && (
                 <div className="flex-1">
                   <TelegramUserField
@@ -191,14 +195,17 @@ const TelegramUserField = ({
   const profile = useJazzProfile()
 
   const [usernameValue, setUsernameValue] = useState("")
-  const [showTagsField, setShowTagsField] = useState(false)
-  const [selectedTag, setSelectedTag] = useState<JazzTag | null>(null)
+  const [tagValue, setTagValue] = useState("")
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedTopic, setSelectedTopic] = useState<JazzTopic | null>(null)
+
+  const [step, setStep] = useState(0)
 
   const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null)
   const [telegramSearchLoading, setTelegramSearchLoading] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const tagsInputRef = useRef<HTMLInputElement | null>(null)
 
   const [localFocused, setLocalFocused] = useState(false)
 
@@ -238,11 +245,11 @@ const TelegramUserField = ({
           { owner: profile._owner },
         ),
       )
-      if (selectedTag) {
+      if (selectedTopic) {
         profile.links!.push(
           JazzLink.create(
             {
-              source: selectedTag.id,
+              source: selectedTopic.id,
               target: telegramUser?.username!,
             },
             { owner: profile._owner },
@@ -250,130 +257,183 @@ const TelegramUserField = ({
         )
       }
       setTelegramUser(null)
-      setSelectedTag(null)
+      setStep(0)
       setUsernameValue("")
     }
   }
 
+  const selectTag = (tag: string) => {
+    if (tag.length > 0) {
+      setSelectedTags((prev) => [...prev, tag])
+      setTagValue("")
+    }
+  }
+
   return (
-    <div>
+    <div className="flex">
       {telegramUser && (
-        <div
-          className="absolute -top-28 left-0 w-full"
-          onClick={createNewContact}
-        >
+        <div className="absolute -top-4 -translate-y-full left-0 w-full">
           <div className="bg-secondary m-2 rounded-xl shadow-xl">
             <Contact
               username={telegramUser.username!}
               firstName={telegramUser.firstName}
+              selectedTags={selectedTags}
+              topic={selectedTopic}
+              addContact={createNewContact}
             />
           </div>
         </div>
       )}
-      {showTagsField && (
-        <div className="flex-1">
+      <div className="flex-1">
+        {step === 0 && (
           <Input
-            ref={tagsInputRef}
+            ref={inputRef}
             autoFocus={true}
-            className="text-white bg-primary"
-            style={{ color: "white" }}
+            className={`text-white ${noTelegramUser ? "bg-[#5c3236]" : "bg-primary"}`}
+            style={{ color: "white", flex: "1 !important" }}
             type="text"
             onFocus={() => {
               setFocused()
               window.scrollTo(0, 0)
+              setLocalFocused(true)
             }}
-            onBlur={handleBlur}
             onKeyDown={disableEditModeOnEnter}
-            placeholder="Tag"
-            value={""}
-            onChange={(e) => {}}
-          />
-        </div>
-      )}
-      <div className="flex items-center gap-2">
-        <Input
-          ref={inputRef}
-          autoFocus={true}
-          className={`text-white bg-primary ${noTelegramUser ? "bg-[#5c3236]" : "bg-primary"}`}
-          style={{ color: "white", flex: "1 !important" }}
-          type="text"
-          onFocus={() => {
-            setFocused()
-            window.scrollTo(0, 0)
-            setLocalFocused(true)
-          }}
-          onKeyDown={disableEditModeOnEnter}
-          onBlur={handleBlur}
-          placeholder="username"
-          value={usernameValue}
-          onChange={(e) => setUsernameValue(e.target.value)}
-          after={
-            <AnimatePresence mode="wait">
-              <div
-                className={`absolute top-[9px] z-10 right-[12px] transition-all duration-100 ease-in-out ${noTelegramUser ? "bg-[#5c3236]" : "bg-primary"} pointer-events-none ${telegramSearchLoading ? "opacity-100 h-6" : "opacity-0 h-0"}`}
-              >
-                <Spinner size="s" />
-              </div>
-              {usernameValue ? (
-                <Tappable
-                  key="cancel"
-                  Component="div"
-                  style={{
-                    display: "flex",
-                    opacity: localFocused ? "1" : "0",
-                  }}
-                  onClick={() => {
-                    setUsernameValue("")
-                    setTelegramUser(null)
-                  }}
+            onBlur={handleBlur}
+            placeholder="username"
+            value={usernameValue}
+            onChange={(e) => setUsernameValue(e.target.value)}
+            after={
+              <AnimatePresence mode="wait">
+                <div
+                  className={`absolute top-[9px] z-10 right-[12px] transition-all duration-100 ease-in-out pointer-events-none ${telegramSearchLoading ? "opacity-100 h-6" : "opacity-0 h-0"}`}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                    transition={{ duration: 0.15, ease: "easeInOut" }}
+                  <Spinner size="s" />
+                </div>
+                {usernameValue ? (
+                  <Tappable
+                    key="cancel"
+                    Component="div"
+                    style={{
+                      display: "flex",
+                      opacity:
+                        localFocused && !telegramSearchLoading ? "1" : "0",
+                    }}
+                    onClick={() => {
+                      setUsernameValue("")
+                      setSelectedTags([])
+                      setTelegramUser(null)
+                    }}
                   >
-                    <Icon16Cancel />
-                  </motion.div>
-                </Tappable>
-              ) : (
-                <Tappable
-                  key="qr"
-                  Component="div"
-                  style={{ display: "flex" }}
-                  onClick={() => setUsernameValue("")}
-                >
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      transition={{ duration: 0.15, ease: "easeInOut" }}
+                    >
+                      <Icon16Cancel />
+                    </motion.div>
+                  </Tappable>
+                ) : (
+                  <Tappable
+                    key="qr"
+                    Component="div"
+                    style={{ display: "flex" }}
+                    onClick={() => setUsernameValue("")}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                      transition={{ duration: 0.15, ease: "easeInOut" }}
+                    >
+                      <Icon24QR />
+                    </motion.div>
+                  </Tappable>
+                )}
+              </AnimatePresence>
+            }
+          />
+        )}
+        {step === 1 && (
+          <div className="flex-1">
+            <Input
+              ref={inputRef}
+              autoFocus={true}
+              className="text-white bg-primary relative"
+              style={{ color: "white" }}
+              type="text"
+              onFocus={() => {
+                setFocused()
+                window.scrollTo(0, 0)
+              }}
+              onBlur={handleBlur}
+              onKeyDown={disableEditModeOnEnter}
+              placeholder="Skill, work..."
+              value={tagValue}
+              onChange={(e) => setTagValue(e.target.value)}
+              after={
+                <AnimatePresence mode="wait">
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
                     exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
                     transition={{ duration: 0.15, ease: "easeInOut" }}
                   >
-                    <Icon24QR />
+                    <Tappable
+                      className="h-6 absolute w-6 -top-[2px] right-0 rounded-full"
+                      onClick={() => selectTag(tagValue)}
+                    >
+                      <Icon28AddCircle />
+                    </Tappable>
                   </motion.div>
-                </Tappable>
-              )}
-            </AnimatePresence>
-          }
-        />
-        <Tappable
-          onClick={() => {
-            setFocused()
-            setShowTagsField((prev) => !prev)
-          }}
-        >
-          <div className="flex text-white items-center justify-center gap-1">
-            <div className="h-6 w-6">
-              <TagIcon />
-            </div>
-
-            <div
-              className={`h-4 w-4 transition-all duration-150 ease-in-out ${showTagsField ? "-rotate-90" : "rotate-90"} `}
-            >
-              <Icon16Chevron />
+                </AnimatePresence>
+              }
+            />
+          </div>
+        )}
+        {step === 2 && (
+          <div
+            style={{ width: "calc(100vw - 156px)" }}
+            className="rounded-xl relative"
+          >
+            {/* shadow input to have keyboard shown */}
+            <Input
+              ref={inputRef}
+              autoFocus={true}
+              className="opacity-0 absolute"
+              style={{ color: "white" }}
+              type="text"
+              onKeyDown={disableEditModeOnEnter}
+              onFocus={() => {
+                setFocused()
+                window.scrollTo(0, 0)
+              }}
+              onBlur={handleBlur}
+            />
+            <div className="flex gap-2 overflow-x-auto max-h-10 rounded-xl">
+              {profile?.tags?.map((tag) => {
+                if (tag?.superTag) {
+                  return (
+                    <Tappable
+                      onClick={() => setSelectedTopic(tag)}
+                      className="flex bg-buttonBezeled font-semibold items-center justify-center gap-2 py-2 px-2 rounded-xl"
+                    >
+                      <div className="flex gap-2 items-center">
+                        <div className="h-6 w-6">
+                          <BlueStarIcon />
+                        </div>
+                        <div className="text-nowrap">{tag.title}</div>
+                      </div>
+                    </Tappable>
+                  )
+                }
+              })}
             </div>
           </div>
-        </Tappable>
+        )}
+      </div>
+      <div className="ml-2">
+        <ContactTagTooltip step={step} setStep={(step) => setStep(step)} />
       </div>
     </div>
   )
@@ -605,11 +665,11 @@ const EntityTooltip = ({
 }
 
 const ContactTagTooltip = ({
-  selectedTag,
-  setSelectedTag,
+  step,
+  setStep,
 }: {
-  selectedTag: JazzTag | null
-  setSelectedTag: (tag: JazzTag) => void
+  step: number
+  setStep: (step: number) => void
 }) => {
   const profile = useJazzProfile()
 
@@ -640,14 +700,21 @@ const ContactTagTooltip = ({
         className="flex font-semibold items-center justify-center gap-2 py-2 px-2 rounded-xl border-[1px] border-primary"
       >
         <div className="flex text-white items-center justify-center gap-1">
-          {selectedTag ? (
-            truncateWord(selectedTag.title, 10)
-          ) : (
+          {step === 0 && (
             <div className="h-6 w-6">
-              <LinkIcon />
+              <TelegramIcon />
             </div>
           )}
-
+          {step === 1 && (
+            <div className="h-6 w-6 p-0.5">
+              <TagIcon />
+            </div>
+          )}
+          {step === 2 && (
+            <div className="h-6 w-6">
+              <FilledStarIcon />
+            </div>
+          )}
           <div
             className={`h-4 w-4 transition-all duration-150 ease-in-out ${showToolTip ? "-rotate-90" : "rotate-90"} `}
           >
@@ -660,22 +727,35 @@ const ContactTagTooltip = ({
       ></div>
       <div
         ref={tooltipRef}
-        className={`p-2 h-32 overflow-y-auto absolute w-32 right-2 bottom-20 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-1`}
+        className={`p-2 absolute w-32 right-2 bottom-20 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-1`}
       >
-        {profile?.tags?.map((tag) => (
-          <div>
-            <ToolTipItem
-              title={truncateWord(tag?.title || "", 10)}
-              action={() => {
-                if (tag) {
-                  setSelectedTag(tag)
-                }
-                setShowToolTip(false)
-              }}
-            />
-            <div className="h-[1px] bg-divider"></div>
-          </div>
-        ))}
+        <ToolTipItem
+          Icon={<TelegramIcon />}
+          title={"Contact"}
+          action={() => {
+            setStep(0)
+            setShowToolTip(false)
+          }}
+        />
+
+        <div className="h-[1px] bg-divider"></div>
+        <ToolTipItem
+          Icon={<TagIcon />}
+          title={"Tags"}
+          action={() => {
+            setStep(1)
+            setShowToolTip(false)
+          }}
+        />
+        <div className="h-[1px] bg-divider"></div>
+        <ToolTipItem
+          Icon={<FilledStarIcon />}
+          title={"Topic"}
+          action={() => {
+            setStep(2)
+            setShowToolTip(false)
+          }}
+        />
       </div>
     </div>
   )
