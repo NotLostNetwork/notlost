@@ -27,6 +27,7 @@ import TagIcon from "@/assets/icons/tag.svg?react"
 import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
 import TelegramIcon from "@/assets/icons/telegram.svg?react"
 import AtSign from "@/assets/icons/at-sign.svg?react"
+import BlueStarIcon from "@/assets/icons/star-blue.svg?react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { $getTelegramUserByUsername } from "~/lib/telegram/api/telegram-api-server"
@@ -374,6 +375,15 @@ const LinkNodes = () => {
         <div className="flex items-center gap-2">
           <div className="h-4 w-4">
             <TagIcon />
+          </div>
+          <div className="font-medium text-link">{node.title}</div>
+        </div>
+      )
+    } else if (node.type === GraphNodeType.SUPER_TAG) {
+      return (
+        <div className="flex items-center gap-2">
+          <div className="h-6 w-6">
+            <BlueStarIcon />
           </div>
           <div className="font-medium text-link">{node.title}</div>
         </div>
