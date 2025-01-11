@@ -198,6 +198,7 @@ const TelegramUserField = ({
   const [telegramSearchLoading, setTelegramSearchLoading] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const tagsInputRef = useRef<HTMLInputElement | null>(null)
 
   const [localFocused, setLocalFocused] = useState(false)
 
@@ -272,7 +273,7 @@ const TelegramUserField = ({
       {showTagsField && (
         <div className="flex-1">
           <Input
-            ref={inputRef}
+            ref={tagsInputRef}
             autoFocus={true}
             className="text-white bg-primary"
             style={{ color: "white" }}
