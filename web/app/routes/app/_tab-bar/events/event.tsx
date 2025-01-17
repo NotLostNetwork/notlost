@@ -186,7 +186,6 @@ function RouteComponent() {
             />
             <div className="pt-6 pb-4">
               <Input
-                ref={inputRef}
                 autoFocus={true}
                 className="text-white bg-primary flex-1 mb-4"
                 style={{ color: "white" }}

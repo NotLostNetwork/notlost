@@ -4,7 +4,8 @@
 
 body {
   background: var(--tg-theme-bg-color, white);
-  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
   -webkit-overflow-scrolling: auto !important;
 }
 
