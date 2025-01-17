@@ -124,7 +124,7 @@ function RouteComponent() {
         exit={{ opacity: 0, y: 10, filter: "blur(2px)" }}
         transition={{ duration: 0.3 }}
       >
-        <div className="bg-primary p-4 h-full border-[1px] border-primary rounded-xl">
+        <div className="bg-primary p-4 border-[1px] border-primary rounded-xl">
           <img
             src={tonkeeperBg}
             className="w-full rounded-xl h-40 object-cover"
