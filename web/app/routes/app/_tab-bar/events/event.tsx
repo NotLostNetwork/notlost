@@ -73,17 +73,18 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    if (
-      jazzEvent &&
-      !jazzEvent.participants?.find(
-        (p) => p?.username === lp.initData?.user?.username,
-      )
-    ) {
-      setSignInModalOpen(true)
-      setFocused(true)
-    } else {
-      setSignInModalOpen(false)
-      setFocused(false)
+    if (jazzEvent) {
+      if (
+        !jazzEvent.participants?.find(
+          (p) => p?.username === lp.initData?.user?.username,
+        )
+      ) {
+        setSignInModalOpen(true)
+        setFocused(true)
+      } else {
+        setSignInModalOpen(false)
+        setFocused(false)
+      }
     }
   }, [jazzEvent])
 
@@ -150,9 +151,27 @@ function RouteComponent() {
             faster, more convenient, and more secure.
           </div>
           <div className="mt-4 font-semibold">People on the event</div>
-          <div className="">
+          <div className="flex flex-col">
             {jazzEvent.participants?.map((p) => {
               if (!p) return
+              if (p.username === lp.initData?.user?.username) {
+                return (
+                  <div className="-order-1">
+                    <Contact
+                      username={p.username!}
+                      firstName={p.firstName!}
+                      selectedTags={p.tags?.map((tag) => tag.toString())}
+                      addContact={() => {}}
+                      topic={null}
+                      addButton={false}
+                      description={p.description}
+                      divider={true}
+                      edit={true}
+                      participant={p}
+                    />
+                  </div>
+                )
+              }
               return (
                 <Contact
                   username={p.username!}
