@@ -1,8 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { Route as AppRoute } from "@/routes/app"
+import { Route as EventsRoute } from "@/routes/app/_tab-bar/events/index"
+import { useEffect } from "react"
 
 function RouteComponent() {
   const navigate = useNavigate()
+
+  navigate({ to: EventsRoute.to })
+
   return (
     <div
       style={{
