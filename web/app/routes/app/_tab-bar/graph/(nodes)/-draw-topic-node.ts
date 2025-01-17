@@ -9,7 +9,8 @@ export const drawTopicNode = (
   img: HTMLImageElement,
   platform: string,
 ) => {
-  const titleText = node.title!.toString()
+  //const titleText = node.title!.toString()
+  const titleText = ""
 
   // circle
   const radius = getTopicRadius(globalScale)
