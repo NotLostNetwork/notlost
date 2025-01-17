@@ -28,7 +28,10 @@ export class JazzListOfParticipantTags extends CoList.Of(co.string) {}
 export class JazzContact extends CoMap {
   username = co.string
   firstName = co.string
+  tags = co.ref(JazzListOfContactTags)
+  topic = co.string
 }
+export class JazzListOfContactTags extends CoList.Of(co.string) {}
 export class JazzTag extends CoMap {
   title = co.string
   superTag = co.boolean

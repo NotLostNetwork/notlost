@@ -3,7 +3,7 @@ import { GraphNode, GraphNodeImageCache, GraphNodeType } from "../-@interface"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { NodeObject } from "react-force-graph-2d"
 import tagIcon from "@/assets/icons/graph/tag.svg"
-import starIcon from "@/assets/icons/star-blue.svg"
+import tonkeeperLogo from "@/assets/tonkeeper-logo.png"
 
 export const useImageCache = (nodes: GraphNode[]) => {
   const [imageCache, setImageCache] = useState<GraphNodeImageCache>({})
@@ -31,7 +31,7 @@ export const useImageCache = (nodes: GraphNode[]) => {
               break
 
             case GraphNodeType.SUPER_TAG:
-              img = (await loadImage(starIcon)) as HTMLImageElement
+              img = (await loadImage(tonkeeperLogo)) as HTMLImageElement
               break
 
             case GraphNodeType.TAG:

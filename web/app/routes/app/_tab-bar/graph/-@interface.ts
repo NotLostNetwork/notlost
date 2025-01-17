@@ -32,6 +32,7 @@ export interface GraphNodeContact {
   username: string
   firstName: string
   type: GraphNodeType.CONTACT
+  tags: string[]
 }
 
 export type GraphNode = GraphNodeContact | GraphNodeTag | GraphNodeSuperTag

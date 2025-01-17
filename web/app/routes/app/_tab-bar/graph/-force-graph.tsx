@@ -189,6 +189,11 @@ const initializeGraphData = (jazzProfile: RootUserProfile): GraphData => {
         username: contact?.username,
         firstName: contact?.firstName,
         type: GraphNodeType.CONTACT,
+        tags: contact?.tags
+          ? contact?.tags
+              .filter((tag) => tag !== undefined)
+              .map((tag) => tag.toString())
+          : [],
       })
     }
   })

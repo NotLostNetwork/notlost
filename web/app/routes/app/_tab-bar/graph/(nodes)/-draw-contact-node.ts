@@ -10,7 +10,6 @@ export const drawContactNode = (
   img: HTMLImageElement | null,
 ) => {
   let imgSize = 20
-
   if (getTopicRadius(globalScale) >= 36) return
 
   const firstNameFontSize = Math.min(3, (12 * globalScale) / 8)
@@ -49,7 +48,7 @@ export const drawContactNode = (
 
   // username
   drawText(
-    `@${node.username!}`,
+    `${node.tags.join(" ")}`,
     usernameFontSize,
     getCssVariableValue("--tg-theme-link-color"),
     imgSize / 4 + 4.5,

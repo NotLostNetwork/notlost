@@ -3,11 +3,19 @@ import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
 import StarBlue from "@/assets/icons/star-blue.svg?react"
-import { JazzContact, JazzListOfContacts, JazzTopic } from "~/lib/jazz/schema"
+import {
+  JazzContact,
+  JazzLink,
+  JazzListOfContacts,
+  JazzListOfContactTags,
+  JazzTag,
+  JazzTopic,
+} from "~/lib/jazz/schema"
 import { Icon24Chat } from "@telegram-apps/telegram-ui/dist/icons/24/chat"
 import StarIcon from "@/assets/icons/star.svg?react"
 import FilledStarIcon from "@/assets/icons/star-filled.svg?react"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
+import { co, CoList } from "jazz-tools"
 
 const Contact = ({
   username,
@@ -60,12 +68,50 @@ const Contact = ({
             {
               username: username,
               firstName: firstName,
+              tags: JazzListOfContactTags.create(selectedTags, {
+                owner: jazzProfile._owner,
+              }),
+              topic: topic?.title!,
             },
             {
               owner: jazzProfile._owner,
             },
           ),
         )
+        const tonkeeperTag = jazzProfile.tags?.find(
+          (jTag) => jTag?.title === "Tonkeeper Event",
+        )
+        if (!tonkeeperTag) {
+          const newTag = JazzTag.create(
+            {
+              title: "Tonkeeper Event",
+              superTag: true,
+            },
+            {
+              owner: jazzProfile._owner,
+            },
+          )
+          jazzProfile.tags?.push(newTag)
+          jazzProfile.links?.push(
+            JazzLink.create(
+              {
+                source: newTag.id,
+                target: username,
+              },
+              { owner: jazzProfile._owner },
+            ),
+          )
+        } else {
+          jazzProfile.links?.push(
+            JazzLink.create(
+              {
+                source: tonkeeperTag.id,
+                target: username,
+              },
+              { owner: jazzProfile._owner },
+            ),
+          )
+        }
       } else {
         const filteredContacts = jazzProfile.contacts!.filter(
           (profileContact) => profileContact?.username !== username,

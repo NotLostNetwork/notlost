@@ -40,7 +40,7 @@ export const drawTopicNode = (
   // text background
   const padding = 1
   const cornerRadius = 3
-  ctx.fillStyle = hexToRgba("#232e3c", 1)
+  ctx.fillStyle = hexToRgba("#232e3c", 0)
 
   ctx.beginPath()
   const x = node.x! - textWidth / 2 - padding * 2
@@ -72,7 +72,7 @@ export const drawTopicNode = (
  */
   // icon
   if (img) {
-    const imgSize = radius
+    const imgSize = radius + 5
 
     ctx.save()
     ctx.drawImage(

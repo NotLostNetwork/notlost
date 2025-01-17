@@ -4,6 +4,7 @@ import {
   JazzAccount,
   JazzContact,
   JazzLink,
+  JazzListOfContactTags,
   JazzListOfTags,
   JazzTag,
   JazzTopic,
@@ -240,9 +241,15 @@ const TelegramUserField = ({
         JazzContact.create(
           {
             username: telegramUser!.username!,
-            firstName: telegramUser?.firstName!,
+            firstName: telegramUser!.firstName!,
+            tags: JazzListOfContactTags.create(selectedTags, {
+              owner: profile._owner,
+            }),
+            topic: selectedTopic?.title!,
           },
-          { owner: profile._owner },
+          {
+            owner: profile._owner,
+          },
         ),
       )
       if (selectedTopic) {

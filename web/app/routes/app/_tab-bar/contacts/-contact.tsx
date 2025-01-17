@@ -42,33 +42,6 @@ const Contact = ({
   const timerRef = useRef<number | null>(null)
   const isLongPress = useRef(false)
 
-  const startPress = () => {
-    isLongPress.current = false
-    timerRef.current = window.setTimeout(() => {
-      isLongPress.current = true
-      setLongPressTriggered((prev) => !prev)
-    }, 200)
-  }
-
-  const endPress = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-
-    if (!isLongPress.current) {
-      window.open(`https://t.me/${contact.username}`)
-    }
-  }
-
-  const handleTouchMove = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-      isLongPress.current = true
-    }
-  }
-
   const removeContact = () => {
     setHidden(true)
     setTimeout(() => {
