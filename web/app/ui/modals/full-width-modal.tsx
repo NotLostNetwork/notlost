@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Icon28CloseAmbient } from "@telegram-apps/telegram-ui/dist/icons/28/close_ambient"
+import { AnimatePresence, motion } from "framer-motion"
 
 interface ModalProps {
   isOpen: boolean
@@ -37,29 +38,38 @@ const FullWidthModal = ({
   }, [])
 
   return (
-    <div
-      className={`w-screen h-screen fixed z-50  left-0 transition-all ease-in-out duration-300 ${
-        isOpen
-          ? "opacity-100 blur-0 top-0"
-          : "opacity-0 pointer-events-none blur-xl top-20"
-      }`}
-      onClick={onClose}
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(2px)" }}
+      animate={{ opacity: 1, filter: "unset" }}
+      exit={{ opacity: 0, filter: "blur(2px)" }}
+      transition={{ duration: 0.3 }}
     >
       <div
-        className="absolute top-0 left-0 flex items-center justify-center transition-all ease-in-out duration-75"
-        style={{ height: viewportHeight, width: "100%" }}
+        className={`w-screen h-screen fixed z-50  left-0 transition-all ease-in-out duration-300 ${
+          isOpen
+            ? "opacity-100 blur-0 top-0"
+            : "opacity-0 pointer-events-none blur-xl top-20"
+        }`}
+        onClick={onClose}
       >
         <div
-          className={`bg-secondary p-4 shadow-lg h-full transform transition-transform ease-in-out duration-300 absolute top-0 translate-y-20 w-full ${
-            isOpen ? "translate-y-0" : "translate-y-full"
-          }`}
-          onClick={(e) => e.stopPropagation()}
+          className="absolute top-0 left-0 flex items-center justify-center transition-all ease-in-out duration-75"
+          style={{ height: viewportHeight, width: "100%" }}
         >
-          <div className="text-2xl font-semibold text-center mb-2">{title}</div>
-          {children}
+          <div
+            className={`bg-secondary p-4 shadow-lg h-full transform transition-transform ease-in-out duration-300 absolute top-0 translate-y-20 w-full ${
+              isOpen ? "translate-y-0" : "translate-y-full"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-2xl font-semibold text-center mb-2">
+              {title}
+            </div>
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
