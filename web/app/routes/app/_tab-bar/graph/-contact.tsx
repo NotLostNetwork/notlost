@@ -1,4 +1,4 @@
-import { Avatar, Button, Tappable } from "@telegram-apps/telegram-ui"
+import { Avatar, Button, Divider, Tappable } from "@telegram-apps/telegram-ui"
 import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
@@ -12,6 +12,7 @@ const Contact = ({
   topic,
   addContact,
   addButton = true,
+  description,
 }: {
   username: string
   firstName: string
@@ -19,6 +20,7 @@ const Contact = ({
   topic: JazzTopic | null
   addContact: () => void
   addButton?: boolean
+  description?: string
 }) => {
   const [avatarUrl, setAvatarUrl] = useState("")
 
@@ -81,6 +83,11 @@ const Contact = ({
                               </span>
                             ))}
                         </div>
+                        {description && (
+                          <div className="text-xs text-hint mt-2">
+                            {description}
+                          </div>
+                        )}
                       </div>
                       <div className="ml-auto flex items-start">
                         {topic && (

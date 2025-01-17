@@ -15,13 +15,15 @@ export class JazzEvent extends CoMap {
 export class JazzParticipant extends CoMap {
   username = co.string
   firstName = co.string
-  tags = co.string
+  tags = co.ref(JazzListOfParticipantTags)
   description = co.string
 }
 
 export class JazzListOfParticipants extends CoList.Of(
   co.ref(JazzParticipant),
 ) {}
+
+export class JazzListOfParticipantTags extends CoList.Of(co.string) {}
 
 export class JazzContact extends CoMap {
   username = co.string

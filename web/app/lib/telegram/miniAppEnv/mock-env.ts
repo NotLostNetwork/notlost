@@ -30,7 +30,7 @@ if (import.meta.env.DEV) {
             id: 99281932,
             first_name: "Andrew",
             last_name: "Rogue",
-            username: "rogue",
+            username: "shestaya_liniya",
             language_code: "en",
             is_premium: true,
             allows_write_to_pm: true,
@@ -72,7 +72,7 @@ if (import.meta.env.DEV) {
 
     mockTelegramEnv(lp)
     console.warn(
-      "⚠️ As long as the current environment was not considered as the Telegram-based one, it was mocked. Take a note, that you should not do it in production and current behavior is only specific to the development process. Environment mocking is also applied only in development mode. So, after building the application, you will not see this behavior and related warning, leading to crashing the application outside Telegram."
+      "⚠️ As long as the current environment was not considered as the Telegram-based one, it was mocked. Take a note, that you should not do it in production and current behavior is only specific to the development process. Environment mocking is also applied only in development mode. So, after building the application, you will not see this behavior and related warning, leading to crashing the application outside Telegram.",
     )
   })()
 }
