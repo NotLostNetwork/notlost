@@ -165,7 +165,10 @@ function RouteComponent() {
 
       <FullWidthModal
         isOpen={signInModalOpen}
-        onClose={() => setSignInModalOpen(false)}
+        onClose={() => {
+          setSignInModalOpen(false)
+          setFocused(false)
+        }}
         title="Join room"
       >
         <div className="bg-secondary px-2 py-1 relative ">
