@@ -70,20 +70,6 @@ function RouteComponent() {
     }
   }
 
-  const removeParticipant = () => {
-    if (jazzEvent) {
-      const filteredParticipants = jazzEvent.participants!.filter(
-        (p) => p?.username !== "test",
-      )
-      jazzEvent.participants! = JazzListOfParticipants.create(
-        filteredParticipants,
-        {
-          owner: group,
-        },
-      )
-    }
-  }
-
   useEffect(() => {
     if (
       jazzEvent &&
@@ -93,13 +79,15 @@ function RouteComponent() {
     ) {
       setSignInModalOpen(true)
       setFocused(true)
+    } else {
+      setSignInModalOpen(false)
+      setFocused(false)
     }
   }, [jazzEvent])
 
   if (!jazzEvent) return
 
   const addParticipant = () => {
-    removeParticipant()
     if (jazzEvent) {
       jazzEvent.participants?.push(
         JazzParticipant.create(
@@ -112,6 +100,7 @@ function RouteComponent() {
           { owner: group },
         ),
       )
+      setSignInModalOpen(false)
     }
   }
 
@@ -151,6 +140,8 @@ function RouteComponent() {
                 topic={null}
                 addButton={false}
                 description={p.description}
+                divider={true}
+                actions={true}
               />
             )
           })}

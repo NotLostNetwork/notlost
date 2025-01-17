@@ -3,7 +3,11 @@ import { memo, useEffect, useState } from "react"
 import TelegramHelper from "~/lib/telegram/api/telegram-helper"
 import { AnimatePresence, motion } from "framer-motion"
 import StarBlue from "@/assets/icons/star-blue.svg?react"
-import { JazzTopic } from "~/lib/jazz/schema"
+import { JazzContact, JazzListOfContacts, JazzTopic } from "~/lib/jazz/schema"
+import { Icon24Chat } from "@telegram-apps/telegram-ui/dist/icons/24/chat"
+import StarIcon from "@/assets/icons/star.svg?react"
+import FilledStarIcon from "@/assets/icons/star-filled.svg?react"
+import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 
 const Contact = ({
   username,
@@ -13,6 +17,8 @@ const Contact = ({
   addContact,
   addButton = true,
   description,
+  divider = false,
+  actions = false,
 }: {
   username: string
   firstName: string
@@ -21,6 +27,8 @@ const Contact = ({
   addContact: () => void
   addButton?: boolean
   description?: string
+  divider?: boolean
+  actions?: boolean
 }) => {
   const [avatarUrl, setAvatarUrl] = useState("")
 
@@ -29,6 +37,44 @@ const Contact = ({
       setAvatarUrl(avatarBlobUrl)
     })
   }, [])
+
+  const jazzProfile = useJazzProfile()
+
+  const [contactSaved, setContactSaved] = useState(false)
+
+  useEffect(() => {
+    if (jazzProfile) {
+      if (jazzProfile.contacts?.find((c) => c?.username === username)) {
+        setContactSaved(true)
+      } else {
+        setContactSaved(false)
+      }
+    }
+  }, [jazzProfile])
+
+  const clickOnStar = () => {
+    if (jazzProfile && jazzProfile.contacts)
+      if (!contactSaved) {
+        jazzProfile.contacts.push(
+          JazzContact.create(
+            {
+              username: username,
+              firstName: firstName,
+            },
+            {
+              owner: jazzProfile._owner,
+            },
+          ),
+        )
+      } else {
+        const filteredContacts = jazzProfile.contacts!.filter(
+          (profileContact) => profileContact?.username !== username,
+        )
+        jazzProfile.contacts! = JazzListOfContacts.create(filteredContacts, {
+          owner: jazzProfile._owner,
+        })
+      }
+  }
 
   return (
     <div className="no-select">
@@ -47,8 +93,8 @@ const Contact = ({
           }}
         >
           <div className={`transition-all duration-300 ease`}>
-            <Tappable
-              className={`flex p-2 min-h-14 justify-center text-sm relative`}
+            <div
+              className={`flex px-2 pt-4 min-h-14 justify-center text-sm relative`}
             >
               <div className="h-14 flex items-center">
                 {avatarUrl ? (
@@ -65,7 +111,7 @@ const Contact = ({
               </div>
               <div className="h-full ml-4 w-full ">
                 <div className={"h-full flex items-center w-full"}>
-                  <div className="w-full py-2">
+                  <div className="w-full">
                     <div className="flex w-full">
                       <div>
                         <div className="font-medium text-left">{firstName}</div>
@@ -103,12 +149,47 @@ const Contact = ({
                             Add
                           </Button>
                         )}
+                        {actions && (
+                          <div className="space-y-2">
+                            <Tappable
+                              onClick={() => {
+                                window.open(`https://t.me/${username}`)
+                              }}
+                              style={{
+                                background: "transparent",
+                              }}
+                              className={"py-2 px-4 font-semibold rounded-2xl"}
+                            >
+                              <Icon24Chat />
+                            </Tappable>
+                            <Tappable
+                              onClick={clickOnStar}
+                              style={{
+                                background: "transparent",
+                              }}
+                              className={"py-2 px-4 font-semibold rounded-2xl"}
+                            >
+                              {contactSaved ? (
+                                <div className="text-link">
+                                  <FilledStarIcon />
+                                </div>
+                              ) : (
+                                <div>
+                                  <StarIcon />
+                                </div>
+                              )}
+                            </Tappable>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+                {divider && (
+                  <div className="h-[1px] mt-2 bg-divider w-full"></div>
+                )}
               </div>
-            </Tappable>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
