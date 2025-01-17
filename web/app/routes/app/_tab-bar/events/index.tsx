@@ -88,7 +88,7 @@ function RouteComponent() {
             disable={() => {}}
           />
         </div>
-        <div className="italic text-xs text-hint mt-1">
+        <div className="italic text-xs text-hint mt-1 text-center">
           MVP was made in two days, sorry but without filters for now
         </div>
       </div>

@@ -11,12 +11,14 @@ const Contact = ({
   selectedTags,
   topic,
   addContact,
+  addButton = true,
 }: {
   username: string
   firstName: string
   selectedTags: string[]
   topic: JazzTopic | null
   addContact: () => void
+  addButton?: boolean
 }) => {
   const [avatarUrl, setAvatarUrl] = useState("")
 
@@ -89,9 +91,11 @@ const Contact = ({
                             <span>{topic.title}</span>
                           </div>
                         )}
-                        <Button onClick={addContact} mode="bezeled">
-                          Add
-                        </Button>
+                        {addButton && (
+                          <Button onClick={addContact} mode="bezeled">
+                            Add
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>

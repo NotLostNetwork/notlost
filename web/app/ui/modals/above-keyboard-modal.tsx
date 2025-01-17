@@ -12,6 +12,7 @@ interface ModalProps {
   children: React.ReactNode
   cancelable?: boolean
   focused: boolean
+  showGraph?: boolean
 }
 
 export const AboveKeyboardModal = ({
@@ -20,6 +21,7 @@ export const AboveKeyboardModal = ({
   children,
   cancelable = true,
   focused,
+  showGraph = true,
 }: ModalProps) => {
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
 
@@ -72,9 +74,12 @@ export const AboveKeyboardModal = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="max-screen">
-        <div className="top-0">
-          <ForceGraph jazzProfile={profile} />
-        </div>
+        {showGraph && (
+          <div className="top-0">
+            <ForceGraph jazzProfile={profile} />
+          </div>
+        )}
+
         <div
           className={`bg-secondary pointer-events-auto w-screen  shadow-lg pt-2 pb-2 transform transition-all ease-in-out  absolute left-0 ${focused ? "duration-150 delay-0 bottom-0" : "duration-300 bottom-1/2"}`}
           onClick={(e) => e.stopPropagation()}

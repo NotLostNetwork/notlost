@@ -8,18 +8,26 @@ import {
   JazzParticipant,
 } from "~/lib/jazz/schema"
 import { Group, ID } from "jazz-tools"
-import { motion } from "framer-motion"
-import { useEffect } from "react"
-import { Button, Divider } from "@telegram-apps/telegram-ui"
+import { AnimatePresence, motion } from "framer-motion"
+import { Button, Input, Tappable } from "@telegram-apps/telegram-ui"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
+import Modal from "~/ui/modals/modal"
+import { useRef, useState } from "react"
+import Contact from "../graph/-contact"
+import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
+import { Icon28AddCircle } from "@telegram-apps/telegram-ui/dist/icons/28/add_circle"
 
 function RouteComponent() {
   const { me } = useAccount()
+  const lp = useLaunchParams()
   const jazzEvent = useCoState(
     JazzEvent,
     "co_zCv49eqnJvGLHPyR6kizpMZ1stL" as ID<JazzEvent>,
   )
 
-  const createEvent = () => {
+  const [signInModalOpen, setSignInModalOpen] = useState(false)
+
+  /*   const createEvent = () => {
     const group = Group.create({ owner: me })
     group.addMember("everyone", "writer")
     const jazzEvent = JazzEvent.create(
@@ -28,10 +36,12 @@ function RouteComponent() {
       },
       { owner: group },
     )
-  }
+  } */
 
   const addParticipant = () => {
     if (jazzEvent) {
+      const group = Group.create({ owner: me })
+      group.addMember("everyone", "writer")
       jazzEvent.participants?.push(
         JazzParticipant.create(
           {
@@ -40,13 +50,48 @@ function RouteComponent() {
             tags: "test",
             description: "test",
           },
-          { owner: me },
+          { owner: group },
         ),
       )
     }
   }
 
+  const [inputValues, setInputValues] = useState({
+    tag: "",
+    description: "",
+  })
+  const [tags, setTags] = useState<string[]>([])
+  const [description, setDescription] = useState("")
+
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const [focused, setFocused] = useState(false)
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (event.relatedTarget === null) {
+      window.scrollTo(0, 0)
+      inputRef.current?.focus()
+    }
+  }
+
+  const disableEditModeOnEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Enter") {
+      setSignInModalOpen(false)
+      setFocused(false)
+    }
+  }
+
   if (!jazzEvent) return
+
+  if (
+    !jazzEvent.participants?.find(
+      (p) => p?.username === lp.initData?.user?.username,
+    )
+  ) {
+    console.log("make a sign in")
+  }
 
   return (
     <div className="h-full">
@@ -73,10 +118,100 @@ function RouteComponent() {
             applications for iOS and Android. Using the wallet has become even
             faster, more convenient, and more secure.
           </div>
-          <Button onClick={addParticipant}></Button>
+          {jazzEvent.participants?.map((p) => <div>{p?.username}</div>)}
+
+          <Button onClick={() => setSignInModalOpen(true)}></Button>
         </div>
-        {jazzEvent.participants?.map((p) => <div>{p?.username}</div>)}
       </motion.div>
+
+      {signInModalOpen && (
+        <AboveKeyboardModal
+          isOpen={signInModalOpen}
+          onClose={() => setSignInModalOpen(false)}
+          focused={focused}
+          showGraph={false}
+        >
+          <div className="bg-secondary px-2 py-1 relative ">
+            <div className="text-center mb-2">Create participant card</div>
+            <div className="text-xs text-center text-hint">
+              This information will help other people on the event to know more
+              about you{" "}
+            </div>
+            <Contact
+              username={lp.initData?.user?.username!}
+              firstName={lp.initData?.user?.firstName!}
+              selectedTags={tags}
+              addContact={() => {}}
+              topic={null}
+              addButton={false}
+            />
+            <div className="px-4 space-y-4">
+              <Input
+                ref={inputRef}
+                autoFocus={true}
+                className="text-white bg-primary flex-1"
+                style={{ color: "white" }}
+                type="text"
+                onFocus={() => {
+                  setFocused(true)
+                  window.scrollTo(0, 0)
+                }}
+                onBlur={handleBlur}
+                onKeyDown={disableEditModeOnEnter}
+                placeholder="Company, role, skill..."
+                value={inputValues.tag}
+                onChange={(e) =>
+                  setInputValues((prev) => ({
+                    ...prev,
+                    tag: e.target.value,
+                  }))
+                }
+                after={
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                      transition={{ duration: 0.15, ease: "easeInOut" }}
+                    >
+                      <Tappable
+                        className="h-6 absolute w-6 -top-[2px] right-0 rounded-full"
+                        onClick={() => {
+                          setTags((prev) => [...prev, inputValues.tag])
+                          setInputValues((prev) => ({ ...prev, tag: "" }))
+                        }}
+                      >
+                        <Icon28AddCircle />
+                      </Tappable>
+                    </motion.div>
+                  </AnimatePresence>
+                }
+              />
+              <Input
+                ref={inputRef}
+                autoFocus={true}
+                className="text-white bg-primary"
+                style={{ color: "white" }}
+                type="text"
+                onFocus={() => {
+                  setFocused(true)
+                  window.scrollTo(0, 0)
+                }}
+                onBlur={handleBlur}
+                onKeyDown={disableEditModeOnEnter}
+                placeholder="Motivation for the event"
+                value={inputValues.tag}
+                onChange={(e) =>
+                  setInputValues((prev) => ({
+                    ...prev,
+                    tag: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+        </AboveKeyboardModal>
+      )}
     </div>
   )
 }

@@ -104,9 +104,6 @@ const Contact = ({
             className={`transition-all duration-300 ease ${hidden ? "max-h-0 opacity-0" : "max-h-[200px] opacity-100"}`}
           >
             <Tappable
-              onTouchStart={startPress}
-              onTouchEnd={endPress}
-              onTouchMove={handleTouchMove}
               className={`flex px-4 min-h-20 justify-center text-sm relative`}
             >
               <div className="h-20 flex items-center">
