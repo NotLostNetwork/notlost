@@ -85,7 +85,7 @@ function RouteComponent() {
       setFocused(true)
     } else {
       //setSignInModalOpen(false)
-      setFocused(false)
+      //setFocused(false)
     }
   }, [jazzEvent])
 
