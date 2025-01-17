@@ -39,9 +39,9 @@ const FullWidthModal = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, filter: "blur(2px)" }}
-      animate={{ opacity: 1, filter: "unset" }}
-      exit={{ opacity: 0, filter: "blur(2px)" }}
+      initial={{ filter: "blur(2px)" }}
+      animate={{ filter: "unset" }}
+      exit={{ filter: "blur(2px)" }}
       transition={{ duration: 0.3 }}
     >
       <div
@@ -66,6 +66,12 @@ const FullWidthModal = ({
               {title}
             </div>
             {children}
+            <button
+              className="absolute top-2 right-2 text-xl"
+              onClick={onClose}
+            >
+              <Icon28CloseAmbient />
+            </button>
           </div>
         </div>
       </div>

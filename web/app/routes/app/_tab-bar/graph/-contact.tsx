@@ -66,8 +66,10 @@ const Contact = ({
   const jazzProfile = useJazzProfile()
   const jazzEvent = useCoState(
     JazzEvent,
-    "co_z8TocJTjFCi9DgkiDpE9nU8AvT5" as ID<JazzEvent>,
+    "co_zWcBGmgtn5rkPgAiVDTitFaVF4T" as ID<JazzEvent>,
   )
+
+  //new event -> co_zhMJSt2rMzhCz2qCzD4CsgfMFd7
 
   const [contactSaved, setContactSaved] = useState(false)
 

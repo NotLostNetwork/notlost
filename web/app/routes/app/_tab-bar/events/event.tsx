@@ -29,12 +29,12 @@ function RouteComponent() {
 
   const jazzEvent = useCoState(
     JazzEvent,
-    "co_z8TocJTjFCi9DgkiDpE9nU8AvT5" as ID<JazzEvent>,
+    "co_zWcBGmgtn5rkPgAiVDTitFaVF4T" as ID<JazzEvent>,
   )
 
   const [signInModalOpen, setSignInModalOpen] = useState(false)
 
-  /*   const createEvent = () => {
+  const createEvent = () => {
     const group = Group.create({ owner: me })
     group.addMember("everyone", "writer")
     const jazzEvent = JazzEvent.create(
@@ -43,7 +43,9 @@ function RouteComponent() {
       },
       { owner: group },
     )
-  } */
+    console.log(jazzEvent.id)
+  }
+  createEvent()
 
   const [inputValues, setInputValues] = useState({
     tag: "",
@@ -72,18 +74,16 @@ function RouteComponent() {
     }
   }
 
+  const [joined, setJoined] = useState(false)
+
   useEffect(() => {
     if (jazzEvent && jazzEvent.participants) {
       if (
-        !jazzEvent.participants.find(
+        jazzEvent.participants.find(
           (p) => p?.username === lp.initData?.user?.username,
         )
       ) {
-        setSignInModalOpen(true)
-        setFocused(true)
-      } else {
-        setSignInModalOpen(false)
-        setFocused(false)
+        setJoined(true)
       }
     }
   }, [jazzEvent])
@@ -150,7 +150,25 @@ function RouteComponent() {
             applications for iOS and Android. Using the wallet has become even
             faster, more convenient, and more secure.
           </div>
-          <div className="mt-4 font-semibold">People on the event</div>
+          <div className="mt-4 font-semibold flex justify-between">
+            People on the event
+            {!joined && (
+              <Tappable
+                onClick={() => {
+                  setSignInModalOpen(true)
+                  setFocused(true)
+                }}
+                style={{
+                  boxShadow: "0 0 0 1px var(--tgui--outline)",
+                }}
+                className={
+                  "py-2 px-4 font-semibold rounded-2xl bg-button animate-pulse"
+                }
+              >
+                Join
+              </Tappable>
+            )}
+          </div>
           <div className="flex flex-col">
             {jazzEvent.participants?.map((p) => {
               if (!p) return
