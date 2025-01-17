@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react"
 import Contact from "../graph/-contact"
 import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
 import { Icon28AddCircle } from "@telegram-apps/telegram-ui/dist/icons/28/add_circle"
+import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 
 function RouteComponent() {
   const { me } = useAccount()
@@ -105,7 +106,14 @@ function RouteComponent() {
   }
 
   return (
-    <div className="h-full">
+    <div
+      className="h-full"
+      style={{
+        paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+          ? 40
+          : `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
+      }}
+    >
       <div>
         <TgWallpaper opacity={0.5} />
       </div>
@@ -170,7 +178,7 @@ function RouteComponent() {
               addButton={false}
               description={inputValues.description}
             />
-            <div className="px-4">
+            <div className="pt-6 pb-4">
               <Input
                 ref={inputRef}
                 autoFocus={true}
