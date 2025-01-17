@@ -29,7 +29,7 @@ function RouteComponent() {
 
   const jazzEvent = useCoState(
     JazzEvent,
-    "co_zCv49eqnJvGLHPyR6kizpMZ1stL" as ID<JazzEvent>,
+    "co_z8TocJTjFCi9DgkiDpE9nU8AvT5" as ID<JazzEvent>,
   )
 
   const [signInModalOpen, setSignInModalOpen] = useState(false)
@@ -64,9 +64,6 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    setSignInModalOpen(true)
-    setFocused(true)
-
     if (
       jazzEvent &&
       !jazzEvent.participants?.find(
@@ -76,10 +73,20 @@ function RouteComponent() {
       setSignInModalOpen(true)
       setFocused(true)
     } else {
-      //setSignInModalOpen(false)
-      //setFocused(false)
+      setSignInModalOpen(false)
+      setFocused(false)
     }
   }, [jazzEvent])
+
+  /* const createEvent = () => {
+    const group = Group.create({ owner: me })
+    group.addMember("everyone", "writer")
+    const jazzEvent = JazzEvent.create(
+      { participants: JazzListOfParticipants.create([], { owner: group }) },
+      { owner: group },
+    )
+    console.log(jazzEvent.id)
+  } */
 
   if (!jazzEvent) return
 
