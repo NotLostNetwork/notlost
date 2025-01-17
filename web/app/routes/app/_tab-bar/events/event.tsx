@@ -56,6 +56,15 @@ function RouteComponent() {
 
   const [focused, setFocused] = useState(false)
 
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  // scroll to the bottom when the participants list changes
+  const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.relatedTarget === null) {
       window.scrollTo(0, 0)
@@ -104,6 +113,7 @@ function RouteComponent() {
         ),
       )
       setSignInModalOpen(false)
+      scrollToBottom()
     }
   }
 
@@ -157,6 +167,7 @@ function RouteComponent() {
                 />
               )
             })}
+            <div ref={bottomRef} />
           </div>
         </div>
       </motion.div>
