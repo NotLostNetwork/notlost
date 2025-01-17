@@ -18,6 +18,7 @@ import Contact from "../graph/-contact"
 import { AboveKeyboardModal } from "~/ui/modals/above-keyboard-modal"
 import { Icon28AddCircle } from "@telegram-apps/telegram-ui/dist/icons/28/add_circle"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
+import FullWidthModal from "~/ui/modals/full-width-modal"
 
 function RouteComponent() {
   const { me } = useAccount()
@@ -162,96 +163,103 @@ function RouteComponent() {
         </div>
       </motion.div>
 
-      {signInModalOpen && (
-        <AboveKeyboardModal
-          isOpen={signInModalOpen}
-          onClose={() => setSignInModalOpen(false)}
-          focused={focused}
-          showGraph={false}
-        >
-          <div className="bg-secondary px-2 py-1 relative ">
-            <div className="text-center mb-2">Create participant card</div>
-            <div className="text-xs text-center text-hint">
-              This information will help other people on the event to know more
-              about you{" "}
-            </div>
-            <Contact
-              username={lp.initData?.user?.username!}
-              firstName={lp.initData?.user?.firstName!}
-              selectedTags={tags}
-              addContact={() => {}}
-              topic={null}
-              addButton={false}
-              description={inputValues.description}
-            />
-            <div className="pt-6 pb-4">
-              <Input
-                className="text-white bg-primary flex-1 mb-4"
-                style={{ color: "white" }}
-                type="text"
-                onFocus={() => {
-                  setFocused(true)
-                  window.scrollTo(0, 0)
-                }}
-                onBlur={handleBlur}
-                onKeyDown={disableEditModeOnEnter}
-                placeholder="Company, role, skill..."
-                value={inputValues.tag}
-                onChange={(e) =>
-                  setInputValues((prev) => ({
-                    ...prev,
-                    tag: e.target.value,
-                  }))
-                }
-                after={
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                      exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                      transition={{ duration: 0.15, ease: "easeInOut" }}
-                    >
-                      <Tappable
-                        className="h-6 absolute w-6 -top-[2px] right-0 rounded-full"
-                        onClick={() => {
-                          setTags((prev) => [...prev, inputValues.tag])
-                          setInputValues((prev) => ({ ...prev, tag: "" }))
-                        }}
-                      >
-                        <Icon28AddCircle />
-                      </Tappable>
-                    </motion.div>
-                  </AnimatePresence>
-                }
-              />
-              <Input
-                ref={inputRef}
-                autoFocus={true}
-                className="text-white bg-primary mb-8"
-                style={{ color: "white" }}
-                type="text"
-                onFocus={() => {
-                  setFocused(true)
-                  window.scrollTo(0, 0)
-                }}
-                onBlur={handleBlur}
-                onKeyDown={disableEditModeOnEnter}
-                placeholder="Motivation for the event"
-                value={inputValues.description}
-                onChange={(e) =>
-                  setInputValues((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-              />
-              <Button stretched={true} onClick={addParticipant}>
-                Create
-              </Button>
-            </div>
+      <FullWidthModal
+        isOpen={signInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+        title="Join room"
+      >
+        <div className="bg-secondary px-2 py-1 relative ">
+          <div className="text-xs text-center text-hint">
+            This information will help other people on the event to know more
+            about you{" "}
           </div>
-        </AboveKeyboardModal>
-      )}
+          <Contact
+            username={lp.initData?.user?.username!}
+            firstName={lp.initData?.user?.firstName!}
+            selectedTags={tags}
+            addContact={() => {}}
+            topic={null}
+            addButton={false}
+            description={inputValues.description}
+          />
+          <div className="pt-6 pb-4">
+            <Input
+              className="text-white bg-primary flex-1"
+              style={{ color: "white" }}
+              type="text"
+              onFocus={() => {
+                setFocused(true)
+                window.scrollTo(0, 0)
+              }}
+              onBlur={handleBlur}
+              onKeyDown={disableEditModeOnEnter}
+              placeholder="Company, role, skill..."
+              value={inputValues.tag}
+              onChange={(e) =>
+                setInputValues((prev) => ({
+                  ...prev,
+                  tag: e.target.value,
+                }))
+              }
+              after={
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                    transition={{ duration: 0.15, ease: "easeInOut" }}
+                  >
+                    <Tappable
+                      className="h-6 absolute w-6 -top-[2px] right-0 rounded-full"
+                      onClick={() => {
+                        setTags((prev) => [...prev, inputValues.tag])
+                        setInputValues((prev) => ({ ...prev, tag: "" }))
+                      }}
+                    >
+                      <Icon28AddCircle />
+                    </Tappable>
+                  </motion.div>
+                </AnimatePresence>
+              }
+            />
+            <div className="mt-1 mb-4 text-xs text-hint px-2">
+              Things that can interest people to meet you
+            </div>
+            <Input
+              ref={inputRef}
+              autoFocus={true}
+              className="text-white bg-primary"
+              style={{ color: "white" }}
+              type="text"
+              onFocus={() => {
+                setFocused(true)
+                window.scrollTo(0, 0)
+              }}
+              onBlur={handleBlur}
+              onKeyDown={disableEditModeOnEnter}
+              placeholder="You want everybody to know about"
+              value={inputValues.description}
+              onChange={(e) =>
+                setInputValues((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+            />
+            <div className="mt-1 mb-6 text-xs text-hint px-2">
+              Might be specific connections you search for, or just "I love dogs
+              🐶"
+            </div>
+            <Button
+              stretched={true}
+              onClick={addParticipant}
+              disabled={tags.length < 1 || inputValues.description.length < 1}
+            >
+              Join
+            </Button>
+          </div>
+        </div>
+      </FullWidthModal>
     </div>
   )
 }
