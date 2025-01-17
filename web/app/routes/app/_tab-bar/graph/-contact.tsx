@@ -323,6 +323,11 @@ const Contact = ({
             isOpen={signInModalOpen}
             onClose={() => {
               setSignInModalOpen(false)
+              setInputValues({
+                description: "",
+                tag: "",
+              })
+              setTags([])
             }}
             title="Modify my contact"
           >
