@@ -137,7 +137,7 @@ function RouteComponent() {
             applications for iOS and Android. Using the wallet has become even
             faster, more convenient, and more secure.
           </div>
-          <div className="mt-2 mt-4">People on the event</div>
+          <div className="mt-4 font-semibold">People on the event</div>
           {jazzEvent.participants?.map((p) => {
             if (!p) return
             return (

@@ -81,7 +81,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
 
 function LayoutComponent() {
   return (
-    <div className="flex flex-col" style={{ height: "100vh" }}>
+    <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto">
         <Outlet />
       </div>
