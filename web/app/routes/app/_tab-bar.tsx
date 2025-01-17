@@ -2,16 +2,23 @@ import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { Link } from "@tanstack/react-router"
 import SearchIcon from "~/assets/icons/search-icon.svg?react"
 import GraphIcon from "~/assets/icons/graph-icon.svg?react"
+import NetworkInternetIcon from "@/assets/icons/network-internet-icon.svg?react"
 import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
+import { Route as EventsRoute } from "~/routes/app/_tab-bar/events"
 
 export default function TabBar() {
   return (
     <div className="bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
+          <BottomBarLink
+            to={EventsRoute.to}
+            title="Events"
+            Icon={<NetworkInternetIcon />}
+          />
           <BottomBarLink
             to={GraphRoute.to}
             title="Network"
