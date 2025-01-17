@@ -117,7 +117,7 @@ function RouteComponent() {
                     <PlaceIcon />
                   </div>
                 </div>
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center font-semibold">
                   <div className="text-xs">Networking</div>
                   <div className="text-xs mt-1 text-link">Today</div>
                   <div className="text-xs mt-1">Paris</div>
