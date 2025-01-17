@@ -150,7 +150,7 @@ const Contact = ({
                           </Button>
                         )}
                         {actions && (
-                          <div className="space-y-2">
+                          <div className="space-y-2 text-hint">
                             <Tappable
                               onClick={() => {
                                 window.open(`https://t.me/${username}`)
