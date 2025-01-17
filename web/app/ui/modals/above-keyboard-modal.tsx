@@ -80,6 +80,9 @@ export const AboveKeyboardModal = ({
           onClick={(e) => e.stopPropagation()}
         >
           {children}
+          <div className="text-center text-xs text-hint mt-2">
+            Press "Enter" on your keyboard to close
+          </div>
         </div>
       </div>
     </div>

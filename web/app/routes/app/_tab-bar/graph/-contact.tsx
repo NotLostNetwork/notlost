@@ -80,24 +80,22 @@ const Contact = ({
                             ))}
                         </div>
                       </div>
-                      <div className="ml-auto">
+                      <div className="ml-auto flex items-start">
                         {topic && (
-                          <div className="ml-auto flex items-center justify-end pr-4 gap-2 font-medium mt-[3px]">
+                          <div className="ml-auto flex items-center justify-start pr-4 gap-2 font-medium mt-[3px]">
                             <div className="h-6 w-6">
                               <StarBlue />
                             </div>
                             <span>{topic.title}</span>
                           </div>
                         )}
+                        <Button onClick={addContact} mode="bezeled">
+                          Add
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="mt-auto text-hint text-xs font-medium absolute -top-2 -translate-y-full">
-                <Button onClick={addContact} mode="bezeled">
-                  Add into graph
-                </Button>
               </div>
             </Tappable>
           </div>

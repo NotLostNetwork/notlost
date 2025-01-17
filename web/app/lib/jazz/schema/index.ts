@@ -8,6 +8,21 @@ import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools"
 // this root acccount starts with an empty contacts list and some default values
 // then user can create contacts and add them to the root, more later
 
+export class JazzEvent extends CoMap {
+  participants = co.ref(JazzListOfParticipants)
+}
+
+export class JazzParticipant extends CoMap {
+  username = co.string
+  firstName = co.string
+  tags = co.string
+  description = co.string
+}
+
+export class JazzListOfParticipants extends CoList.Of(
+  co.ref(JazzParticipant),
+) {}
+
 export class JazzContact extends CoMap {
   username = co.string
   firstName = co.string

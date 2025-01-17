@@ -7,13 +7,16 @@ import calendarIcon from "@/assets/icons/calendar.svg"
 export const FilterBySearch = ({
   value,
   onChange,
+  enabled = true,
 }: {
   value: string
   onChange: (value: string) => void
+  enabled?: boolean
 }) => {
   return (
     <div className="pt-5 pb-4">
       <Input
+        disabled={!enabled}
         className="text-white"
         style={{ color: "white" }}
         type="text"
@@ -62,7 +65,11 @@ export const SingleSelectFilter = ({
   return (
     <div>
       <Tappable
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (items.length > 0) {
+            setOpen(true)
+          }
+        }}
         style={{
           boxShadow: "0 0 0 1px var(--tgui--outline)",
           background:
