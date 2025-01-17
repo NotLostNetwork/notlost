@@ -1,6 +1,8 @@
 import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react"
 import { JazzAccount } from "./schema"
-import { BetaTest } from "@/routes/app/closed-beta"
+import { AutoSignIn } from "~/routes/app/auto-sign-in-jazz"
+import { useLaunchParams } from "@telegram-apps/sdk-react"
+import { useEffect, useState } from "react"
 
 const Jazz = createJazzReactApp({
   AccountSchema: JazzAccount,
@@ -10,13 +12,35 @@ export const { useAccount, useCoState } = Jazz
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   const [auth, state] = useDemoAuth()
+  const lp = useLaunchParams()
+
+  const [noUsernameCase, setNoUsernameCase] = useState(false)
+
+  useEffect(() => {
+    debugger
+    if (lp.initData?.user && !lp.initData?.user.username) {
+      setNoUsernameCase(true)
+    }
+  }, [lp])
+
+  if (noUsernameCase) {
+    return (
+      <div>
+        <div className="mb-4">
+          Unfortunately current MVP doesn't support users without tg username :(
+        </div>
+        You can blame @shestaya_liniya user for being so lazy to not handling
+        that case, pathetic
+      </div>
+    )
+  }
 
   return (
     <>
       <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
         {children}
       </Jazz.Provider>
-      {state.state !== "signedIn" && <BetaTest state={state} />}
+      {state.state !== "signedIn" && <AutoSignIn state={state} />}
     </>
   )
 }

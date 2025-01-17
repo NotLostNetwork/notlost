@@ -17,7 +17,7 @@ import { Route as AppIndexImport } from './routes/app/index'
 import { Route as AppTryImport } from './routes/app/try'
 import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
 import { Route as AppOnboardingImport } from './routes/app/onboarding'
-import { Route as AppClosedBetaImport } from './routes/app/closed-beta'
+import { Route as AppAutoSignInJazzImport } from './routes/app/auto-sign-in-jazz'
 import { Route as AppTabBarImport } from './routes/app/_tab-bar'
 import { Route as AppTabBarGraphIndexImport } from './routes/app/_tab-bar/graph/index'
 import { Route as AppTabBarEventsIndexImport } from './routes/app/_tab-bar/events/index'
@@ -62,9 +62,9 @@ const AppOnboardingRoute = AppOnboardingImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppClosedBetaRoute = AppClosedBetaImport.update({
-  id: '/closed-beta',
-  path: '/closed-beta',
+const AppAutoSignInJazzRoute = AppAutoSignInJazzImport.update({
+  id: '/auto-sign-in-jazz',
+  path: '/auto-sign-in-jazz',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -122,11 +122,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTabBarImport
       parentRoute: typeof AppImport
     }
-    '/app/closed-beta': {
-      id: '/app/closed-beta'
-      path: '/closed-beta'
-      fullPath: '/app/closed-beta'
-      preLoaderRoute: typeof AppClosedBetaImport
+    '/app/auto-sign-in-jazz': {
+      id: '/app/auto-sign-in-jazz'
+      path: '/auto-sign-in-jazz'
+      fullPath: '/app/auto-sign-in-jazz'
+      preLoaderRoute: typeof AppAutoSignInJazzImport
       parentRoute: typeof AppImport
     }
     '/app/onboarding': {
@@ -210,7 +210,7 @@ const AppTabBarRouteWithChildren = AppTabBarRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppTabBarRoute: typeof AppTabBarRouteWithChildren
-  AppClosedBetaRoute: typeof AppClosedBetaRoute
+  AppAutoSignInJazzRoute: typeof AppAutoSignInJazzRoute
   AppOnboardingRoute: typeof AppOnboardingRoute
   AppTgSignInRoute: typeof AppTgSignInRoute
   AppTryRoute: typeof AppTryRoute
@@ -219,7 +219,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppTabBarRoute: AppTabBarRouteWithChildren,
-  AppClosedBetaRoute: AppClosedBetaRoute,
+  AppAutoSignInJazzRoute: AppAutoSignInJazzRoute,
   AppOnboardingRoute: AppOnboardingRoute,
   AppTgSignInRoute: AppTgSignInRoute,
   AppTryRoute: AppTryRoute,
@@ -231,7 +231,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppTabBarRouteWithChildren
-  '/app/closed-beta': typeof AppClosedBetaRoute
+  '/app/auto-sign-in-jazz': typeof AppAutoSignInJazzRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
@@ -245,7 +245,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppIndexRoute
-  '/app/closed-beta': typeof AppClosedBetaRoute
+  '/app/auto-sign-in-jazz': typeof AppAutoSignInJazzRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
@@ -260,7 +260,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/_tab-bar': typeof AppTabBarRouteWithChildren
-  '/app/closed-beta': typeof AppClosedBetaRoute
+  '/app/auto-sign-in-jazz': typeof AppAutoSignInJazzRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/try': typeof AppTryRoute
@@ -276,7 +276,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
-    | '/app/closed-beta'
+    | '/app/auto-sign-in-jazz'
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/try'
@@ -289,7 +289,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/app'
-    | '/app/closed-beta'
+    | '/app/auto-sign-in-jazz'
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/try'
@@ -302,7 +302,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/_tab-bar'
-    | '/app/closed-beta'
+    | '/app/auto-sign-in-jazz'
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/try'
@@ -345,7 +345,7 @@ export const routeTree = rootRoute
       "filePath": "app.tsx",
       "children": [
         "/app/_tab-bar",
-        "/app/closed-beta",
+        "/app/auto-sign-in-jazz",
         "/app/onboarding",
         "/app/tg-sign-in",
         "/app/try",
@@ -362,8 +362,8 @@ export const routeTree = rootRoute
         "/app/_tab-bar/graph/"
       ]
     },
-    "/app/closed-beta": {
-      "filePath": "app/closed-beta.tsx",
+    "/app/auto-sign-in-jazz": {
+      "filePath": "app/auto-sign-in-jazz.tsx",
       "parent": "/app"
     },
     "/app/onboarding": {
