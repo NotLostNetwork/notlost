@@ -17,7 +17,6 @@ export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   const [noUsernameCase, setNoUsernameCase] = useState(false)
 
   useEffect(() => {
-    debugger
     if (lp.initData?.user && !lp.initData?.user.username) {
       setNoUsernameCase(true)
     }
