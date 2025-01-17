@@ -73,9 +73,9 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    if (jazzEvent) {
+    if (jazzEvent && jazzEvent.participants) {
       if (
-        !jazzEvent.participants?.find(
+        !jazzEvent.participants.find(
           (p) => p?.username === lp.initData?.user?.username,
         )
       ) {
