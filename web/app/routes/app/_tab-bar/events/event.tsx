@@ -72,6 +72,9 @@ function RouteComponent() {
   }
 
   useEffect(() => {
+    setSignInModalOpen(true)
+    setFocused(true)
+
     if (
       jazzEvent &&
       !jazzEvent.participants?.find(
@@ -81,7 +84,7 @@ function RouteComponent() {
       setSignInModalOpen(true)
       setFocused(true)
     } else {
-      setSignInModalOpen(false)
+      //setSignInModalOpen(false)
       setFocused(false)
     }
   }, [jazzEvent])
@@ -138,22 +141,24 @@ function RouteComponent() {
             faster, more convenient, and more secure.
           </div>
           <div className="mt-4 font-semibold">People on the event</div>
-          {jazzEvent.participants?.map((p) => {
-            if (!p) return
-            return (
-              <Contact
-                username={p.username!}
-                firstName={p.firstName!}
-                selectedTags={p.tags?.map((tag) => tag.toString())}
-                addContact={() => {}}
-                topic={null}
-                addButton={false}
-                description={p.description}
-                divider={true}
-                actions={true}
-              />
-            )
-          })}
+          <div className="">
+            {jazzEvent.participants?.map((p) => {
+              if (!p) return
+              return (
+                <Contact
+                  username={p.username!}
+                  firstName={p.firstName!}
+                  selectedTags={p.tags?.map((tag) => tag.toString())}
+                  addContact={() => {}}
+                  topic={null}
+                  addButton={false}
+                  description={p.description}
+                  divider={true}
+                  actions={true}
+                />
+              )
+            })}
+          </div>
         </div>
       </motion.div>
 

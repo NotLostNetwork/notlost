@@ -30,7 +30,7 @@ function RouteComponent() {
   // co_zRFDGQiMJWAor53ZBFXhtaxe9JT
   const navigate = useNavigate()
   return (
-    <div>
+    <div className="h-full overflow-hidden">
       <div>
         <TgWallpaper opacity={0.5} />
       </div>
