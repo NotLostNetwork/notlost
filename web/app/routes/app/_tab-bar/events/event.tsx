@@ -187,6 +187,8 @@ function RouteComponent() {
           />
           <div className="pt-6 pb-4">
             <Input
+              autoFocus={signInModalOpen}
+              ref={inputRef}
               className="text-white bg-primary flex-1"
               style={{ color: "white" }}
               type="text"
@@ -229,8 +231,6 @@ function RouteComponent() {
               Things that can interest people to meet you
             </div>
             <Input
-              ref={inputRef}
-              autoFocus={true}
               className="text-white bg-primary"
               style={{ color: "white" }}
               type="text"

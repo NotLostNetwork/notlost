@@ -101,7 +101,7 @@ const Contact = ({
                   <img
                     loading="lazy"
                     src={avatarUrl}
-                    className="h-12 min-w-12 rounded-full"
+                    className="h-14 min-w-14 rounded-full"
                     decoding="async"
                     alt=""
                   />
