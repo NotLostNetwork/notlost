@@ -12,7 +12,7 @@ class TelegramHelper {
   private downloadQueue = new Set<string>()
 
   getProfileAvatar = async (username: string): Promise<string> => {
-    return `http://t.me/i/userpic/320/${username}.svg`
+    return `https://t.me/i/userpic/320/${username}.svg`
 
     let avatarBlobUrl
     const sessionAvatarBlobUrl = this.getSessionBlob(username)
