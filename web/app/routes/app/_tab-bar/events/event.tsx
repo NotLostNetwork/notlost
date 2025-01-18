@@ -213,6 +213,11 @@ function RouteComponent() {
           <FullWidthModal
             isOpen={signInModalOpen}
             onClose={() => {
+              setInputValues({
+                description: "",
+                tag: "",
+              })
+              setTags([])
               setSignInModalOpen(false)
               setFocused(false)
             }}

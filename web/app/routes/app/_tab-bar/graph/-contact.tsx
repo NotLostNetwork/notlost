@@ -322,12 +322,12 @@ const Contact = ({
           <FullWidthModal
             isOpen={signInModalOpen}
             onClose={() => {
-              setSignInModalOpen(false)
               setInputValues({
                 description: "",
                 tag: "",
               })
               setTags([])
+              setSignInModalOpen(false)
             }}
             title="Modify my contact"
           >
