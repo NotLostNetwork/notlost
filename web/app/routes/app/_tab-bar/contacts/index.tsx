@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Filter, useContactsState } from "./-@state"
-import { FilterByLatest, FilterBySearch, SingleSelectFilter } from "./-filters"
+import { FilterBySearch } from "./-filters"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import {
@@ -10,8 +10,6 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
-import TagIcon from "@/assets/icons/tag.svg?react"
-import LinkIcon from "@/assets/icons/link.svg?react"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 
 const ContactsPage = () => {
@@ -25,14 +23,8 @@ const ContactsPage = () => {
 
   const lp = useLaunchParams()
 
-  const {
-    filteredData,
-    toggleGraphMode,
-    filtersState,
-    updateFilterState,
-    uniqueTags,
-    uniqueTopics,
-  } = useContactsState(profile?.contacts)
+  const { filteredData, toggleGraphMode, filtersState, updateFilterState } =
+    useContactsState(profile?.contacts)
 
   useEffect(() => {
     if (filtersBlock.current) {
@@ -49,7 +41,7 @@ const ContactsPage = () => {
             ? 40
             : `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
         }}
-        className="pb-4 w-full bg-primary -mt-4 pl-4 pr-4 shadow-lg border-b-primary border-b-[1px]"
+        className="w-full  -mt-4 pl-4 pr-4"
       >
         <div className="relative">
           <FilterBySearch
@@ -62,56 +54,8 @@ const ContactsPage = () => {
             NotLost Alpha
           </div>
         </div>
-
-        <div
-          className={
-            "flex space-x-2 overflow-x-scroll no-scrollbar py-[1px] -ml-4 -mr-4 px-4"
-          }
-        >
-          <SingleSelectFilter
-            items={uniqueTopics}
-            setSelected={(topic: string | null) =>
-              updateFilterState(Filter.TOPIC, topic)
-            }
-            selected={filtersState.selectedTopic}
-            placeholder={
-              <div className="flex w-full justify-between gap-2 items-center">
-                <div className="w-[18px] h-[18px]">
-                  <LinkIcon />
-                </div>
-                Topic
-              </div>
-            }
-            modalTitle="Filter by topic"
-          />
-          <SingleSelectFilter
-            items={uniqueTags}
-            setSelected={(tag: string | null) =>
-              updateFilterState(Filter.TAG, tag)
-            }
-            selected={filtersState.selectedTag}
-            placeholder={
-              <div className="flex w-full justify-between gap-2 items-center">
-                <div className="w-4 h-4 text-white">
-                  <TagIcon />
-                </div>
-                Tag
-              </div>
-            }
-            modalTitle="Filter by tag"
-          />
-          <FilterByLatest
-            enable={() => {
-              updateFilterState(Filter.LAST_ADDED, true)
-              updateFilterState(Filter.TAG, null)
-            }}
-            disable={() => {
-              updateFilterState(Filter.LAST_ADDED, false)
-            }}
-          />
-        </div>
       </div>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto items-center text-white ">
         <ContactsList
           filtersBlockHeight={filtersBlockHeight}
           data={filteredData as JazzListOfContacts}

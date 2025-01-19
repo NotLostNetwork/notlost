@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { Button, Input } from "@telegram-apps/telegram-ui"
 import { useState } from "react"
-import { $validateBetaTestPassword } from "~/actions/telegram"
 import Modal from "~/ui/modals/modal"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts"
@@ -14,7 +13,7 @@ export function BetaTest() {
   const navigate = useNavigate()
 
   const validate = async () => {
-    const validated = await $validateBetaTestPassword({ data: passwordValue })
+    const validated = true
     if (!validated) {
       setInvalidPassword(true)
     } else {

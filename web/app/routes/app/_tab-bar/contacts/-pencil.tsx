@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import { Button, Input } from "@telegram-apps/telegram-ui"
+import { Button } from "@telegram-apps/telegram-ui"
 import personIcon from "~/assets/icons/person-icon.svg"
 import connectionIcon from "~/assets/icons/connection-icon.svg"
 import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 
 import CreateContactModal from "./(modals)/-create-contact-modal"
+import { ManageDialogsModal } from "./-manage-dialogs-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
   const [showCreateContactModal, setShowCreateContactModal] = useState(false)
+  const [showManageDialogsModal, setShowManageDialogsModal] = useState(false)
+
   const tooltipRef = useRef<HTMLDivElement>(null)
 
   const toggleShowToolTip = () => {
@@ -51,11 +54,14 @@ export const Pencil = () => {
             }}
           />
           <div className="h-[2px] bg-divider"></div>
-          {/* <ToolTipItem
+          <ToolTipItem
             icon={connectionIcon}
             title={`New topic`}
-            action={() => {}}
-          /> */}
+            action={() => {
+              setShowManageDialogsModal(true)
+              setShowToolTip(false)
+            }}
+          />
         </div>
         <Button
           size={"s"}
@@ -75,6 +81,10 @@ export const Pencil = () => {
           setShowToolTip(false)
           setShowCreateContactModal(false)
         }}
+      />
+      <ManageDialogsModal
+        isOpen={showManageDialogsModal}
+        close={() => setShowManageDialogsModal(false)}
       />
     </div>
   )

@@ -52,7 +52,7 @@ iframe {
   background: transparent !important;
 }
 .tgui-0f5050defacbf813 {
-  box-shadow: 0 0 0 1px var(--tgui--outline) !important;
+  box-shadow: 0 0 0 0px var(--tgui--outline) !important;
   border-radius: 24px !important;
 }
 .tgui-9f9a52f695b85cc9 {
@@ -67,6 +67,10 @@ iframe {
 
 .tgui-8ca550c2fc85eff5.tgui-89277928456f0e30 .tgui-0f5050defacbf813 {
   box-shadow: 0 0 0 2px var(--tgui--link_color) !important;
+}
+
+.tgui-9b2ad13855aef059 {
+  min-height: 0 !important;
 }
 
 /* Make small button full rounded */

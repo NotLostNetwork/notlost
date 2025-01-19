@@ -12,7 +12,7 @@ import { User as TelegramUser } from "@telegram-apps/sdk-react"
 import { Icon24QR } from "@telegram-apps/telegram-ui/dist/icons/24/qr"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { AnimatePresence, motion } from "framer-motion"
-import { $getTelegramUserByUsername } from "~/lib/telegram/api/telegram-api-server"
+import { $getTelegramUser } from "~/actions/telegram"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
 import {
   JazzAccount,
@@ -23,7 +23,6 @@ import {
 import { TabsItem } from "@telegram-apps/telegram-ui/dist/components/Navigation/TabsList/components/TabsItem/TabsItem"
 import TagIcon from "@/assets/icons/tag.svg?react"
 import LinkIcon from "@/assets/icons/link.svg?react"
-import toast from "react-hot-toast"
 import { toastSuccess } from "~/ui/toast"
 
 const CreateContactModal = ({
@@ -63,7 +62,7 @@ const CreateContactModal = ({
   useEffect(() => {
     setTelegramUserSearch(null)
     setTelegramUserSearchLoading(true)
-    $getTelegramUserByUsername({ data: telegramUserValue })
+    $getTelegramUser({ data: telegramUserValue })
       .then((res) => {
         if (res && res[0]) {
           setTelegramUserSearch(res[0] as TelegramUser)
