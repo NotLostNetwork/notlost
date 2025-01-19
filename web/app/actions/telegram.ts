@@ -2,6 +2,7 @@
 
 import { createServerFn } from "@tanstack/start"
 import TelegramApiClient from "@/lib/telegram/api/telegram-api-client"
+import { validate } from "@telegram-apps/init-data-node"
 
 const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH
@@ -43,6 +44,12 @@ export const $signIn = createServerFn({ method: "GET" })
       ctx.data.phoneCode,
     )
     return res
+  })
+
+export const $validateInitData = createServerFn({ method: "GET" })
+  .validator((data: string) => data)
+  .handler(async (ctx) => {
+    validate(ctx.data, process.env.TELEGRAM_API_KEY!)
   })
 
 export const $getMyDialogs = createServerFn({
