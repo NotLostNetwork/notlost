@@ -1,6 +1,6 @@
 import { JazzFolder } from "~/lib/jazz/schema"
 import FolderIcon from "@/assets/icons/folder.svg?react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Icon28CloseAmbient } from "@telegram-apps/telegram-ui/dist/icons/28/close_ambient"
 import { Tappable } from "@telegram-apps/telegram-ui"
 import { jazzDeleteFolder } from "~/lib/jazz/actions/jazz-folder"
@@ -11,6 +11,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
 
   const [showDeleteOption, setShowDeleteOption] = useState(false)
+  const [folderTitle, setFolderTitle] = useState(folder?.title || "")
 
   const [isPressing, setIsPressing] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -52,6 +53,15 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
       },
     },
   }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFolderTitle(e.target.value)
+  }
+
+  useEffect(() => {
+    setFolderTitle(folder?.title || "")
+  }, [folder])
+
   return (
     <div className="overflow-hidden no-select">
       <motion.div
@@ -75,9 +85,27 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
             <div className="h-6 w-6 text-link">
               <FolderIcon />
             </div>
-            <div contentEditable className="z-10 font-medium">
-              {folder?.title}
-            </div>
+            <input
+              type="text"
+              value={folderTitle}
+              onChange={handleChange}
+              className="w-full bg-transparent border-none outline-none font-medium z-10"
+              style={{
+                background: "transparent",
+                border: "none",
+                outline: "none",
+                textAlign: "left",
+              }}
+              onBlur={() => {
+                if (folder) {
+                  if (folderTitle.length === 0) {
+                    folder.title = "New folder"
+                  } else {
+                    folder.title = folderTitle
+                  }
+                }
+              }}
+            />
           </Tappable>
           {showDeleteOption && (
             <Tappable
