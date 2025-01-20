@@ -87,7 +87,7 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
         <div
           ref={newFolderRef}
           onTouchStart={(e) => handleTouchStart(e, "folder")}
-          className="flex items-center bg-buttonBezeled px-2 py-1 rounded-xl gap-2 font-medium touch-none"
+          className="flex items-center bg-buttonBezeled px-2 py-1 rounded-xl gap-2 font-medium touch-none no-select"
         >
           <div className="h-6 w-6">
             <FolderIcon />
