@@ -12,15 +12,14 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
 
   const [showDeleteOption, setShowDeleteOption] = useState(false)
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
+  const [inputWidth, setInputWidth] = useState(0)
+  const spanRef = useRef<HTMLSpanElement | null>(null)
 
-  const [isPressing, setIsPressing] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleTouchStart = () => {
-    setIsPressing(true)
     timeoutRef.current = setTimeout(() => {
       setShowDeleteOption((prev) => !prev)
-      setIsPressing(false)
     }, 500)
   }
 
@@ -63,6 +62,12 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
     setFolderTitle(folder?.title || "")
   }, [folder])
 
+  useEffect(() => {
+    if (spanRef.current) {
+      setInputWidth(spanRef.current.offsetWidth)
+    }
+  }, [folderTitle])
+
   return (
     <div className="overflow-hidden no-select">
       <motion.div
@@ -75,7 +80,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
         style={{ overflow: "hidden", maxWidth: "100%" }}
       >
         <div className="rounded-xl bg-secondary flex gap-2 items-center">
-          <Tappable
+          <div
             onClick={() => {
               if (showDeleteOption) {
                 setShowDeleteOption(false)
@@ -96,6 +101,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                 border: "none",
                 outline: "none",
                 textAlign: "left",
+                width: `${inputWidth}px`,
               }}
               onBlur={() => {
                 if (folder) {
@@ -107,7 +113,10 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                 }
               }}
             />
-          </Tappable>
+            <span ref={spanRef} className="absolute invisible font-medium">
+              {folderTitle || " "}
+            </span>
+          </div>
           {showDeleteOption && (
             <Tappable
               onClick={() => {

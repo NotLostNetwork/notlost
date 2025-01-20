@@ -3,6 +3,7 @@ import { DialogData, $getMyDialogs } from "~/actions/telegram"
 import BottomModal from "~/ui/modals/bottom-modal"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
+import { useKeyboardState } from "~/lib/utils/funcs/use-keyboard-visible"
 
 interface ManageDialogsModal {
   isOpen: boolean
@@ -79,6 +80,14 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
     document.addEventListener("touchmove", handleTouchMove)
     document.addEventListener("touchend", handleTouchEnd)
   }
+
+  const keyboardIsVisible = useKeyboardState()
+
+  useEffect(() => {
+    if (keyboardIsVisible) {
+      close()
+    }
+  }, [keyboardIsVisible])
 
   return (
     <BottomModal title="Manage dialogs" isOpen={isOpen} onClose={close}>

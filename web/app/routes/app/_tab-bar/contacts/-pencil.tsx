@@ -5,7 +5,7 @@ import connectionIcon from "~/assets/icons/connection-icon.svg"
 import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 
 import CreateContactModal from "./(modals)/-create-contact-modal"
-import { ManageDialogsModal } from "./-manage-dialogs-modal"
+import { ManageDialogsModal } from "./(modals)/-manage-dialogs-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
