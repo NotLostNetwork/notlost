@@ -67,7 +67,7 @@ export const Pencil = () => {
           size={"s"}
           className={"rounded-full"}
           style={{ borderRadius: "50% !important" }}
-          onClick={toggleShowToolTip}
+          onClick={() => setShowManageDialogsModal(true)}
         >
           <div className="text-white h-6 w-6">
             <PencilIcon />

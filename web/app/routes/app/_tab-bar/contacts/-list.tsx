@@ -10,6 +10,8 @@ import { AddFolder } from "./(dragables)/-add-folder"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
 import { jazzCreateNewFolder } from "~/lib/jazz/actions/jazz-folder"
 import { Folder } from "./-folder"
+import { Cell, IconContainer } from "@telegram-apps/telegram-ui"
+import FolderIcon from "@/assets/icons/folder.svg?react"
 
 const ContactsList = ({
   filtersBlockHeight,
