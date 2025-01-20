@@ -64,7 +64,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
 
   useEffect(() => {
     if (spanRef.current) {
-      setInputWidth(spanRef.current.offsetWidth + 5)
+      setInputWidth(spanRef.current.offsetWidth)
     }
   }, [folderTitle])
 
@@ -114,7 +114,8 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
               }}
             />
             <span ref={spanRef} className="absolute invisible font-medium">
-              {folderTitle || " "}
+              {/* without adding 5 symbols to shadow span for calculate width, input is lagging, don't ask XD */}
+              {folderTitle + "*****" || " "}
             </span>
           </div>
           {showDeleteOption && (
