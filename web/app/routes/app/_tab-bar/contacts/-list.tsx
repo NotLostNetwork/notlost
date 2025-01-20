@@ -3,12 +3,13 @@ import utyaLoading from "~/assets/utya-loading.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
-import { JazzListOfContacts } from "~/lib/jazz/schema"
+import { JazzListOfContacts, RootUserProfile } from "~/lib/jazz/schema"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { useRef, useState } from "react"
-import FolderIcon from "@/assets/icons/folder.svg?react"
+import { useEffect, useRef, useState } from "react"
 import { AddFolder } from "./(dragables)/-add-folder"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
+import { jazzCreateNewFolder } from "~/lib/jazz/actions/jazz-folder"
+import { Folder } from "./-folder"
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -46,12 +47,21 @@ const ContactsList = ({
       draggableItem === "folder" &&
       isTouchOnBlockAndDragMode(addFolderDragBlock, touch)
     ) {
-      setBg("bg-secondary")
-      setShowFolder(true)
+      createNewFolder("New folder")
     } else {
       setBg("bg-transparent")
     }
   }
+
+  const createNewFolder = (title: string) => {
+    if (jazzProfile) {
+      jazzCreateNewFolder(jazzProfile, title)
+    }
+  }
+
+  useEffect(() => {
+    console.log(jazzProfile?.folders)
+  }, [jazzProfile])
 
   const [showFolder, setShowFolder] = useState(false)
 
@@ -61,17 +71,8 @@ const ContactsList = ({
         <TgWallpaper opacity={0.1} withAccent={true} />
       </div>
       <div className="overflow-y-auto overscroll-none pb-20">
-        {showFolder && (
-          <div className="p-4">
-            <div className="rounded-xl bg-secondary px-4 py-2 flex gap-2">
-              <div className="h-6 w-6 text-link">
-                <FolderIcon />
-              </div>
-              <div contentEditable>New folder</div>
-            </div>
-          </div>
-        )}
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
+        {jazzProfile?.folders?.map((f) => <Folder folder={f} />)}
         {filtersBlockHeight > 0 &&
           data &&
           data.map((contact) => {

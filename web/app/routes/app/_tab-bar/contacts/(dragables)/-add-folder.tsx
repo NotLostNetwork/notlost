@@ -13,7 +13,7 @@ export const AddFolder = forwardRef<HTMLDivElement, AddFolderProps>(
     if (draggableItem !== "folder") return
 
     return (
-      <div className={`p-4 ${bgColor}`} ref={ref}>
+      <div className={`px-2 py-2 ${bgColor}`} ref={ref}>
         <div className="rounded-xl bg-buttonBezeled p-2 font-semibold text-link text-center">
           Drop here to create folder
         </div>
