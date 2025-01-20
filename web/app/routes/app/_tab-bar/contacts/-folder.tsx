@@ -39,6 +39,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const deleteFolder = () => {
     if (jazzProfile && folder) {
       jazzDeleteFolder(jazzProfile, folder)
+      setShowDeleteOption(false)
     }
   }
 
@@ -89,7 +90,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
               type="text"
               value={folderTitle}
               onChange={handleChange}
-              className="w-full bg-transparent border-none outline-none font-medium z-10"
+              className="bg-transparent border-none outline-none font-medium z-10"
               style={{
                 background: "transparent",
                 border: "none",
