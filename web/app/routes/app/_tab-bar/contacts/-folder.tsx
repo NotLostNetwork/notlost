@@ -64,7 +64,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
 
   useEffect(() => {
     if (spanRef.current) {
-      setInputWidth(spanRef.current.offsetWidth)
+      setInputWidth(spanRef.current.offsetWidth + 5)
     }
   }, [folderTitle])
 
