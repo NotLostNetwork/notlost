@@ -9,7 +9,7 @@ interface AddFolderProps {
 
 export const AddFolder = forwardRef<HTMLDivElement, AddFolderProps>(
   ({ bgColor }, ref) => {
-    const { draggableItem } = useDragStore()
+    const { draggableItemType: draggableItem } = useDragStore()
 
     if (draggableItem !== "folder") return
 

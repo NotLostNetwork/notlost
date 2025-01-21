@@ -88,6 +88,11 @@ iframe {
   height: 100% !important;
 }
 
+/* Accrodion transparent bg for content*/
+.tgui-f23c0e195677169c {
+  background: transparent !important;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
 }

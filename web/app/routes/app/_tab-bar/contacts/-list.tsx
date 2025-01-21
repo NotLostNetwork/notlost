@@ -3,15 +3,22 @@ import utyaLoading from "~/assets/utya-loading.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import Contact from "./-contact"
 import { Pencil } from "./-pencil"
-import { JazzListOfContacts, RootUserProfile } from "~/lib/jazz/schema"
+import {
+  JazzFolder,
+  JazzListOfContacts,
+  RootUserProfile,
+} from "~/lib/jazz/schema"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { useEffect, useRef, useState } from "react"
 import { AddFolder } from "./(dragables)/-add-folder"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
-import { jazzCreateNewFolder } from "~/lib/jazz/actions/jazz-folder"
+import {
+  jazzAddDialogToFolder,
+  jazzCreateNewFolder,
+} from "~/lib/jazz/actions/jazz-folder"
 import { Folder } from "./-folder"
-import { Cell, IconContainer } from "@telegram-apps/telegram-ui"
-import FolderIcon from "@/assets/icons/folder.svg?react"
+import { useCoState } from "~/lib/jazz/jazz-provider"
+import { ID } from "jazz-tools"
 
 const ContactsList = ({
   filtersBlockHeight,
@@ -25,32 +32,45 @@ const ContactsList = ({
 
   const jazzProfile = useJazzProfile()
 
-  const { draggableItem } = useDragStore()
+  const { draggableItemType, draggableItem } = useDragStore()
 
   const [bg, setBg] = useState("bg-transparent")
+  const [activeFolderId, setActiveFolderId] = useState<string | null>(null)
+
+  const jazzFolder = useCoState(JazzFolder, activeFolderId as ID<JazzFolder>)
+
   const addFolderDragBlock = useRef<HTMLDivElement | null>(null)
+  const foldersRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   const handleTouchMove = (e: React.TouchEvent) => {
     const touch = e.touches[0]
     if (
-      draggableItem === "folder" &&
+      draggableItemType === "folder" &&
       isTouchOnBlockAndDragMode(addFolderDragBlock, touch)
     ) {
       setBg("bg-secondary")
+    } else if (draggableItemType && isTouchOnAnyFolder(foldersRefs, touch)) {
+      setActiveFolderId(isTouchOnAnyFolder(foldersRefs, touch))
     } else {
+      setActiveFolderId(null)
       setBg("bg-transparent")
-      setShowFolder(false)
     }
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const touch = e.changedTouches[0]
     if (
-      draggableItem === "folder" &&
+      draggableItemType === "folder" &&
       isTouchOnBlockAndDragMode(addFolderDragBlock, touch)
     ) {
       createNewFolder("New folder")
+    } else if (isTouchOnAnyFolder(foldersRefs, touch) && draggableItem) {
+      if (jazzFolder) {
+        jazzAddDialogToFolder(jazzProfile, jazzFolder, draggableItem)
+        setActiveFolderId(null)
+      }
     } else {
+      setActiveFolderId(null)
       setBg("bg-transparent")
     }
   }
@@ -65,8 +85,6 @@ const ContactsList = ({
     console.log(jazzProfile?.folders)
   }, [jazzProfile])
 
-  const [showFolder, setShowFolder] = useState(false)
-
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
       <div className="h-screen absolute">
@@ -74,7 +92,18 @@ const ContactsList = ({
       </div>
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
-        {jazzProfile?.folders?.map((f) => <Folder folder={f} />)}
+        {jazzProfile?.folders?.map((f) => (
+          <div
+            ref={(el) => f && (foldersRefs.current[f.id] = el)}
+            className={
+              f && activeFolderId === f.id
+                ? "bg-secondary bg-opacity-60"
+                : "bg-transparent"
+            }
+          >
+            <Folder folder={f} />
+          </div>
+        ))}
         {filtersBlockHeight > 0 &&
           data &&
           data.map((contact) => {
@@ -144,6 +173,21 @@ const isTouchOnBlockAndDragMode = (
     touchEvent.clientY >= rect.top &&
     touchEvent.clientY <= rect.bottom
   )
+}
+
+const isTouchOnAnyFolder = (
+  foldersRefs: React.MutableRefObject<Record<string, HTMLDivElement | null>>,
+  touchEvent: React.Touch,
+) => {
+  for (const [folderId, folderRef] of Object.entries(foldersRefs.current)) {
+    if (
+      folderRef &&
+      isTouchOnBlockAndDragMode({ current: folderRef }, touchEvent)
+    ) {
+      return folderId
+    }
+  }
+  return null
 }
 
 export default ContactsList

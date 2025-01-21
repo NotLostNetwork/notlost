@@ -2,7 +2,7 @@ import { JazzFolder } from "~/lib/jazz/schema"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useState, useRef, useEffect } from "react"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
-import { Accordion } from "@telegram-apps/telegram-ui"
+import { Accordion, Tappable } from "@telegram-apps/telegram-ui"
 import { jazzDeleteFolder } from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { motion } from "framer-motion"
@@ -11,6 +11,7 @@ import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blo
 import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Blocks/InlineButtons/components/InlineButtonsItem/InlineButtonsItem"
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
+import { truncateWord } from "./(modals)/-manage-dialogs-modal"
 
 export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
@@ -48,7 +49,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   return (
     <div className="overflow-hidden no-select">
       <motion.div
-        className="px-4 py-1 overflow-hidden"
+        className="px-4 py-1 overflow-hidden rounded-b-xl"
         style={{ overflow: "hidden", maxWidth: "100%" }}
       >
         <Accordion
@@ -117,21 +118,23 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                 </div>
               </InlineButtonsItem>
             </div>
-            <div className="p-4">
-              <div>
-                <img
-                  loading="lazy"
-                  src={`https://t.me/i/userpic/320/${"shestaya_liniya"}.svg`}
-                  className="h-12 w-12 rounded-full "
-                  decoding="async"
-                  alt=""
-                />
-                <span
-                  className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
-                >
-                  Andrei
-                </span>
-              </div>
+            <div className="px-4 py-2 flex items-center justify-center flex-wrap">
+              {folder?.dialogs?.map((d) => (
+                <Tappable className="flex flex-col items-center justify-center gap-1 rounded-xl p-2">
+                  <img
+                    loading="lazy"
+                    src={`https://t.me/i/userpic/320/${d?.username}.svg`}
+                    className="h-12 w-12 rounded-full "
+                    decoding="async"
+                    alt=""
+                  />
+                  <span
+                    className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                  >
+                    {truncateWord(d?.name || "", 5)}
+                  </span>
+                </Tappable>
+              ))}
             </div>
           </AccordionContent>
         </Accordion>

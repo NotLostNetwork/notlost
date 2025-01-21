@@ -28,26 +28,33 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
   const dialogRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const newFolderRef = useRef<HTMLDivElement | null>(null)
 
-  const { setDragState } = useDragStore()
+  const { setDragState, draggableItem } = useDragStore()
 
   const handleTouchStart = (
     e: React.TouchEvent,
-    draggableItem: "contact" | "folder",
-    username?: string,
+    draggableItemType: "contact" | "folder",
+    dialog?: DialogData,
   ) => {
     let touch = e.touches[0]
     const ref =
-      draggableItem === "folder"
+      draggableItemType === "folder"
         ? newFolderRef.current
-        : dialogRefs.current[username!]
+        : dialogRefs.current[dialog?.username!]
 
     if (!ref) {
       return
     }
 
-    setDragState({
-      draggableItem,
-    })
+    if (draggableItemType === "contact") {
+      setDragState({
+        draggableItemType,
+        draggableItem: dialog,
+      })
+    } else {
+      setDragState({
+        draggableItemType,
+      })
+    }
 
     const startPos = {
       x: touch.clientX,
@@ -67,6 +74,7 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
     const handleTouchEnd = () => {
       setDragState({
         draggableItem: null,
+        draggableItemType: null,
       })
       ref.style.transition = `transform 0.3s ease`
       ref.style.transform = `translate(0px, 0px)`
@@ -114,9 +122,9 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
                 <div
                   ref={(el) => (dialogRefs.current[d.username!] = el)}
                   /*onMouseDown={(e) => handleMouseDown(e, d.username!)}*/
-                  onTouchStart={(e) =>
-                    handleTouchStart(e, "contact", d.username!)
-                  }
+                  onTouchStart={(e) => {
+                    handleTouchStart(e, "contact", d)
+                  }}
                   className="flex flex-col justify-center items-center gap-1 touch-none relative"
                 >
                   <img
@@ -141,6 +149,6 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
   )
 }
 
-function truncateWord(word: string, maxLength: number): string {
+export function truncateWord(word: string, maxLength: number): string {
   return word.length > maxLength ? word.slice(0, maxLength) + "..." : word
 }

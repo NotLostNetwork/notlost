@@ -1,4 +1,6 @@
+import { DialogData } from "~/actions/telegram"
 import {
+  JazzDialog,
   JazzFolder,
   JazzListOfDialogs,
   JazzListOfFolders,
@@ -20,7 +22,10 @@ export const jazzCreateNewFolder = (
   )
 }
 
-export const jazzDeleteFolder = (jazzProfile: RootUserProfile, folder: JazzFolder) => {
+export const jazzDeleteFolder = (
+  jazzProfile: RootUserProfile,
+  folder: JazzFolder,
+) => {
   if (jazzProfile) {
     const filteredFolders = jazzProfile.folders?.filter(
       (f) => f?.id !== folder.id,
@@ -30,5 +35,20 @@ export const jazzDeleteFolder = (jazzProfile: RootUserProfile, folder: JazzFolde
         owner: jazzProfile._owner,
       })
     }
+  }
+}
+
+export const jazzAddDialogToFolder = (
+  jazzProfile: RootUserProfile | null | undefined,
+  folder: JazzFolder,
+  dialog: DialogData,
+) => {
+  if (jazzProfile) {
+    folder.dialogs?.push(
+      JazzDialog.create(
+        { name: dialog.name, username: dialog.username || "No username" },
+        { owner: jazzProfile._owner },
+      ),
+    )
   }
 }
