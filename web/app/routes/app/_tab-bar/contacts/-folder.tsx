@@ -1,8 +1,8 @@
-import { JazzFolder } from "~/lib/jazz/schema"
+import { JazzDialog, JazzFolder } from "~/lib/jazz/schema"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useState, useRef, useEffect } from "react"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
-import { Accordion, Tappable } from "@telegram-apps/telegram-ui"
+import { Accordion, Button, Tappable } from "@telegram-apps/telegram-ui"
 import { jazzDeleteFolder } from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { motion } from "framer-motion"
@@ -12,22 +12,34 @@ import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Bl
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
 import { truncateWord } from "./(modals)/-manage-dialogs-modal"
+import { useAppStore } from "~/lib/zustand-store/store"
+import { Dialog } from "telegram/tl/custom/dialog"
+import { DialogData } from "~/actions/telegram"
+import personIcon from "~/assets/icons/person-icon.svg"
 
 export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
 
-  const [isExpanded, setIsExpanded] = useState(false)
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
+
+  // dialog tooltip
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
+    null,
+  )
+  const [tooltipDialogId, setTooltipDialogId] = useState<null | string>(null)
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  const { expandedFolder, setExpandedFolder } = useAppStore()
 
   const deleteFolder = () => {
     if (jazzProfile && folder) {
       jazzDeleteFolder(jazzProfile, folder)
-      setIsExpanded(false)
+      setExpandedFolder(null)
     }
   }
 
@@ -46,6 +58,63 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
     }
   }, [folderTitle])
 
+  const handleTouchStartDialog = (e: React.TouchEvent, dialog: JazzDialog) => {
+    const timer = setTimeout(() => {
+      setTooltipDialogId(dialog.id)
+    }, 500)
+    setLongPressTimer(timer)
+  }
+
+  const handleTouchEndDialog = (e: React.TouchEvent) => {
+    if (longPressTimer && !tooltipDialogId) {
+      clearTimeout(longPressTimer)
+      setLongPressTimer(null)
+    }
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(event.target as Node)
+      ) {
+        setTooltipDialogId(null)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const [longPressTriggered, setLongPressTriggered] = useState(false)
+  const timerRef = useRef<number | null>(null)
+  const isLongPress = useRef(false)
+
+  const startPress = (dialogId: string | null) => {
+    isLongPress.current = false
+    timerRef.current = window.setTimeout(() => {
+      setTooltipDialogId(dialogId)
+      isLongPress.current = true
+      setLongPressTriggered(true)
+    }, 200)
+  }
+
+  const endPress = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+
+      if (!isLongPress.current) {
+        window.open(`https://t.me/shestaya_liniya`, "_blank")
+      }
+    }
+  }
+
+  useEffect(() => {}, [longPressTriggered])
+
   return (
     <div className="overflow-hidden no-select">
       <motion.div
@@ -53,9 +122,13 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
         style={{ overflow: "hidden", maxWidth: "100%" }}
       >
         <Accordion
-          expanded={isExpanded}
+          expanded={expandedFolder?.id === folder?.id}
           onChange={() => {
-            setIsExpanded((prev) => !prev)
+            if (expandedFolder?.id === folder?.id) {
+              setExpandedFolder(null)
+            } else {
+              setExpandedFolder(folder)
+            }
           }}
         >
           <AccordionSummary className="rounded-xl bg-secondary">
@@ -120,20 +193,50 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
             </div>
             <div className="px-4 py-2 flex items-center justify-center flex-wrap">
               {folder?.dialogs?.map((d) => (
-                <Tappable className="flex flex-col items-center justify-center gap-1 rounded-xl p-2">
-                  <img
-                    loading="lazy"
-                    src={`https://t.me/i/userpic/320/${d?.username}.svg`}
-                    className="h-12 w-12 rounded-full "
-                    decoding="async"
-                    alt=""
-                  />
-                  <span
-                    className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                <div className="relative">
+                  <Tappable
+                    onTouchStart={() => {
+                      if (d?.id) {
+                        startPress(d.id)
+                      }
+                    }}
+                    onTouchEnd={endPress}
+                    className="flex flex-col items-center justify-center gap-1 rounded-xl p-2"
                   >
-                    {truncateWord(d?.name || "", 5)}
-                  </span>
-                </Tappable>
+                    <img
+                      loading="lazy"
+                      src={`https://t.me/i/userpic/320/${d?.username}.svg`}
+                      className="h-12 w-12 rounded-full "
+                      decoding="async"
+                      alt=""
+                    />
+                    <span
+                      className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                    >
+                      {truncateWord(d?.name || "", 5)}
+                    </span>
+                  </Tappable>
+                  {d?.id === tooltipDialogId && (
+                    <div ref={tooltipRef}>
+                      <div
+                        ref={tooltipRef}
+                        className={`p-2 absolute right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg space-y-2 z-10`}
+                      >
+                        <ToolTipItem
+                          icon={personIcon}
+                          title={"New contact"}
+                          action={() => {}}
+                        />
+                        <div className="h-[2px] bg-divider"></div>
+                        <ToolTipItem
+                          icon={personIcon}
+                          title={`New topic`}
+                          action={() => {}}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </AccordionContent>
@@ -146,5 +249,25 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
         action={deleteFolder}
       />
     </div>
+  )
+}
+
+const ToolTipItem = ({
+  icon,
+  title,
+  action,
+}: {
+  icon: string
+  title: string
+  action: () => void
+}) => {
+  return (
+    <Tappable className="rounded-xl" onClick={action}>
+      <div className="flex w-full">
+        <div className="ml-4 text-left font-medium whitespace-nowrap">
+          {title}
+        </div>
+      </div>
+    </Tappable>
   )
 }

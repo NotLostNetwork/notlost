@@ -157,7 +157,7 @@ class TelegramApiClient {
 
   async getDialogs() {
     await this.initialize()
-    const dialogs = await this.client.getDialogs({ folder: 0, limit: 16 })
+    const dialogs = await this.client.getDialogs({ folder: 0, limit: 12 })
 
     return dialogs
   }
