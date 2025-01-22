@@ -88,9 +88,10 @@ iframe {
   height: 100% !important;
 }
 
-/* Accrodion transparent bg for content*/
+/* Accordion transparent bg for content and overflow for dailog tooltip visibility*/
 .tgui-f23c0e195677169c {
   background: transparent !important;
+  overflow: visible !important;
 }
 
 .no-scrollbar::-webkit-scrollbar {

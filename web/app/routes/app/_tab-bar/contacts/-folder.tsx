@@ -3,7 +3,10 @@ import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useState, useRef, useEffect } from "react"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
 import { Accordion, Button, Tappable } from "@telegram-apps/telegram-ui"
-import { jazzDeleteFolder } from "~/lib/jazz/actions/jazz-folder"
+import {
+  jazzDeleteFolder,
+  jazzRemoveDialogFromFolder,
+} from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { motion } from "framer-motion"
 import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent"
@@ -13,9 +16,7 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
 import { truncateWord } from "./(modals)/-manage-dialogs-modal"
 import { useAppStore } from "~/lib/zustand-store/store"
-import { Dialog } from "telegram/tl/custom/dialog"
-import { DialogData } from "~/actions/telegram"
-import personIcon from "~/assets/icons/person-icon.svg"
+import MoreIcon from "~/assets/icons/more.svg?react"
 
 export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
@@ -40,6 +41,12 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
     if (jazzProfile && folder) {
       jazzDeleteFolder(jazzProfile, folder)
       setExpandedFolder(null)
+    }
+  }
+
+  const deleteDialogFromFolder = (dialog: JazzDialog) => {
+    if (jazzProfile && folder) {
+      jazzRemoveDialogFromFolder(jazzProfile, folder, dialog)
     }
   }
 
@@ -109,14 +116,22 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
 
       if (!isLongPress.current) {
         window.open(`https://t.me/shestaya_liniya`, "_blank")
+      } else {
+        // Prevent hiding the tooltip if it was just shown
+        console.log("Tooltip remains visible.")
       }
     }
   }
 
-  useEffect(() => {}, [longPressTriggered])
-
   return (
     <div className="overflow-hidden no-select">
+      {tooltipDialogId && (
+        <div
+          onClick={() => setTooltipDialogId(null)}
+          className={`h-screen w-screen absolute top-0 left-0 z-20`}
+        ></div>
+      )}
+
       <motion.div
         className="px-4 py-1 overflow-hidden rounded-b-xl"
         style={{ overflow: "hidden", maxWidth: "100%" }}
@@ -220,18 +235,26 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                     <div ref={tooltipRef}>
                       <div
                         ref={tooltipRef}
-                        className={`p-2 absolute right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg space-y-2 z-10`}
+                        className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
                       >
                         <ToolTipItem
-                          icon={personIcon}
-                          title={"New contact"}
+                          Icon={
+                            <div className="text-link h-4 w-4">
+                              <MoreIcon />
+                            </div>
+                          }
+                          title={"Info"}
                           action={() => {}}
                         />
                         <div className="h-[2px] bg-divider"></div>
                         <ToolTipItem
-                          icon={personIcon}
-                          title={`New topic`}
-                          action={() => {}}
+                          Icon={
+                            <div className="text-link">
+                              <Icon16Cancel />
+                            </div>
+                          }
+                          title={`Remove`}
+                          action={() => deleteDialogFromFolder(d)}
                         />
                       </div>
                     </div>
@@ -253,18 +276,19 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
 }
 
 const ToolTipItem = ({
-  icon,
+  Icon,
   title,
   action,
 }: {
-  icon: string
+  Icon: React.ReactElement
   title: string
   action: () => void
 }) => {
   return (
-    <Tappable className="rounded-xl" onClick={action}>
-      <div className="flex w-full">
-        <div className="ml-4 text-left font-medium whitespace-nowrap">
+    <Tappable className=" p-2" onClick={action}>
+      <div className="flex w-full items-center">
+        {Icon}
+        <div className="ml-2 text-left font-medium whitespace-nowrap">
           {title}
         </div>
       </div>
