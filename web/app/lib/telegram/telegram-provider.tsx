@@ -18,6 +18,8 @@ function TelegramProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     try {
       if (initData) {
+        const webApp = (window as any)?.Telegram?.WebApp
+        webApp.LocationManager.init()
         if (!["macos", "tdesktop"].includes(retrieveLaunchParams().platform)) {
           postEvent("web_app_expand")
           postEvent("web_app_request_fullscreen")
