@@ -12,11 +12,13 @@ function RouteComponent() {
 
   const [locationManagerInited, setLocationManagerInited] = useState(false)
 
-  WebApp.LocationManager.init(() => setLocationManagerInited(true))
+  const webApp = (window as any)?.Telegram?.WebApp
+
+  webApp.LocationManager.init(() => setLocationManagerInited(true))
 
   const locationAccessSetting = () => {
     if (locationManagerInited) {
-      WebApp.LocationManager.openSettings()
+      webApp.LocationManager.openSettings()
     }
   }
 
