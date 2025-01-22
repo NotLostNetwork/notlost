@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@telegram-apps/telegram-ui"
 import WebApp from "@twa-dev/sdk"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function RouteComponent() {
   // const { me } = useAccountOrGuest({})
@@ -15,13 +15,21 @@ function RouteComponent() {
   const locationAccessSetting = () => {
     if ((window as any)?.Telegram?.WebApp) {
       const webApp = (window as any)?.Telegram?.WebApp
-      webApp.LocationManager.getLocation((res: null | any) => console.log(res))
+      webApp.LocationManager.init(() => setLocationManagerInited(true))
     }
   }
 
+  useEffect(() => {
+    if ((window as any)?.Telegram?.WebApp && locationManagerInited) {
+      const webApp = (window as any)?.Telegram?.WebApp
+      console.log("before init")
+      webApp.LocationManager.getLocation((res: null | any) => console.log(res))
+    }
+  }, [locationManagerInited])
+
   return (
     <>
-      <Button onClick={locationAccessSetting}>Open location</Button>
+      <Button onClick={locationAccessSetting}>Open lOocation</Button>
     </>
   )
 }
