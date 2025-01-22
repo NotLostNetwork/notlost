@@ -254,7 +254,10 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                             </div>
                           }
                           title={`Remove`}
-                          action={() => deleteDialogFromFolder(d)}
+                          action={() => {
+                            deleteDialogFromFolder(d)
+                            setTooltipDialogId(null)
+                          }}
                         />
                       </div>
                     </div>
