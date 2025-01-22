@@ -12,11 +12,9 @@ function RouteComponent() {
 
   const locationAccessSetting = () => {
     if (!WebApp.LocationManager.isInited) {
-      WebApp.LocationManager.init()
-    } else {
-      console.log("get location")
-      WebApp.LocationManager.getLocation((res: null | any) => console.log(res))
+      console.log("location not inited")
     }
+    WebApp.LocationManager.getLocation((res: null | any) => console.log(res))
   }
 
   return (
