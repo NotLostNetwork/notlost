@@ -6,17 +6,14 @@ import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
+import { Route as TryRoute } from "~/routes/app/try"
 
 export default function TabBar() {
   return (
     <div className="bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
-          <BottomBarLink
-            to={GraphRoute.to}
-            title="Network"
-            Icon={<GraphIcon />}
-          />
+          <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} />
           <BottomBarLink
             to={ContactsRoute.to}
             title="Search"
