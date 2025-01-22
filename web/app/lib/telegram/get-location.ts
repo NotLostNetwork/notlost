@@ -20,7 +20,7 @@ export const getLocation = () => {
   WebApp.LocationManager.getLocation((locationData) => {
     if (!locationData) {
       console.warn("User denied access to location data.")
-      alert("Location access is required for this feature.")
+      WebApp.LocationManager.openSettings()
     } else {
       console.log("Location data:", locationData)
     }
