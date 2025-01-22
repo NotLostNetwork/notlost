@@ -109,13 +109,13 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
     }, 200)
   }
 
-  const endPress = () => {
+  const endPress = (username: string) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current)
       timerRef.current = null
 
       if (!isLongPress.current) {
-        window.open(`https://t.me/shestaya_liniya`, "_blank")
+        window.open(`https://t.me/${username}`, "_blank")
       } else {
         // Prevent hiding the tooltip if it was just shown
         console.log("Tooltip remains visible.")
@@ -215,7 +215,11 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                         startPress(d.id)
                       }
                     }}
-                    onTouchEnd={endPress}
+                    onTouchEnd={() => {
+                      if (d?.username) {
+                        endPress(d.username)
+                      }
+                    }}
                     className="flex flex-col items-center justify-center gap-1 rounded-xl p-2"
                   >
                     <img
