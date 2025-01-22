@@ -4,16 +4,7 @@ export const getLocation = () => {
   // Handle location data
   // console.log(window.Telegram.WebApp.LocationManager);
 
-  WebApp.LocationManager.init(() => {
-    if (WebApp.LocationManager.isInited) {
-      console.log("LocationManager initialized successfully.")
-
-      // Now you can use location-related features
-      WebApp.LocationManager.openSettings()
-    } else {
-      console.log("Failed to initialize LocationManager.")
-    }
-  })
+  WebApp.LocationManager.init()
   WebApp.LocationManager.getLocation((locationData) => {
     if (locationData) {
       //setLocationData(locationData)

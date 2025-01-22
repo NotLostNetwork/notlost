@@ -12,17 +12,13 @@ import {
 } from "@telegram-apps/sdk-react"
 import { init } from "./miniAppEnv/init"
 import "./miniAppEnv/mock-env"
-import WebApp from "@twa-dev/sdk"
 
 function TelegramProvider({ children }: PropsWithChildren) {
   init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV)
   useEffect(() => {
     try {
       if (initData) {
-        const webApp = (window as any)?.Telegram?.WebApp
-        webApp.LocationManager.init()
         if (!["macos", "tdesktop"].includes(retrieveLaunchParams().platform)) {
-          WebApp.LocationManager.init()
           postEvent("web_app_expand")
           postEvent("web_app_request_fullscreen")
           postEvent("web_app_setup_swipe_behavior", {
