@@ -10,22 +10,14 @@ function RouteComponent() {
   //   root: { contacts: [{}] }] },
   // })
 
-  const [locationManagerInited, setLocationManagerInited] = useState(false)
-
   const locationAccessSetting = () => {
-    if ((window as any)?.Telegram?.WebApp) {
-      console.log(WebApp.LocationManager.isInited)
-      WebApp.LocationManager.init(() => setLocationManagerInited(true))
+    if (!WebApp.LocationManager.isInited) {
+      WebApp.LocationManager.init()
+    } else {
+      console.log("get location")
+      WebApp.LocationManager.getLocation((res: null | any) => console.log(res))
     }
   }
-
-  useEffect(() => {
-    if ((window as any)?.Telegram?.WebApp && locationManagerInited) {
-      const webApp = (window as any)?.Telegram?.WebApp
-      console.log("before init")
-      webApp.LocationManager.getLocation((res: null | any) => console.log(res))
-    }
-  }, [locationManagerInited])
 
   return (
     <>
