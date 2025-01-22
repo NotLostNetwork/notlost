@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@telegram-apps/telegram-ui"
 import WebApp from "@twa-dev/sdk"
+import { useState } from "react"
+import { getLocation } from "~/lib/telegram/get-location"
 
 function RouteComponent() {
   // const { me } = useAccountOrGuest({})
@@ -9,22 +11,9 @@ function RouteComponent() {
   //   root: { contacts: [{}] }] },
   // })
 
-  const locationAccessSetting = () => {
-    if (!WebApp.LocationManager.isInited) {
-      console.log("location not inited")
-      WebApp.LocationManager.init()
-    } else {
-      getLocation()
-    }
-  }
-
-  const getLocation = () => {
-    WebApp.LocationManager.getLocation((res: null | any) => console.log(res))
-  }
-
   return (
     <>
-      <Button onClick={locationAccessSetting}>Open lOocation</Button>
+      <Button onClick={getLocation}>Open lOocation</Button>
     </>
   )
 }
