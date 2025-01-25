@@ -18,9 +18,9 @@ import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
 import { Route as AppOnboardingImport } from './routes/app/onboarding'
 import { Route as AppClosedBetaImport } from './routes/app/closed-beta'
 import { Route as AppTabBarImport } from './routes/app/_tab-bar'
+import { Route as AppTabBarMapIndexImport } from './routes/app/_tab-bar/map/index'
 import { Route as AppTabBarGraphIndexImport } from './routes/app/_tab-bar/graph/index'
 import { Route as AppTabBarContactsIndexImport } from './routes/app/_tab-bar/contacts/index'
-import { Route as AppTabBarMapTryImport } from './routes/app/_tab-bar/map/try'
 
 // Create/Update Routes
 
@@ -65,6 +65,12 @@ const AppTabBarRoute = AppTabBarImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
+const AppTabBarMapIndexRoute = AppTabBarMapIndexImport.update({
+  id: '/map/',
+  path: '/map/',
+  getParentRoute: () => AppTabBarRoute,
+} as any)
+
 const AppTabBarGraphIndexRoute = AppTabBarGraphIndexImport.update({
   id: '/graph/',
   path: '/graph/',
@@ -74,12 +80,6 @@ const AppTabBarGraphIndexRoute = AppTabBarGraphIndexImport.update({
 const AppTabBarContactsIndexRoute = AppTabBarContactsIndexImport.update({
   id: '/contacts/',
   path: '/contacts/',
-  getParentRoute: () => AppTabBarRoute,
-} as any)
-
-const AppTabBarMapTryRoute = AppTabBarMapTryImport.update({
-  id: '/map/try',
-  path: '/map/try',
   getParentRoute: () => AppTabBarRoute,
 } as any)
 
@@ -136,13 +136,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/app/_tab-bar/map/try': {
-      id: '/app/_tab-bar/map/try'
-      path: '/map/try'
-      fullPath: '/app/map/try'
-      preLoaderRoute: typeof AppTabBarMapTryImport
-      parentRoute: typeof AppTabBarImport
-    }
     '/app/_tab-bar/contacts/': {
       id: '/app/_tab-bar/contacts/'
       path: '/contacts'
@@ -157,21 +150,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTabBarGraphIndexImport
       parentRoute: typeof AppTabBarImport
     }
+    '/app/_tab-bar/map/': {
+      id: '/app/_tab-bar/map/'
+      path: '/map'
+      fullPath: '/app/map'
+      preLoaderRoute: typeof AppTabBarMapIndexImport
+      parentRoute: typeof AppTabBarImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AppTabBarRouteChildren {
-  AppTabBarMapTryRoute: typeof AppTabBarMapTryRoute
   AppTabBarContactsIndexRoute: typeof AppTabBarContactsIndexRoute
   AppTabBarGraphIndexRoute: typeof AppTabBarGraphIndexRoute
+  AppTabBarMapIndexRoute: typeof AppTabBarMapIndexRoute
 }
 
 const AppTabBarRouteChildren: AppTabBarRouteChildren = {
-  AppTabBarMapTryRoute: AppTabBarMapTryRoute,
   AppTabBarContactsIndexRoute: AppTabBarContactsIndexRoute,
   AppTabBarGraphIndexRoute: AppTabBarGraphIndexRoute,
+  AppTabBarMapIndexRoute: AppTabBarMapIndexRoute,
 }
 
 const AppTabBarRouteWithChildren = AppTabBarRoute._addFileChildren(
@@ -203,9 +203,9 @@ export interface FileRoutesByFullPath {
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/': typeof AppIndexRoute
-  '/app/map/try': typeof AppTabBarMapTryRoute
   '/app/contacts': typeof AppTabBarContactsIndexRoute
   '/app/graph': typeof AppTabBarGraphIndexRoute
+  '/app/map': typeof AppTabBarMapIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -214,9 +214,9 @@ export interface FileRoutesByTo {
   '/app/closed-beta': typeof AppClosedBetaRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
-  '/app/map/try': typeof AppTabBarMapTryRoute
   '/app/contacts': typeof AppTabBarContactsIndexRoute
   '/app/graph': typeof AppTabBarGraphIndexRoute
+  '/app/map': typeof AppTabBarMapIndexRoute
 }
 
 export interface FileRoutesById {
@@ -228,9 +228,9 @@ export interface FileRoutesById {
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/': typeof AppIndexRoute
-  '/app/_tab-bar/map/try': typeof AppTabBarMapTryRoute
   '/app/_tab-bar/contacts/': typeof AppTabBarContactsIndexRoute
   '/app/_tab-bar/graph/': typeof AppTabBarGraphIndexRoute
+  '/app/_tab-bar/map/': typeof AppTabBarMapIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -242,9 +242,9 @@ export interface FileRouteTypes {
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/'
-    | '/app/map/try'
     | '/app/contacts'
     | '/app/graph'
+    | '/app/map'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,9 +252,9 @@ export interface FileRouteTypes {
     | '/app/closed-beta'
     | '/app/onboarding'
     | '/app/tg-sign-in'
-    | '/app/map/try'
     | '/app/contacts'
     | '/app/graph'
+    | '/app/map'
   id:
     | '__root__'
     | '/'
@@ -264,9 +264,9 @@ export interface FileRouteTypes {
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/'
-    | '/app/_tab-bar/map/try'
     | '/app/_tab-bar/contacts/'
     | '/app/_tab-bar/graph/'
+    | '/app/_tab-bar/map/'
   fileRoutesById: FileRoutesById
 }
 
@@ -311,9 +311,9 @@ export const routeTree = rootRoute
       "filePath": "app/_tab-bar.tsx",
       "parent": "/app",
       "children": [
-        "/app/_tab-bar/map/try",
         "/app/_tab-bar/contacts/",
-        "/app/_tab-bar/graph/"
+        "/app/_tab-bar/graph/",
+        "/app/_tab-bar/map/"
       ]
     },
     "/app/closed-beta": {
@@ -332,16 +332,16 @@ export const routeTree = rootRoute
       "filePath": "app/index.tsx",
       "parent": "/app"
     },
-    "/app/_tab-bar/map/try": {
-      "filePath": "app/_tab-bar/map/try.tsx",
-      "parent": "/app/_tab-bar"
-    },
     "/app/_tab-bar/contacts/": {
       "filePath": "app/_tab-bar/contacts/index.tsx",
       "parent": "/app/_tab-bar"
     },
     "/app/_tab-bar/graph/": {
       "filePath": "app/_tab-bar/graph/index.tsx",
+      "parent": "/app/_tab-bar"
+    },
+    "/app/_tab-bar/map/": {
+      "filePath": "app/_tab-bar/map/index.tsx",
       "parent": "/app/_tab-bar"
     }
   }

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react"
-import { UserCoordinates } from "./_tab-bar/map/try"
+import { UserCoordinates } from "./_tab-bar/map"
 import { createRoot } from "react-dom/client"
 import { Map, Marker } from "@vis.gl/react-maplibre"
 import darkStyles from "./_tab-bar/map/dark.json"

@@ -1,12 +1,15 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router"
-import { Link } from "@tanstack/react-router"
+import {
+  Outlet,
+  createFileRoute,
+  useLocation,
+  useRouter,
+} from "@tanstack/react-router"
 import SearchIcon from "~/assets/icons/search-icon.svg?react"
 import GraphIcon from "~/assets/icons/graph-icon.svg?react"
 import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
-import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
-import { Route as TryRoute } from "~/routes/app/_tab-bar/map/try"
+import { Route as TryRoute } from "~/routes/app/_tab-bar/map"
 
 export default function TabBar() {
   return (
@@ -36,36 +39,46 @@ interface BottomBarLinkProps {
 }
 
 const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
+  const router = useRouter()
+  const { pathname } = useLocation()
+
+  const isActive = `${pathname}/` === to
+  const handleClick = () => {
+    router.navigate({ to })
+  }
+
   return (
-    <Link
-      to={to}
-      className="w-full text-[12px] flex flex-col items-center gap-0.5"
+    <div
+      onClick={handleClick}
+      className={`w-full text-[12px] flex flex-col items-center gap-0.5 cursor-pointer`}
     >
-      {({ isActive }) => (
-        <>
-          <div
-            className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${isActive ? "bg-buttonBezeled" : "bg-transparent "}`}
-          >
-            <div
-              style={{
-                color: isActive
-                  ? getCssVariableValue("--tg-theme-accent-text-color")
-                  : "white",
-                padding: isActive ? 6 : 4,
-              }}
-              className="transition-all duration-150 ease-in-out"
-            >
-              <div>{Icon}</div>
-            </div>
+      <div
+        className={`h-8 w-8 rounded-full transition-all duration-150 ease-in-out ${
+          isActive ? "bg-buttonBezeled" : "bg-transparent"
+        }`}
+      >
+        <div
+          style={{
+            color: isActive
+              ? getCssVariableValue("--tg-theme-accent-text-color")
+              : "white",
+            padding: isActive ? 6 : 4,
+          }}
+          className="flex items-center justify-center transition-all duration-150 ease-in-out"
+        >
+          <div className={`h-6 w-6 ${isActive ? "text-link" : "text-white"}`}>
+            {Icon}
           </div>
-          <span
-            className={`font-medium transition-all duration-150 ease-in-out ${isActive && "px-2 rounded-2xl text-accent"}`}
-          >
-            {title}
-          </span>
-        </>
-      )}
-    </Link>
+        </div>
+      </div>
+      <span
+        className={`font-medium transition-all duration-150 ease-in-out ${
+          isActive ? "px-2 rounded-2xl text-accent" : ""
+        }`}
+      >
+        {title}
+      </span>
+    </div>
   )
 }
 
