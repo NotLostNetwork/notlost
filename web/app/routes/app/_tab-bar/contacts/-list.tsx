@@ -14,14 +14,14 @@ import { useCoState } from "~/lib/jazz/jazz-provider"
 import { ID } from "jazz-tools"
 
 const ContactsList = () => {
-  //const jazzProfile = useJazzProfile()
+  const jazzProfile = useJazzProfile()
 
   const { draggableItemType, draggableItem } = useDragStore()
 
   const [bg, setBg] = useState("bg-transparent")
   const [activeFolderId, setActiveFolderId] = useState<string | null>(null)
 
-  //const jazzFolder = useCoState(JazzFolder, activeFolderId as ID<JazzFolder>)
+  const jazzFolder = useCoState(JazzFolder, activeFolderId as ID<JazzFolder>)
 
   const addFolderDragBlock = useRef<HTMLDivElement | null>(null)
   const foldersRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -47,34 +47,34 @@ const ContactsList = () => {
       draggableItemType === "folder" &&
       isTouchOnBlockAndDragMode(addFolderDragBlock, touch)
     ) {
-      //createNewFolder("New folder")
+      createNewFolder("New folder")
     } else if (isTouchOnAnyFolder(foldersRefs, touch) && draggableItem) {
-      /* if (jazzFolder) {
+      if (jazzFolder) {
         jazzAddDialogToFolder(jazzProfile, jazzFolder, draggableItem)
         setActiveFolderId(null)
-      } */
+      }
     } else {
       setActiveFolderId(null)
       setBg("bg-transparent")
     }
   }
 
-  /* const createNewFolder = (title: string) => {
+  const createNewFolder = (title: string) => {
     if (jazzProfile) {
       jazzCreateNewFolder(jazzProfile, title)
     }
-  } */
+  }
 
   console.log("render")
 
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
-      <div className="h-screen absolute">
+      {/* <div className="h-screen absolute">
         <TgWallpaper opacity={0.1} withAccent={true} />
-      </div>
+      </div> */}
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
-        {/* <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
           {jazzProfile?.folders?.map((f) => (
             <div
               key={f && f.id}
@@ -88,7 +88,7 @@ const ContactsList = () => {
               <Folder folder={f} />
             </div>
           ))}
-        </Suspense> */}
+        </Suspense>
       </div>
       <Pencil />
     </div>
