@@ -1,8 +1,7 @@
-import TgWallpaper from "~/ui/tg-wallpaper"
 import { Pencil } from "./-pencil"
 import { JazzFolder } from "~/lib/jazz/schema"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { Suspense, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { AddFolder } from "./(dragables)/-add-folder"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
 import {
@@ -65,27 +64,23 @@ const ContactsList = () => {
     }
   }
 
-  console.log("render")
-
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
-        <Suspense fallback={<div>Loading...</div>}>
-          {jazzProfile?.folders?.map((f) => (
-            <div
-              key={f && f.id}
-              ref={(el) => f && (foldersRefs.current[f.id] = el)}
-              className={
-                f && activeFolderId === f.id
-                  ? "bg-secondary bg-opacity-60"
-                  : "bg-transparent"
-              }
-            >
-              <Folder folder={f} />
-            </div>
-          ))}
-        </Suspense>
+        {jazzProfile?.folders?.map((f) => (
+          <div
+            key={f && f.id}
+            ref={(el) => f && (foldersRefs.current[f.id] = el)}
+            className={
+              f && activeFolderId === f.id
+                ? "bg-secondary bg-opacity-60"
+                : "bg-transparent"
+            }
+          >
+            <Folder folder={f} />
+          </div>
+        ))}
       </div>
       <Pencil />
     </div>
