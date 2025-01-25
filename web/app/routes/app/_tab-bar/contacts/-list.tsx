@@ -69,9 +69,9 @@ const ContactsList = () => {
 
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
-      {/* <div className="h-screen absolute">
+      <div className="h-screen absolute">
         <TgWallpaper opacity={0.1} withAccent={true} />
-      </div> */}
+      </div>
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
         <Suspense fallback={<div>Loading...</div>}>

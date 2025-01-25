@@ -1,5 +1,4 @@
 import TWallpaper from "@twallpaper/react"
-import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import "@twallpaper/react/css"
 import tgWallpaperParis from "@/assets/tg-wallpaper-paris.svg"
@@ -11,10 +10,10 @@ const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
   return (
     <TWallpaper
       options={{
-        fps: 60,
+        fps: 0,
         tails: 90,
         animate: false,
-        scrollAnimate: true,
+        scrollAnimate: false,
         colors: withAccent ? darkThemeColorsWithAccent : darkThemeColors,
         pattern: {
           image: tgWallpaperParis,
