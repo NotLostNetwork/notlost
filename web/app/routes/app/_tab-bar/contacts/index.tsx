@@ -1,15 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { useEffect, useRef, useState } from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Filter, useContactsState } from "./-@state"
 import { FilterBySearch } from "./-filters"
 import ContactsList from "./-list"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
-import {
-  JazzAccount,
-  JazzListOfContacts,
-  RootUserProfile,
-} from "~/lib/jazz/schema"
+import { JazzAccount, RootUserProfile } from "~/lib/jazz/schema"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 
 const ContactsPage = () => {
@@ -18,24 +13,15 @@ const ContactsPage = () => {
   const user = useCoState(JazzAccount, me?.id)
   const profile = useCoState(RootUserProfile, user?.profile?.id)
 
-  const filtersBlock = useRef<HTMLDivElement>(null)
-  const [filtersBlockHeight, setFiltersBlockHeight] = useState<number>(0)
-
   const lp = useLaunchParams()
 
-  const { filteredData, toggleGraphMode, filtersState, updateFilterState } =
-    useContactsState(profile?.contacts)
-
-  useEffect(() => {
-    if (filtersBlock.current) {
-      setFiltersBlockHeight(filtersBlock.current.offsetHeight)
-    }
-  }, [])
+  const { filtersState, updateFilterState } = useContactsState(
+    profile?.contacts,
+  )
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div
-        ref={filtersBlock}
         style={{
           paddingTop: ["macos", "tdesktop"].includes(lp.platform)
             ? 40
@@ -56,11 +42,7 @@ const ContactsPage = () => {
         </div>
       </div>
       <div className="flex-1 overflow-auto items-center text-white ">
-        {/* <ContactsList
-          filtersBlockHeight={filtersBlockHeight}
-          data={filteredData as JazzListOfContacts}
-          toggleGraphMode={toggleGraphMode}
-        /> */}
+        <ContactsList />
       </div>
     </div>
   )
