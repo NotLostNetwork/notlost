@@ -6,7 +6,7 @@ import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as GraphRoute } from "~/routes/app/_tab-bar/graph"
-import { Route as TryRoute } from "~/routes/app/try"
+import { Route as TryRoute } from "~/routes/app/_tab-bar/map/try"
 
 export default function TabBar() {
   return (

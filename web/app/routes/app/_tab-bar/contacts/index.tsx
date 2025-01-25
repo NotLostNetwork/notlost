@@ -68,4 +68,6 @@ const ContactsPage = () => {
 
 export const Route = createFileRoute("/app/_tab-bar/contacts/")({
   component: ContactsPage,
+  pendingMinMs: 0,
+  pendingMs: 0,
 })
