@@ -65,6 +65,8 @@ const ContactsList = () => {
     }
   }
 
+  console.log("render")
+
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
       <div className="h-screen absolute">
@@ -72,7 +74,7 @@ const ContactsList = () => {
       </div>
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
-        <Suspense fallback={<div>Loading...</div>}>
+        {/* <Suspense fallback={<div>Loading...</div>}>
           {jazzProfile?.folders?.map((f) => (
             <div
               key={f && f.id}
@@ -86,7 +88,7 @@ const ContactsList = () => {
               <Folder folder={f} />
             </div>
           ))}
-        </Suspense>
+        </Suspense> */}
       </div>
       <Pencil />
     </div>
