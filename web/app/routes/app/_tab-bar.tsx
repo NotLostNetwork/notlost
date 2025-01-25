@@ -89,9 +89,9 @@ function LayoutComponent() {
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto">
-        <div className="h-screen absolute">
+        {/* <div className="h-screen absolute">
           <TgWallpaper opacity={0.1} withAccent={true} />
-        </div>
+        </div> */}
         <Outlet />
       </div>
       <TabBar />
