@@ -11,12 +11,12 @@ const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
     <TWallpaper
       options={{
         fps: 0,
-        tails: 90,
+        tails: 0,
         animate: false,
         scrollAnimate: false,
         colors: withAccent ? darkThemeColorsWithAccent : darkThemeColors,
         pattern: {
-          image: tgWallpaperParis,
+          image: "https://twallpaper.js.org/patterns/paris.svg",
           background: getCssVariableValue("--tg-theme-bg-color"),
           blur: 0,
           size: "420px",
