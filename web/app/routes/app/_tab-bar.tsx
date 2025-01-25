@@ -10,6 +10,7 @@ import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
 import { Route as TryRoute } from "~/routes/app/_tab-bar/map"
+import TgWallpaper from "~/ui/tg-wallpaper"
 
 export default function TabBar() {
   return (
@@ -82,10 +83,15 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
   )
 }
 
+console.log("render outlet")
+
 function LayoutComponent() {
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto">
+        <div className="h-screen absolute">
+          <TgWallpaper opacity={0.1} withAccent={true} />
+        </div>
         <Outlet />
       </div>
       <TabBar />

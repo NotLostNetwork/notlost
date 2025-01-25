@@ -16,7 +16,7 @@ const TgWallpaper = ({ opacity = 1, withAccent = false }) => {
         scrollAnimate: false,
         colors: withAccent ? darkThemeColorsWithAccent : darkThemeColors,
         pattern: {
-          image: "https://twallpaper.js.org/patterns/paris.svg",
+          image: tgWallpaperParis,
           background: getCssVariableValue("--tg-theme-bg-color"),
           blur: 0,
           size: "420px",
