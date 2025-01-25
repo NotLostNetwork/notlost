@@ -70,7 +70,6 @@ const ContactsList = () => {
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
         {jazzProfile?.folders?.map((f) => (
           <div
-            key={f && f.id}
             ref={(el) => f && (foldersRefs.current[f.id] = el)}
             className={
               f && activeFolderId === f.id
