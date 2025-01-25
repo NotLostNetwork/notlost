@@ -56,11 +56,11 @@ const ContactsPage = () => {
         </div>
       </div>
       <div className="flex-1 overflow-auto items-center text-white ">
-        <ContactsList
+        {/* <ContactsList
           filtersBlockHeight={filtersBlockHeight}
           data={filteredData as JazzListOfContacts}
           toggleGraphMode={toggleGraphMode}
-        />
+        /> */}
       </div>
     </div>
   )
