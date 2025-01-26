@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
 import { Button } from "@telegram-apps/telegram-ui"
-import utyaCool from "@/assets/utya-cool.gif"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { $validateInitData } from "~/actions/telegram"
 import { useAccount, useCoState } from "~/lib/jazz/jazz-provider"
@@ -49,7 +48,6 @@ function OnboardingPage() {
         <TgWallpaper />
       </div>
       <div className="flex flex-col items-center justify-center flex-1">
-        <img src={utyaCool} alt={"Utya sticker"} height={180} width={180} />
         <div className="text-3xl mt-4 text-center">
           Make your contacts NOTLOST
         </div>
