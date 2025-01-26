@@ -65,12 +65,15 @@ function RouteComponent() {
               />
               <div className="pt-2 text-xl">{jazzDialog?.name}</div>
               <span className={`text-link`}>@{jazzDialog?.username}</span>
-              <Input
-                className="text-white bg-secondary w-full flex-1"
-                style={{ color: "white", width: "100% !important" }}
-                type="text"
-                placeholder="Search"
-              />
+              <div className="w-full mt-4">
+                <div className="p-2 ml-4 uppercase text-hint">Tags</div>
+                <Input
+                  className="text-white bg-secondary w-full flex-1"
+                  style={{ color: "white", width: "100% !important" }}
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
             </div>
           </div>
         </motion.div>

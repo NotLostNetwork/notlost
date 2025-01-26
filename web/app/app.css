@@ -13,8 +13,7 @@ body {
   overscroll-behavior: none;
 }
 
-:root {
-  /* Overwrite tg theme colors */
+/* :root {
   --tg-bg-color: #17212b !important;
   --tg-bottom-bar-color: #232e3c !important;
   --tg-header-color: #17212b !important;
@@ -32,7 +31,7 @@ body {
   --tg-theme-subtitle-text-color: #708499 !important;
   --tg-theme-text-color: #f5f5f5 !important;
   --tg-wallpaper-color: #fff;
-}
+} */
 
 .no-select {
   -webkit-user-select: none; /* Safari and iOS */
