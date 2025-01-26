@@ -2,7 +2,7 @@ import { JazzDialog, JazzFolder } from "~/lib/jazz/schema"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useState, useRef, useEffect } from "react"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
-import { Accordion, Button, Tappable } from "@telegram-apps/telegram-ui"
+import { Accordion, Tappable } from "@telegram-apps/telegram-ui"
 import {
   jazzDeleteFolder,
   jazzRemoveDialogFromFolder,
@@ -15,19 +15,22 @@ import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Bl
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
 import { truncateWord } from "./(modals)/-manage-dialogs-modal"
-import { useAppStore } from "~/lib/zustand-store/store"
 import MoreIcon from "~/assets/icons/more.svg?react"
 
-export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
+export const Folder = ({
+  folder,
+  expandedFolderId,
+  setExpandedFolderId,
+}: {
+  folder: JazzFolder | null
+  expandedFolderId: string | null
+  setExpandedFolderId: (val: null | string) => void
+}) => {
   const jazzProfile = useJazzProfile()
 
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
 
-  // dialog tooltip
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  )
   const [tooltipDialogId, setTooltipDialogId] = useState<null | string>(null)
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
@@ -35,12 +38,10 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
 
-  const { expandedFolder, setExpandedFolder } = useAppStore()
-
   const deleteFolder = () => {
     if (jazzProfile && folder) {
       jazzDeleteFolder(jazzProfile, folder)
-      setExpandedFolder(null)
+      setExpandedFolderId(null)
     }
   }
 
@@ -64,20 +65,6 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
       inputRef.current.focus()
     }
   }, [folderTitle])
-
-  const handleTouchStartDialog = (e: React.TouchEvent, dialog: JazzDialog) => {
-    const timer = setTimeout(() => {
-      setTooltipDialogId(dialog.id)
-    }, 500)
-    setLongPressTimer(timer)
-  }
-
-  const handleTouchEndDialog = (e: React.TouchEvent) => {
-    if (longPressTimer && !tooltipDialogId) {
-      clearTimeout(longPressTimer)
-      setLongPressTimer(null)
-    }
-  }
 
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
@@ -137,12 +124,12 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
         style={{ overflow: "hidden", maxWidth: "100%" }}
       >
         <Accordion
-          expanded={expandedFolder?.id === folder?.id}
+          expanded={expandedFolderId === folder?.id}
           onChange={() => {
-            if (expandedFolder?.id === folder?.id) {
-              setExpandedFolder(null)
-            } else {
-              setExpandedFolder(folder)
+            if (expandedFolderId === folder?.id) {
+              setExpandedFolderId(null)
+            } else if (folder?.id) {
+              setExpandedFolderId(folder?.id)
             }
           }}
         >
@@ -156,7 +143,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
                 ref={inputRef}
                 value={folderTitle}
                 onChange={handleChange}
-                className="bg-transparent border-none outline-none font-semibold z-10"
+                className="bg-transparent border-none outline-none font-medium z-10"
                 style={{
                   background: "transparent",
                   border: "none",
@@ -207,67 +194,70 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
               </InlineButtonsItem>
             </div>
             <div className="px-4 py-2 flex items-center justify-center flex-wrap">
-              {folder?.dialogs?.map((d) => (
-                <div className="relative">
-                  <Tappable
-                    onTouchStart={() => {
-                      if (d?.id) {
-                        startPress(d.id)
-                      }
-                    }}
-                    onTouchEnd={() => {
-                      if (d?.username) {
-                        endPress(d.username)
-                      }
-                    }}
-                    className="flex flex-col items-center justify-center gap-1 rounded-xl p-2"
-                  >
-                    <img
-                      loading="lazy"
-                      src={`https://t.me/i/userpic/320/${d?.username}.svg`}
-                      className="h-12 w-12 rounded-full "
-                      decoding="async"
-                      alt=""
-                    />
-                    <span
-                      className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
-                    >
-                      {truncateWord(d?.name || "", 5)}
-                    </span>
-                  </Tappable>
-                  {d?.id === tooltipDialogId && (
-                    <div ref={tooltipRef}>
-                      <div
-                        ref={tooltipRef}
-                        className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
+              {folder?.dialogs?.map(
+                (d) =>
+                  d && (
+                    <div key={d.id} className="relative">
+                      <Tappable
+                        onTouchStart={() => {
+                          if (d?.id) {
+                            startPress(d.id)
+                          }
+                        }}
+                        onTouchEnd={() => {
+                          if (d?.username) {
+                            endPress(d.username)
+                          }
+                        }}
+                        className="flex flex-col items-center justify-center gap-1 rounded-xl p-2"
                       >
-                        <ToolTipItem
-                          Icon={
-                            <div className="text-link h-4 w-4">
-                              <MoreIcon />
-                            </div>
-                          }
-                          title={"Info"}
-                          action={() => {}}
+                        <img
+                          loading="lazy"
+                          src={`https://t.me/i/userpic/320/${d?.username}.svg`}
+                          className="h-12 w-12 rounded-full "
+                          decoding="async"
+                          alt=""
                         />
-                        <div className="h-[2px] bg-divider"></div>
-                        <ToolTipItem
-                          Icon={
-                            <div className="text-link">
-                              <Icon16Cancel />
-                            </div>
-                          }
-                          title={`Remove`}
-                          action={() => {
-                            deleteDialogFromFolder(d)
-                            setTooltipDialogId(null)
-                          }}
-                        />
-                      </div>
+                        <span
+                          className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                        >
+                          {truncateWord(d?.name || "", 5)}
+                        </span>
+                      </Tappable>
+                      {d?.id === tooltipDialogId && (
+                        <div ref={tooltipRef}>
+                          <div
+                            ref={tooltipRef}
+                            className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
+                          >
+                            <ToolTipItem
+                              Icon={
+                                <div className="text-link h-4 w-4">
+                                  <MoreIcon />
+                                </div>
+                              }
+                              title={"Info"}
+                              action={() => {}}
+                            />
+                            <div className="h-[2px] bg-divider"></div>
+                            <ToolTipItem
+                              Icon={
+                                <div className="text-link">
+                                  <Icon16Cancel />
+                                </div>
+                              }
+                              title={`Remove`}
+                              action={() => {
+                                deleteDialogFromFolder(d)
+                                setTooltipDialogId(null)
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                  ),
+              )}
             </div>
           </AccordionContent>
         </Accordion>

@@ -74,6 +74,10 @@ iframe {
   min-height: 0 !important;
 }
 
+.tgui-7707c5d942b7b9af .tgui-0f5050defacbf813 {
+  background: var(--tg-theme-secondary-bg-color) !important;
+}
+
 /* Make small button full rounded */
 .tgui-13f23a224303ddaa {
   border-radius: 50% !important;

@@ -1,11 +1,9 @@
 import type { QueryClient } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import {
   Outlet,
   ScrollRestoration,
   createRootRouteWithContext,
 } from "@tanstack/react-router"
-import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 import { Meta, Scripts } from "@tanstack/start"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/ui/error-pages/DefaultCatchBoundary"
@@ -17,6 +15,17 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
   head: () => ({
+    scripts: import.meta.env.DEV
+      ? [
+          {
+            type: "module",
+            children: `import RefreshRuntime from "/_build/@react-refresh";
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type`,
+          },
+        ]
+      : [],
     meta: [
       {
         charSet: "utf-8",
@@ -77,18 +86,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-        {import.meta.env.DEV && (
-          <script
-            type="module"
-            dangerouslySetInnerHTML={{
-              __html: `import RefreshRuntime from "/_build/@react-refresh";
-RefreshRuntime.injectIntoGlobalHook(window)
-window.$RefreshReg$ = () => {}
-window.$RefreshSig$ = () => (type) => type`,
-            }}
-          />
-        )}
-        <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
         <Meta />
       </head>
       <body>

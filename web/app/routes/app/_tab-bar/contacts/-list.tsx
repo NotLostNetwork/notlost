@@ -64,22 +64,32 @@ const ContactsList = () => {
     }
   }
 
+  const [expandedFolderId, setExpandedFolderId] = useState<string | null>(null)
+
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
       <div className="overflow-y-auto overscroll-none pb-20">
         <AddFolder ref={addFolderDragBlock} bgColor={bg} />
-        {jazzProfile?.folders?.map((f) => (
-          <div
-            ref={(el) => f && (foldersRefs.current[f.id] = el)}
-            className={
-              f && activeFolderId === f.id
-                ? "bg-secondary bg-opacity-60"
-                : "bg-transparent"
-            }
-          >
-            <Folder folder={f} />
-          </div>
-        ))}
+        {jazzProfile?.folders?.map(
+          (f) =>
+            f && (
+              <div
+                key={f.id}
+                ref={(el) => f && (foldersRefs.current[f.id] = el)}
+                className={
+                  f && activeFolderId === f.id
+                    ? "bg-secondary bg-opacity-60"
+                    : "bg-transparent"
+                }
+              >
+                <Folder
+                  folder={f}
+                  expandedFolderId={expandedFolderId}
+                  setExpandedFolderId={(val) => setExpandedFolderId(val)}
+                />
+              </div>
+            ),
+        )}
       </div>
       <Pencil />
     </div>
