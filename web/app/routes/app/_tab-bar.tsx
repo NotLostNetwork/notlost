@@ -17,7 +17,7 @@ export default function TabBar() {
     <div className="bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
-          <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} />
+          {/* <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} /> */}
           <BottomBarLink
             to={ContactsRoute.to}
             title="Search"
@@ -65,7 +65,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
               : "white",
             padding: isActive ? 6 : 4,
           }}
-          className="flex items-center justify-center transition-all duration-150 ease-in-out"
+          className="flex items-center justify-center"
         >
           <div className={`h-6 w-6 ${isActive ? "text-link" : "text-white"}`}>
             {Icon}
@@ -73,7 +73,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
         </div>
       </div>
       <span
-        className={`font-medium transition-all duration-150 ease-in-out ${
+        className={`font-medium ${
           isActive ? "px-2 rounded-2xl text-accent" : ""
         }`}
       >

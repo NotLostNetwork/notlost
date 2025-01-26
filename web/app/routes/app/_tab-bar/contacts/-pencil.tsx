@@ -1,22 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@telegram-apps/telegram-ui"
-import personIcon from "~/assets/icons/person-icon.svg"
 import connectionIcon from "~/assets/icons/connection-icon.svg"
 import PencilIcon from "~/assets/icons/pencil-icon.svg?react"
 
-import CreateContactModal from "./(modals)/-create-contact-modal"
 import { ManageDialogsModal } from "./(modals)/-manage-dialogs-modal"
 
 export const Pencil = () => {
   const [showToolTip, setShowToolTip] = useState(false)
-  const [showCreateContactModal, setShowCreateContactModal] = useState(false)
   const [showManageDialogsModal, setShowManageDialogsModal] = useState(false)
 
   const tooltipRef = useRef<HTMLDivElement>(null)
-
-  const toggleShowToolTip = () => {
-    setShowToolTip(!showToolTip)
-  }
 
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
@@ -45,14 +38,6 @@ export const Pencil = () => {
           ref={tooltipRef}
           className={`p-2 absolute w-48 right-0 bottom-16 bg-primary border-primary border-[1px] rounded-xl transition-opacity ease-in-out duration-150 ${showToolTip ? "opacity-100" : "opacity-0 pointer-events-none"} shadow-lg space-y-2`}
         >
-          <ToolTipItem
-            icon={personIcon}
-            title={"New contact"}
-            action={() => {
-              setShowCreateContactModal(true)
-              setShowToolTip(false)
-            }}
-          />
           <div className="h-[2px] bg-divider"></div>
           <ToolTipItem
             icon={connectionIcon}
@@ -74,14 +59,6 @@ export const Pencil = () => {
           </div>
         </Button>
       </div>
-      <CreateContactModal
-        isOpen={showCreateContactModal}
-        closeModal={() => setShowCreateContactModal(false)}
-        onClose={() => {
-          setShowToolTip(false)
-          setShowCreateContactModal(false)
-        }}
-      />
       <ManageDialogsModal
         isOpen={showManageDialogsModal}
         close={() => setShowManageDialogsModal(false)}
