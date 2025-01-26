@@ -19,18 +19,12 @@ import MoreIcon from "~/assets/icons/more.svg?react"
 import { useRouter } from "@tanstack/react-router"
 import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts/index"
 import { ID } from "jazz-tools"
+import { useAppStore } from "~/lib/zustand-store/store"
 
-export const Folder = ({
-  folder,
-  expandedFolderId,
-  setExpandedFolderId,
-}: {
-  folder: JazzFolder | null
-  expandedFolderId: string | null
-  setExpandedFolderId: (val: null | string) => void
-}) => {
+export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
   const router = useRouter()
+  const { expandedFolder, setExpandedFolder } = useAppStore()
 
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
@@ -46,7 +40,7 @@ export const Folder = ({
   const deleteFolder = () => {
     if (jazzProfile && folder) {
       jazzDeleteFolder(jazzProfile, folder)
-      setExpandedFolderId(null)
+      setExpandedFolder(null)
     }
   }
 
@@ -99,7 +93,7 @@ export const Folder = ({
   }
 
   return (
-    <div className="overflow-hidden no-select">
+    <div className="no-select">
       {overlayVisible && (
         <div
           onTouchStart={(e) => {
@@ -112,17 +106,14 @@ export const Folder = ({
         ></div>
       )}
 
-      <motion.div
-        className="px-4 py-1 overflow-hidden rounded-b-xl"
-        style={{ overflow: "hidden", maxWidth: "100%" }}
-      >
+      <motion.div className="px-4 py-1 rounded-b-xl">
         <Accordion
-          expanded={expandedFolderId === folder?.id}
+          expanded={expandedFolder?.id === folder?.id}
           onChange={() => {
-            if (expandedFolderId === folder?.id) {
-              setExpandedFolderId(null)
+            if (expandedFolder?.id === folder?.id) {
+              setExpandedFolder(null)
             } else if (folder?.id) {
-              setExpandedFolderId(folder?.id)
+              setExpandedFolder(folder)
             }
           }}
         >
@@ -157,7 +148,7 @@ export const Folder = ({
             </div>
           </AccordionSummary>
           <AccordionContent
-            className={`transition-all duration-300 delay-75 ease-in-out ${expandedFolderId === folder?.id ? "opacity-100" : "opacity-0"}`}
+            className={` ${expandedFolder?.id === folder?.id ? "transition-all duration-300 delay-75 ease-in-out opacity-100" : "opacity-0"}`}
           >
             <div className={`flex gap-4`}>
               <InlineButtonsItem mode="plain" text="Icon (soon)">
@@ -192,7 +183,7 @@ export const Folder = ({
               {folder?.dialogs?.map(
                 (d) =>
                   d && (
-                    <div key={d.id} className="relative">
+                    <div key={d.id} className={`relative`}>
                       <Tappable
                         onTouchStart={() => {
                           if (d?.id) {
@@ -209,7 +200,7 @@ export const Folder = ({
                         <img
                           loading="lazy"
                           src={`https://t.me/i/userpic/320/${d?.username}.svg`}
-                          className="h-12 w-12 rounded-full "
+                          className={`h-12 w-12 rounded-full ${tooltipDialogId === d.id && "animate-pulse"}`}
                           decoding="async"
                           alt=""
                         />
@@ -227,7 +218,7 @@ export const Folder = ({
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.1 }}
-                            className={`absolute left-0 bottom-0 -translate-y-full backdrop-blur-lg overflow-hidden border-primary border-[2px] rounded-xl shadow-lg z-30`}
+                            className={`absolute left-1 -bottom-full -translate-x-1/4 backdrop-blur-lg bg-secondary bg-opacity-70 border-primary border-[2px] rounded-xl shadow-lg z-30`}
                           >
                             <ToolTipItem
                               Icon={

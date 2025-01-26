@@ -43,7 +43,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
   const router = useRouter()
   const { pathname } = useLocation()
 
-  const isActive = `${pathname}/` === to
+  const isActive = pathname.concat("/").includes(to)
   const handleClick = () => {
     router.navigate({ to })
   }

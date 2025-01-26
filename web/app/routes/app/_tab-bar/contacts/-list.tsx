@@ -1,7 +1,7 @@
 import { Pencil } from "./-pencil"
 import { JazzFolder } from "~/lib/jazz/schema"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 import { AddFolder } from "./(dragables)/-add-folder"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
 import {
@@ -64,8 +64,6 @@ const ContactsList = () => {
     }
   }
 
-  const [expandedFolderId, setExpandedFolderId] = useState<string | null>(null)
-
   return (
     <div onTouchMove={handleTouchMove} onTouchEnd={(e) => handleTouchEnd(e)}>
       <div className="overflow-y-auto overscroll-none pb-20">
@@ -82,11 +80,7 @@ const ContactsList = () => {
                     : "bg-transparent"
                 }
               >
-                <Folder
-                  folder={f}
-                  expandedFolderId={expandedFolderId}
-                  setExpandedFolderId={(val) => setExpandedFolderId(val)}
-                />
+                <Folder folder={f} />
               </div>
             ),
         )}
@@ -125,4 +119,4 @@ const isTouchOnAnyFolder = (
   return null
 }
 
-export default ContactsList
+export default memo(ContactsList)

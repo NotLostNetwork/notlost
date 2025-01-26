@@ -102,3 +102,8 @@ iframe {
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
 }
+
+/* Remove bg of section */
+.tgui-97eca24324122dbc .tgui-4b78bed6e925088e {
+  background: unset !important;
+}
