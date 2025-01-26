@@ -163,8 +163,10 @@ export const Folder = ({
               />
             </div>
           </AccordionSummary>
-          <AccordionContent>
-            <div className="flex gap-4">
+          <AccordionContent
+            className={`transition-all duration-300 delay-75 ease-in-out ${expandedFolderId === folder?.id ? "opacity-100" : "opacity-0"}`}
+          >
+            <div className={`flex gap-4`}>
               <InlineButtonsItem mode="plain" text="Icon (soon)">
                 <div className="h-5 w-5">
                   <FolderIcon />
