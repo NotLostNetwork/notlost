@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AppImport } from './routes/app'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppIndexImport } from './routes/app/index'
 import { Route as AppTgSignInImport } from './routes/app/tg-sign-in'
 import { Route as AppOnboardingImport } from './routes/app/onboarding'
 import { Route as AppClosedBetaImport } from './routes/app/closed-beta'
@@ -33,6 +34,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AppIndexRoute = AppIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppTgSignInRoute = AppTgSignInImport.update({
@@ -122,6 +129,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTgSignInImport
       parentRoute: typeof AppImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppImport
+    }
     '/app/_tab-bar/contacts/': {
       id: '/app/_tab-bar/contacts/'
       path: '/contacts'
@@ -169,6 +183,7 @@ interface AppRouteChildren {
   AppClosedBetaRoute: typeof AppClosedBetaRoute
   AppOnboardingRoute: typeof AppOnboardingRoute
   AppTgSignInRoute: typeof AppTgSignInRoute
+  AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -176,6 +191,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppClosedBetaRoute: AppClosedBetaRoute,
   AppOnboardingRoute: AppOnboardingRoute,
   AppTgSignInRoute: AppTgSignInRoute,
+  AppIndexRoute: AppIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -186,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/app/closed-beta': typeof AppClosedBetaRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/': typeof AppIndexRoute
   '/app/contacts': typeof AppTabBarContactsIndexRoute
   '/app/graph': typeof AppTabBarGraphIndexRoute
   '/app/map': typeof AppTabBarMapIndexRoute
@@ -193,7 +210,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppTabBarRouteWithChildren
+  '/app': typeof AppIndexRoute
   '/app/closed-beta': typeof AppClosedBetaRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
@@ -210,6 +227,7 @@ export interface FileRoutesById {
   '/app/closed-beta': typeof AppClosedBetaRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
+  '/app/': typeof AppIndexRoute
   '/app/_tab-bar/contacts/': typeof AppTabBarContactsIndexRoute
   '/app/_tab-bar/graph/': typeof AppTabBarGraphIndexRoute
   '/app/_tab-bar/map/': typeof AppTabBarMapIndexRoute
@@ -223,6 +241,7 @@ export interface FileRouteTypes {
     | '/app/closed-beta'
     | '/app/onboarding'
     | '/app/tg-sign-in'
+    | '/app/'
     | '/app/contacts'
     | '/app/graph'
     | '/app/map'
@@ -244,6 +263,7 @@ export interface FileRouteTypes {
     | '/app/closed-beta'
     | '/app/onboarding'
     | '/app/tg-sign-in'
+    | '/app/'
     | '/app/_tab-bar/contacts/'
     | '/app/_tab-bar/graph/'
     | '/app/_tab-bar/map/'
@@ -283,7 +303,8 @@ export const routeTree = rootRoute
         "/app/_tab-bar",
         "/app/closed-beta",
         "/app/onboarding",
-        "/app/tg-sign-in"
+        "/app/tg-sign-in",
+        "/app/"
       ]
     },
     "/app/_tab-bar": {
@@ -305,6 +326,10 @@ export const routeTree = rootRoute
     },
     "/app/tg-sign-in": {
       "filePath": "app/tg-sign-in.tsx",
+      "parent": "/app"
+    },
+    "/app/": {
+      "filePath": "app/index.tsx",
       "parent": "/app"
     },
     "/app/_tab-bar/contacts/": {
