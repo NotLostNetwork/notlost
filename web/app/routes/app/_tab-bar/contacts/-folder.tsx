@@ -8,7 +8,7 @@ import {
   jazzRemoveDialogFromFolder,
 } from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent"
 import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionSummary/AccordionSummary"
 import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Blocks/InlineButtons/components/InlineButtonsItem/InlineButtonsItem"
@@ -32,6 +32,7 @@ export const Folder = ({
   const [isEditTitle, setIsEditTitle] = useState(false)
 
   const [tooltipDialogId, setTooltipDialogId] = useState<null | string>(null)
+  const [overlayVisible, setOverlayVisible] = useState(false)
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
@@ -73,6 +74,7 @@ export const Folder = ({
     isLongPress.current = false
     timerRef.current = window.setTimeout(() => {
       setTooltipDialogId(dialogId)
+      setOverlayVisible(true)
       isLongPress.current = true
     }, 200)
   }
@@ -90,11 +92,12 @@ export const Folder = ({
 
   return (
     <div className="overflow-hidden no-select">
-      {tooltipDialogId && (
+      {overlayVisible && (
         <div
           onTouchStart={(e) => {
+            setTooltipDialogId(null)
             setTimeout(() => {
-              setTooltipDialogId(null)
+              setOverlayVisible(false)
             }, 150)
           }}
           className={`h-screen w-screen absolute top-0 left-0 z-20 pointer-events-auto`}
@@ -208,10 +211,15 @@ export const Folder = ({
                           {truncateWord(d?.name || "", 5)}
                         </span>
                       </Tappable>
-                      {d?.id === tooltipDialogId && (
-                        <div ref={tooltipRef}>
-                          <div
-                            className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
+                      <AnimatePresence>
+                        {d?.id === tooltipDialogId && (
+                          <motion.div
+                            ref={tooltipRef}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.1 }}
+                            className={`absolute left-0 bottom-0 -translate-y-full backdrop-blur-lg overflow-hidden border-primary border-[2px] rounded-xl shadow-lg z-30`}
                           >
                             <ToolTipItem
                               Icon={
@@ -235,9 +243,9 @@ export const Folder = ({
                                 setTooltipDialogId(null)
                               }}
                             />
-                          </div>
-                        </div>
-                      )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   ),
               )}
@@ -254,6 +262,8 @@ export const Folder = ({
     </div>
   )
 }
+
+const Tooltip = ({}) => {}
 
 const ToolTipItem = ({
   Icon,
