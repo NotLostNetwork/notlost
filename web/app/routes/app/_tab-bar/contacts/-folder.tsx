@@ -241,6 +241,7 @@ export const Folder = ({
                               action={() => {
                                 deleteDialogFromFolder(d)
                                 setTooltipDialogId(null)
+                                setOverlayVisible(false)
                               }}
                             />
                           </motion.div>
