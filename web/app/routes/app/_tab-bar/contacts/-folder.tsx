@@ -16,6 +16,9 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
 import { truncateWord } from "./(modals)/-manage-dialogs-modal"
 import MoreIcon from "~/assets/icons/more.svg?react"
+import { useRouter } from "@tanstack/react-router"
+import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts/index"
+import { ID } from "jazz-tools"
 
 export const Folder = ({
   folder,
@@ -27,6 +30,7 @@ export const Folder = ({
   setExpandedFolderId: (val: null | string) => void
 }) => {
   const jazzProfile = useJazzProfile()
+  const router = useRouter()
 
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
@@ -88,6 +92,10 @@ export const Folder = ({
         window.open(`https://t.me/${username}`, "_blank")
       }
     }
+  }
+
+  const navigateToDialogInfo = (dialogId: ID<JazzDialog>) => {
+    router.navigate({ to: `${ContactsRoute.to}/${dialogId}` })
   }
 
   return (
@@ -228,7 +236,11 @@ export const Folder = ({
                                 </div>
                               }
                               title={"Info"}
-                              action={() => {}}
+                              action={() => {
+                                navigateToDialogInfo(d.id)
+                                setTooltipDialogId(null)
+                                setOverlayVisible(false)
+                              }}
                             />
                             <div className="h-[2px] bg-divider"></div>
                             <ToolTipItem
