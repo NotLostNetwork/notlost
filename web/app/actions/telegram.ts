@@ -1,24 +1,29 @@
+// telegram.ts
+
 import { createServerFn } from "@tanstack/start"
-import { setCookie } from "vinxi/http"
-import TelegramApiClient from "~/lib/telegram/api/telegram-api-client"
+import TelegramApiClient from "@/lib/telegram/api/telegram-api-client"
 import { validate } from "@telegram-apps/init-data-node"
-import { COOKIE, getAndDecodeCookie } from "~/lib/utils/funcs/get-cookie"
 
 const API_ID = Number(process.env.TELEGRAM_API_ID)
 const API_HASH = process.env.TELEGRAM_API_HASH
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
-const STRING_SESSION = getAndDecodeCookie(COOKIE.TELEGRAM_STRING_SESSION)
+const STRING_SESSION = process.env.TELEGRAM_SESSION
 
 const client = TelegramApiClient.getInstance(
   API_ID,
   API_HASH!,
   STRING_SESSION || "",
-  BOT_TOKEN!,
 )
+
+export const $getTelegramPhoto = createServerFn({ method: "GET" })
+  .validator((data: string) => data)
+  .handler(async (ctx) => {
+    return await client.getPhoto(ctx.data)
+  })
 
 export const $getTelegramUser = createServerFn({ method: "GET" })
   .validator((data: string) => data)
   .handler(async (ctx) => {
+    console.log("here")
     return await client.getUserByUsername(ctx.data)
   })
 
@@ -38,13 +43,6 @@ export const $signIn = createServerFn({ method: "GET" })
       ctx.data.password,
       ctx.data.phoneCode,
     )
-    setCookie(COOKIE.TELEGRAM_STRING_SESSION, client.getSession(), {
-      path: "/",
-      maxAge: 90 * 24 * 60 * 60,
-      secure: true,
-      httpOnly: true,
-      sameSite: "lax",
-    })
     return res
   })
 
@@ -54,14 +52,31 @@ export const $validateInitData = createServerFn({ method: "GET" })
     validate(ctx.data, process.env.TELEGRAM_API_KEY!)
   })
 
-export const $validateBetaTestPassword = createServerFn({ method: "GET" })
-  .validator((data: string) => data)
-  .handler(async (ctx) => {
-    return ctx.data === process.env.BETA_TEST_PASSWORD
+export const $getMyDialogs = createServerFn({
+  method: "GET",
+}).handler(async (): Promise<DialogData[]> => {
+  const res = await client.getDialogs()
+  console.log(res)
+  return res.map((dialog) => {
+    const { unreadMentionsCount, name, unreadCount, entity } = dialog
+
+    return {
+      unreadCount,
+      name,
+      //@ts-ignore
+      username: entity.username,
+    }
   })
+})
 
 interface SignInData {
   phone: string
   phoneCode: string
   password: string
+}
+
+export interface DialogData {
+  unreadCount: number
+  name: string
+  username: null | string
 }

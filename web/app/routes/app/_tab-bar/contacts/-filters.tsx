@@ -14,7 +14,7 @@ export const FilterBySearch = ({
   return (
     <div className="pt-5 pb-4">
       <Input
-        className="text-white"
+        className="text-white bg-secondary"
         style={{ color: "white" }}
         type="text"
         placeholder="Search"

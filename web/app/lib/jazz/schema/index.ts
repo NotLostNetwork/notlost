@@ -19,6 +19,18 @@ export class JazzContact extends CoMap {
 }
 export class JazzListOfContacts extends CoList.Of(co.ref(JazzContact)) {}
 
+export class JazzFolder extends CoMap {
+  title = co.string
+  dialogs = co.ref(JazzListOfDialogs)
+}
+export class JazzDialog extends CoMap {
+  name = co.string
+  username = co.string
+}
+
+export class JazzListOfDialogs extends CoList.Of(co.ref(JazzDialog)) {}
+export class JazzListOfFolders extends CoList.Of(co.ref(JazzFolder)) {}
+
 // account root is an app-specific per-user private `CoMap`
 // where you can store top-level objects for that user
 export class RootUserProfile extends Profile {
@@ -29,6 +41,8 @@ export class RootUserProfile extends Profile {
   firstName = co.string
   lastName = co.string
   telegramSync = co.boolean // if true, app will use live tg contact to sync up
+
+  folders = co.ref(JazzListOfFolders)
 }
 
 export class JazzAccount extends Account {
@@ -52,6 +66,12 @@ export class JazzAccount extends Account {
 
     if (!profile._refs.contacts) {
       profile.contacts = JazzListOfContacts.create([], {
+        owner: this.profile!._owner,
+      })
+    }
+
+    if (!profile._refs.folders) {
+      profile.folders = JazzListOfFolders.create([], {
         owner: this.profile!._owner,
       })
     }

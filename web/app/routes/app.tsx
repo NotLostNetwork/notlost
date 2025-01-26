@@ -19,7 +19,6 @@ function LayoutComponent() {
   return (
     <TelegramProvider>
       <JazzAndAuth>
-        <Toaster position="bottom-center" />
         <Outlet />
       </JazzAndAuth>
     </TelegramProvider>

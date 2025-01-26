@@ -11,13 +11,14 @@ interface ModalProps {
 const BottomModal = ({ isOpen, onClose, title, children }: ModalProps) => {
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${
+        isOpen
+          ? "opacity-100 pointer-events-none"
+          : "opacity-0 pointer-events-none"
       }`}
-      onClick={onClose}
     >
       <div
-        className={`bg-secondary p-6 rounded-t-2xl shadow-lg transform transition-transform ease-in-out duration-300 absolute bottom-0 w-full ${
+        className={`bg-secondary pointer-events-auto p-6 rounded-t-2xl shadow-lg transform transition-transform ease-in-out duration-300 absolute bottom-0 w-full ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         onClick={(e) => e.stopPropagation()}

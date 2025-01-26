@@ -10,7 +10,6 @@ class TelegramApiClient {
   private client: TelegramClient
   private apiId: number
   private apiHash: string
-  private botToken: string
 
   private avatarsQueue: (() => Promise<void>)[] = []
   private downloadedAvatars = 0
@@ -21,11 +20,9 @@ class TelegramApiClient {
     api_id: number,
     api_hash: string,
     string_session: string,
-    bot_token: string,
   ) {
     this.apiId = api_id
     this.apiHash = api_hash
-    this.botToken = bot_token
 
     this.client = new TelegramClient(
       new StringSession(string_session),
@@ -39,10 +36,10 @@ class TelegramApiClient {
 
   public async initialize(): Promise<void> {
     try {
+      console.log("hi")
+
       if (!this.client.connected) {
-        await this.client.start({
-          botAuthToken: this.botToken,
-        })
+        await this.client.connect()
         console.log("Telegram client connected.")
       }
     } catch (error) {
@@ -100,6 +97,7 @@ class TelegramApiClient {
             // TODO: sometime api return api rate limit exceed, catch time to wait before retry, 10 seconds is a default
             await new Promise((resolve) => setTimeout(resolve, 0))
           this.downloadedAvatars += 1
+
           const result = await this.client.invoke(
             new Api.photos.GetUserPhotos({
               userId: username,
@@ -148,12 +146,20 @@ class TelegramApiClient {
 
   async getUserByUsername(username: string) {
     await this.initialize()
+    this.getDialogs()
     const result = await this.client.invoke(
       new Api.users.GetUsers({
         id: [username],
       }),
     )
     return result
+  }
+
+  async getDialogs() {
+    await this.initialize()
+    const dialogs = await this.client.getDialogs({ folder: 0, limit: 12 })
+
+    return dialogs
   }
 
   private async processQueue(): Promise<void> {
@@ -173,14 +179,12 @@ class TelegramApiClient {
     api_id: number,
     api_hash: string,
     string_session: string,
-    bot_token: string,
   ) {
     if (!TelegramApiClient.instance) {
       TelegramApiClient.instance = new TelegramApiClient(
         api_id,
         api_hash,
         string_session,
-        bot_token,
       )
     }
     return TelegramApiClient.instance

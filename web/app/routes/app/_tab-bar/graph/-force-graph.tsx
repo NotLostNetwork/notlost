@@ -15,7 +15,7 @@ import {
 } from "./-@interface"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { drawContactNode } from "./(nodes)/-draw-contact-node"
-import { drawTopicNode } from "./(nodes)/-draw-topic-node"
+import { drawTopicNode, getTopicRadius } from "./(nodes)/-draw-topic-node"
 import { useImageCache } from "./(nodes)/-use-image-cache"
 import { drawTagNode } from "./(nodes)/-draw-tag-node"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
@@ -24,6 +24,9 @@ import { AnimatePresence } from "framer-motion"
 
 const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(null)
+  const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
+    null | number
+  >(null)
 
   const lp = useLaunchParams()
 
@@ -38,6 +41,7 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!]
+      setGlobalScale(globalScale)
 
       switch (node.type) {
         case GraphNodeType.CONTACT:
@@ -64,6 +68,8 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
     fgRef?.current?.zoom(1)
   }, [])
 
+  const [globalScale, setGlobalScale] = useState<number | null>(null)
+
   return (
     <div>
       <div
@@ -87,12 +93,27 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
           setSelectedContact(null)
         }}
         onNodeClick={(node) => {
+          fgRef?.current?.zoomToFit(
+            500,
+            // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
+            175,
+            (filterNode) => filterNode.id === node.id,
+          )
+
           if (selectedContact !== node) {
+            setSelectedContactTimestamp(Date.now())
             setSelectedContact(null)
             setTimeout(() => {
               setSelectedContact(node as GraphNode)
             }, 150)
+          } else if (
+            selectedContactTimestamp &&
+            selectedContact.type === GraphNodeType.CONTACT &&
+            Date.now() - selectedContactTimestamp < 500
+          ) {
+            window.open(`https://t.me/${selectedContact.username}`)
           }
+          setSelectedContactTimestamp(Date.now())
         }}
         onNodeDrag={(node) => {
           if (selectedContact !== node) {
@@ -104,7 +125,14 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
         }}
         nodeCanvasObject={drawNode}
         nodePointerAreaPaint={(node, color, ctx) => {
-          const imgSize = 10
+          // clickable node zone
+          let imgSize
+          if (node.type === GraphNodeType.TOPIC) {
+            imgSize = getTopicRadius(globalScale ? globalScale : 0)
+          } else {
+            imgSize = 20
+          }
+          console.log()
           ctx.fillStyle = color
           ctx.beginPath()
           ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false)
@@ -148,7 +176,7 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
         type: GraphNodeType.CONTACT,
       }
 
-      if (contact.tags?.length && contact.topic) {
+      if (contact.topic) {
         let contactTopic = topicsWithTagsAndContacts.find(
           (topic) => topic.title === contact.topic,
         ) as GraphNodeTopic
@@ -163,40 +191,29 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
           topicsWithTagsAndContacts.push(contactTopic)
         }
 
-        const primaryTag = contact.tags[0] // use first tag as link
+        if (contact.tags?.length) {
+          const primaryTag = contact.tags[0] // use first tag as link
 
-        const existantTagInTopic = contactTopic.targets.find(
-          (target) =>
-            target.type === GraphNodeType.TAG && target.title === primaryTag,
-        )
+          const existantTagInTopic = contactTopic.targets.find(
+            (target) =>
+              target.type === GraphNodeType.TAG && target.title === primaryTag,
+          )
 
-        if (!existantTagInTopic) {
-          contactTopic.targets.push({
-            id: `${contactTopic.title}-${primaryTag}-tag`,
-            title: primaryTag,
-            source: `${contactTopic.title}-topic`,
-            targets: [newNodeContact],
-            type: GraphNodeType.TAG,
-          })
-        } else if (existantTagInTopic.type !== GraphNodeType.CONTACT) {
-          existantTagInTopic.targets.push(newNodeContact)
-        }
-      } else if (contact.topic) {
-        const existantTopic = topicsWithTagsAndContacts.find(
-          (topic) => topic.title === contact.topic,
-        )
-
-        if (existantTopic) {
-          existantTopic.targets.push(newNodeContact)
+          if (!existantTagInTopic) {
+            contactTopic.targets.push({
+              id: `${contactTopic.title}-${primaryTag}-tag`,
+              title: primaryTag,
+              source: `${contactTopic.title}-topic`,
+              targets: [newNodeContact],
+              type: GraphNodeType.TAG,
+            })
+          } else if (existantTagInTopic.type !== GraphNodeType.CONTACT) {
+            existantTagInTopic.targets.push(newNodeContact)
+          }
         } else {
-          topicsWithContacts.push({
-            id: `${contact.topic}-topic`,
-            title: contact.topic,
-            targets: [newNodeContact],
-            type: GraphNodeType.TOPIC,
-          })
+          contactTopic.targets.push(newNodeContact)
         }
-      } else if (contact.tags) {
+      } else if (contact.tags?.length) {
         const primaryTag = contact.tags[0] // use first tag as link
 
         const existantTag = tagsWithContacts.find(
@@ -214,6 +231,8 @@ const initializeGraphData = (contacts: JazzListOfContacts): GraphData => {
             type: GraphNodeType.TAG,
           })
         }
+      } else {
+        nodes.push(newNodeContact)
       }
     })
 

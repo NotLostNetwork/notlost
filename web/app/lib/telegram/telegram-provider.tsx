@@ -32,7 +32,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
     }
   }, [])
   return (
-    <AppRoot appearance={"dark"} platform={"base"}>
+    <AppRoot appearance={"dark"} platform={"ios"}>
       {children}
     </AppRoot>
   )
