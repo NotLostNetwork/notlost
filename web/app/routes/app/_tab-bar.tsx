@@ -17,7 +17,7 @@ export default function TabBar() {
     <div className="bg-primary border-t-[1px] border-primary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
-          {/* <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} /> */}
+          <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} />
           <BottomBarLink
             to={ContactsRoute.to}
             title="Search"
