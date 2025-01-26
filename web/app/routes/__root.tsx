@@ -76,6 +76,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html>
       <head>
         <Meta />
+        <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
       </head>
       <body>
         {children}
