@@ -72,11 +72,18 @@ const ForceGraph = ({ data }: { data: JazzListOfContacts }) => {
 
   return (
     <div>
-      <AnimatePresence>
-        {selectedContact && (
-          <SelectedContact selectedContact={selectedContact} />
-        )}
-      </AnimatePresence>
+      <div
+        style={{
+          top: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
+        }}
+        className="absolute left-0 w-full z-10"
+      >
+        <AnimatePresence>
+          {selectedContact && (
+            <SelectedContact selectedContact={selectedContact} />
+          )}
+        </AnimatePresence>
+      </div>
 
       <ForceGraph2D
         ref={fgRef}

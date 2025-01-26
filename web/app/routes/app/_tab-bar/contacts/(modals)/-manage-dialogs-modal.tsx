@@ -112,9 +112,41 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
           <div>Place new folder</div>
         </div>
       </div>
-      {dialogs && (
+      {dialogs ? (
         <div className="flex flex-wrap gap-4 justify-center">
           {dialogs.map((d) => {
+            if (!d.username) return
+            return (
+              <div className="relative">
+                <div className="absolute left-1/2 transform -translate-x-1/2 h-12 w-12 rounded-full bg-primary -z-10 animate-pulse"></div>
+                <div
+                  ref={(el) => (dialogRefs.current[d.username!] = el)}
+                  /*onMouseDown={(e) => handleMouseDown(e, d.username!)}*/
+                  onTouchStart={(e) => {
+                    handleTouchStart(e, "contact", d)
+                  }}
+                  className="flex flex-col justify-center items-center gap-1 touch-none relative"
+                >
+                  <img
+                    loading="lazy"
+                    src={`https://t.me/i/userpic/320/${d.username}.svg`}
+                    className="h-12 w-12 rounded-full "
+                    decoding="async"
+                    alt=""
+                  />
+                  <span
+                    className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+                  >
+                    {truncateWord(d.name, 6)}
+                  </span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-4 justify-center">
+          {trialContacts.map((d) => {
             if (!d.username) return
             return (
               <div className="relative">
@@ -148,6 +180,12 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
     </BottomModal>
   )
 }
+
+const trialContacts: DialogData[] = [
+  { username: "shestaya_liniya", name: "Andrei", unreadCount: 0 },
+  { username: "skywl_k", name: "Andrei", unreadCount: 0 },
+  { username: "PiraJoke", name: "Max", unreadCount: 0 },
+]
 
 export function truncateWord(word: string, maxLength: number): string {
   return word.length > maxLength ? word.slice(0, maxLength) + "..." : word

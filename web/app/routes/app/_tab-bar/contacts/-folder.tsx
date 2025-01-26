@@ -8,7 +8,7 @@ import {
   jazzRemoveDialogFromFolder,
 } from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent"
 import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionSummary/AccordionSummary"
 import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Blocks/InlineButtons/components/InlineButtonsItem/InlineButtonsItem"
@@ -16,6 +16,9 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
 import { truncateWord } from "./(modals)/-manage-dialogs-modal"
 import MoreIcon from "~/assets/icons/more.svg?react"
+import { useRouter } from "@tanstack/react-router"
+import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts/index"
+import { ID } from "jazz-tools"
 
 export const Folder = ({
   folder,
@@ -27,11 +30,13 @@ export const Folder = ({
   setExpandedFolderId: (val: null | string) => void
 }) => {
   const jazzProfile = useJazzProfile()
+  const router = useRouter()
 
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
 
   const [tooltipDialogId, setTooltipDialogId] = useState<null | string>(null)
+  const [overlayVisible, setOverlayVisible] = useState(false)
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
@@ -66,24 +71,6 @@ export const Folder = ({
     }
   }, [folderTitle])
 
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(event.target as Node)
-      ) {
-        setTooltipDialogId(null)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
-
-  const [longPressTriggered, setLongPressTriggered] = useState(false)
   const timerRef = useRef<number | null>(null)
   const isLongPress = useRef(false)
 
@@ -91,8 +78,8 @@ export const Folder = ({
     isLongPress.current = false
     timerRef.current = window.setTimeout(() => {
       setTooltipDialogId(dialogId)
+      setOverlayVisible(true)
       isLongPress.current = true
-      setLongPressTriggered(true)
     }, 200)
   }
 
@@ -103,19 +90,25 @@ export const Folder = ({
 
       if (!isLongPress.current) {
         window.open(`https://t.me/${username}`, "_blank")
-      } else {
-        // Prevent hiding the tooltip if it was just shown
-        console.log("Tooltip remains visible.")
       }
     }
   }
 
+  const navigateToDialogInfo = (dialogId: ID<JazzDialog>) => {
+    router.navigate({ to: `${ContactsRoute.to}/${dialogId}` })
+  }
+
   return (
     <div className="overflow-hidden no-select">
-      {tooltipDialogId && (
+      {overlayVisible && (
         <div
-          onClick={() => setTooltipDialogId(null)}
-          className={`h-screen w-screen absolute top-0 left-0 z-20`}
+          onTouchStart={(e) => {
+            setTooltipDialogId(null)
+            setTimeout(() => {
+              setOverlayVisible(false)
+            }, 150)
+          }}
+          className={`h-screen w-screen absolute top-0 left-0 z-20 pointer-events-auto`}
         ></div>
       )}
 
@@ -163,8 +156,10 @@ export const Folder = ({
               />
             </div>
           </AccordionSummary>
-          <AccordionContent>
-            <div className="flex gap-4">
+          <AccordionContent
+            className={`transition-all duration-300 delay-75 ease-in-out ${expandedFolderId === folder?.id ? "opacity-100" : "opacity-0"}`}
+          >
+            <div className={`flex gap-4`}>
               <InlineButtonsItem mode="plain" text="Icon (soon)">
                 <div className="h-5 w-5">
                   <FolderIcon />
@@ -224,11 +219,15 @@ export const Folder = ({
                           {truncateWord(d?.name || "", 5)}
                         </span>
                       </Tappable>
-                      {d?.id === tooltipDialogId && (
-                        <div ref={tooltipRef}>
-                          <div
+                      <AnimatePresence>
+                        {d?.id === tooltipDialogId && (
+                          <motion.div
                             ref={tooltipRef}
-                            className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.1 }}
+                            className={`absolute left-0 bottom-0 -translate-y-full backdrop-blur-lg overflow-hidden border-primary border-[2px] rounded-xl shadow-lg z-30`}
                           >
                             <ToolTipItem
                               Icon={
@@ -237,7 +236,11 @@ export const Folder = ({
                                 </div>
                               }
                               title={"Info"}
-                              action={() => {}}
+                              action={() => {
+                                navigateToDialogInfo(d.id)
+                                setTooltipDialogId(null)
+                                setOverlayVisible(false)
+                              }}
                             />
                             <div className="h-[2px] bg-divider"></div>
                             <ToolTipItem
@@ -250,11 +253,12 @@ export const Folder = ({
                               action={() => {
                                 deleteDialogFromFolder(d)
                                 setTooltipDialogId(null)
+                                setOverlayVisible(false)
                               }}
                             />
-                          </div>
-                        </div>
-                      )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   ),
               )}
@@ -271,6 +275,8 @@ export const Folder = ({
     </div>
   )
 }
+
+const Tooltip = ({}) => {}
 
 const ToolTipItem = ({
   Icon,

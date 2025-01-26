@@ -37,7 +37,7 @@ const ContactsPage = () => {
             }
           />
           <div className="text-accent font-semibold text-center w-full animate-pulse absolute z-10 -top-4">
-            NotLost Alpha
+            NotLost Beta
           </div>
         </div>
       </div>

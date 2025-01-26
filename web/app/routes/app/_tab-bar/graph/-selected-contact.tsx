@@ -86,18 +86,12 @@ export const SelectedContact = ({
 const Wrapper = ({ children }: { children: ReactElement }) => {
   return (
     <motion.div
-      className="z-50"
       initial={{ opacity: 0, y: 10, filter: "blur(2px)" }}
       animate={{ opacity: 1, y: 0, filter: "unset" }}
       exit={{ opacity: 0, y: 10, filter: "blur(2px)" }}
       transition={{ duration: 0.15 }}
     >
-      <div
-        className="absolute top-0 left-0 z-10  w-full"
-        style={{
-          top: `calc(${getCssVariableValue("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariableValue("--tg-viewport-content-safe-area-inset-top")})`,
-        }}
-      >
+      <div>
         <div className="w-screen p-4 pt-2">
           <div
             className="bg-secondary rounded-xl"

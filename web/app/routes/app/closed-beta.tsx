@@ -5,7 +5,11 @@ import Modal from "~/ui/modals/modal"
 import TgWallpaper from "~/ui/tg-wallpaper"
 import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts"
 
-export function BetaTest() {
+export function BetaTest({
+  setBetaTestPassword,
+}: {
+  setBetaTestPassword: (pass: string) => void
+}) {
   const [passwordModalOpen, setPasswordModalOpen] = useState(false)
   const [passwordValue, setPasswordValue] = useState("")
   const [invalidPassword, setInvalidPassword] = useState(false)
@@ -17,7 +21,7 @@ export function BetaTest() {
     if (!validated) {
       setInvalidPassword(true)
     } else {
-      localStorage.setItem("betaTestPassword", passwordValue)
+      setBetaTestPassword(passwordValue)
       navigate({ to: ContactsRoute.to })
       // remove reload after finding a fix
       // window.location.reload()
