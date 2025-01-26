@@ -66,24 +66,6 @@ export const Folder = ({
     }
   }, [folderTitle])
 
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(event.target as Node)
-      ) {
-        setTooltipDialogId(null)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
-
-  const [longPressTriggered, setLongPressTriggered] = useState(false)
   const timerRef = useRef<number | null>(null)
   const isLongPress = useRef(false)
 
@@ -92,7 +74,6 @@ export const Folder = ({
     timerRef.current = window.setTimeout(() => {
       setTooltipDialogId(dialogId)
       isLongPress.current = true
-      setLongPressTriggered(true)
     }, 200)
   }
 
@@ -103,9 +84,6 @@ export const Folder = ({
 
       if (!isLongPress.current) {
         window.open(`https://t.me/${username}`, "_blank")
-      } else {
-        // Prevent hiding the tooltip if it was just shown
-        console.log("Tooltip remains visible.")
       }
     }
   }
@@ -114,8 +92,12 @@ export const Folder = ({
     <div className="overflow-hidden no-select">
       {tooltipDialogId && (
         <div
-          onClick={() => setTooltipDialogId(null)}
-          className={`h-screen w-screen absolute top-0 left-0 z-20`}
+          onTouchStart={(e) => {
+            setTimeout(() => {
+              setTooltipDialogId(null)
+            }, 150)
+          }}
+          className={`h-screen w-screen absolute top-0 left-0 z-20 pointer-events-auto`}
         ></div>
       )}
 
@@ -229,7 +211,6 @@ export const Folder = ({
                       {d?.id === tooltipDialogId && (
                         <div ref={tooltipRef}>
                           <div
-                            ref={tooltipRef}
                             className={`absolute left-0 bottom-0 -translate-y-full bg-secondary overflow-hidden border-primary border-[2px] rounded-xl transition-opacity ease-in-out duration-150 shadow-lg z-30`}
                           >
                             <ToolTipItem
