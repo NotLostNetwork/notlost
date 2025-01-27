@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useEffect } from "react"
 import { JazzDialog } from "~/lib/jazz/schema"
 import MoreIcon from "~/assets/icons/more.svg?react"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts/index"
+import { Route as ContactsRoute } from "~/routes/app/_tab-bar/dialogs/index"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
 import { jazzRemoveDialog } from "~/lib/jazz/actions/jazz-dialog"
 

@@ -8,7 +8,7 @@ import SearchIcon from "~/assets/icons/search-icon.svg?react"
 import GraphIcon from "~/assets/icons/graph-icon.svg?react"
 import React from "react"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
+import { Route as ContactsRoute } from "~/routes/app/_tab-bar/dialogs"
 import { Route as TryRoute } from "~/routes/app/_tab-bar/map"
 import tgWallpaper from "~/assets/tg-wallpaper-paris.svg"
 

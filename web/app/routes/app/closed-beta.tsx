@@ -3,7 +3,7 @@ import { Button, Input } from "@telegram-apps/telegram-ui"
 import { useState } from "react"
 import Modal from "~/ui/modals/modal"
 import TgWallpaper from "~/ui/tg-wallpaper"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts"
+import { Route as ContactsRoute } from "~/routes/app/_tab-bar/dialogs"
 
 export function BetaTest({
   setBetaTestPassword,

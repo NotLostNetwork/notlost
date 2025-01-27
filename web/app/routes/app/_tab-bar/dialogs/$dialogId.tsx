@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import WebApp from "@twa-dev/sdk"
-import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts/index"
+import { Route as ContactsRoute } from "~/routes/app/_tab-bar/dialogs/index"
 import { useCoState } from "~/lib/jazz/jazz-provider"
 import { JazzDialog } from "~/lib/jazz/schema"
 import { ID } from "jazz-tools"
@@ -78,6 +78,6 @@ function RouteComponent() {
   )
 }
 
-export const Route = createFileRoute("/app/_tab-bar/contacts/$dialogId")({
+export const Route = createFileRoute("/app/_tab-bar/dialogs/$dialogId")({
   component: RouteComponent,
 })

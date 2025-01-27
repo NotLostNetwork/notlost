@@ -31,7 +31,7 @@ const ContactsPage = () => {
   )
 }
 
-export const Route = createFileRoute('/app/_tab-bar/contacts/')({
+export const Route = createFileRoute('/app/_tab-bar/dialogs/')({
   component: ContactsPage,
   pendingMinMs: 0,
   pendingMs: 0,

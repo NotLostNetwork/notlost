@@ -20,8 +20,8 @@ import { Route as AppClosedBetaImport } from './routes/app/closed-beta'
 import { Route as AppTabBarImport } from './routes/app/_tab-bar'
 import { Route as AppTabBarMapIndexImport } from './routes/app/_tab-bar/map/index'
 import { Route as AppTabBarGraphIndexImport } from './routes/app/_tab-bar/graph/index'
-import { Route as AppTabBarContactsIndexImport } from './routes/app/_tab-bar/contacts/index'
-import { Route as AppTabBarContactsDialogIdImport } from './routes/app/_tab-bar/contacts/$dialogId'
+import { Route as AppTabBarDialogsIndexImport } from './routes/app/_tab-bar/dialogs/index'
+import { Route as AppTabBarDialogsDialogIdImport } from './routes/app/_tab-bar/dialogs/$dialogId'
 
 // Create/Update Routes
 
@@ -78,15 +78,15 @@ const AppTabBarGraphIndexRoute = AppTabBarGraphIndexImport.update({
   getParentRoute: () => AppTabBarRoute,
 } as any)
 
-const AppTabBarContactsIndexRoute = AppTabBarContactsIndexImport.update({
-  id: '/contacts/',
-  path: '/contacts/',
+const AppTabBarDialogsIndexRoute = AppTabBarDialogsIndexImport.update({
+  id: '/dialogs/',
+  path: '/dialogs/',
   getParentRoute: () => AppTabBarRoute,
 } as any)
 
-const AppTabBarContactsDialogIdRoute = AppTabBarContactsDialogIdImport.update({
-  id: '/contacts/$dialogId',
-  path: '/contacts/$dialogId',
+const AppTabBarDialogsDialogIdRoute = AppTabBarDialogsDialogIdImport.update({
+  id: '/dialogs/$dialogId',
+  path: '/dialogs/$dialogId',
   getParentRoute: () => AppTabBarRoute,
 } as any)
 
@@ -143,18 +143,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/app/_tab-bar/contacts/$dialogId': {
-      id: '/app/_tab-bar/contacts/$dialogId'
-      path: '/contacts/$dialogId'
-      fullPath: '/app/contacts/$dialogId'
-      preLoaderRoute: typeof AppTabBarContactsDialogIdImport
+    '/app/_tab-bar/dialogs/$dialogId': {
+      id: '/app/_tab-bar/dialogs/$dialogId'
+      path: '/dialogs/$dialogId'
+      fullPath: '/app/dialogs/$dialogId'
+      preLoaderRoute: typeof AppTabBarDialogsDialogIdImport
       parentRoute: typeof AppTabBarImport
     }
-    '/app/_tab-bar/contacts/': {
-      id: '/app/_tab-bar/contacts/'
-      path: '/contacts'
-      fullPath: '/app/contacts'
-      preLoaderRoute: typeof AppTabBarContactsIndexImport
+    '/app/_tab-bar/dialogs/': {
+      id: '/app/_tab-bar/dialogs/'
+      path: '/dialogs'
+      fullPath: '/app/dialogs'
+      preLoaderRoute: typeof AppTabBarDialogsIndexImport
       parentRoute: typeof AppTabBarImport
     }
     '/app/_tab-bar/graph/': {
@@ -177,15 +177,15 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppTabBarRouteChildren {
-  AppTabBarContactsDialogIdRoute: typeof AppTabBarContactsDialogIdRoute
-  AppTabBarContactsIndexRoute: typeof AppTabBarContactsIndexRoute
+  AppTabBarDialogsDialogIdRoute: typeof AppTabBarDialogsDialogIdRoute
+  AppTabBarDialogsIndexRoute: typeof AppTabBarDialogsIndexRoute
   AppTabBarGraphIndexRoute: typeof AppTabBarGraphIndexRoute
   AppTabBarMapIndexRoute: typeof AppTabBarMapIndexRoute
 }
 
 const AppTabBarRouteChildren: AppTabBarRouteChildren = {
-  AppTabBarContactsDialogIdRoute: AppTabBarContactsDialogIdRoute,
-  AppTabBarContactsIndexRoute: AppTabBarContactsIndexRoute,
+  AppTabBarDialogsDialogIdRoute: AppTabBarDialogsDialogIdRoute,
+  AppTabBarDialogsIndexRoute: AppTabBarDialogsIndexRoute,
   AppTabBarGraphIndexRoute: AppTabBarGraphIndexRoute,
   AppTabBarMapIndexRoute: AppTabBarMapIndexRoute,
 }
@@ -219,8 +219,8 @@ export interface FileRoutesByFullPath {
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/': typeof AppIndexRoute
-  '/app/contacts/$dialogId': typeof AppTabBarContactsDialogIdRoute
-  '/app/contacts': typeof AppTabBarContactsIndexRoute
+  '/app/dialogs/$dialogId': typeof AppTabBarDialogsDialogIdRoute
+  '/app/dialogs': typeof AppTabBarDialogsIndexRoute
   '/app/graph': typeof AppTabBarGraphIndexRoute
   '/app/map': typeof AppTabBarMapIndexRoute
 }
@@ -231,8 +231,8 @@ export interface FileRoutesByTo {
   '/app/closed-beta': typeof AppClosedBetaRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
-  '/app/contacts/$dialogId': typeof AppTabBarContactsDialogIdRoute
-  '/app/contacts': typeof AppTabBarContactsIndexRoute
+  '/app/dialogs/$dialogId': typeof AppTabBarDialogsDialogIdRoute
+  '/app/dialogs': typeof AppTabBarDialogsIndexRoute
   '/app/graph': typeof AppTabBarGraphIndexRoute
   '/app/map': typeof AppTabBarMapIndexRoute
 }
@@ -246,8 +246,8 @@ export interface FileRoutesById {
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/tg-sign-in': typeof AppTgSignInRoute
   '/app/': typeof AppIndexRoute
-  '/app/_tab-bar/contacts/$dialogId': typeof AppTabBarContactsDialogIdRoute
-  '/app/_tab-bar/contacts/': typeof AppTabBarContactsIndexRoute
+  '/app/_tab-bar/dialogs/$dialogId': typeof AppTabBarDialogsDialogIdRoute
+  '/app/_tab-bar/dialogs/': typeof AppTabBarDialogsIndexRoute
   '/app/_tab-bar/graph/': typeof AppTabBarGraphIndexRoute
   '/app/_tab-bar/map/': typeof AppTabBarMapIndexRoute
 }
@@ -261,8 +261,8 @@ export interface FileRouteTypes {
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/'
-    | '/app/contacts/$dialogId'
-    | '/app/contacts'
+    | '/app/dialogs/$dialogId'
+    | '/app/dialogs'
     | '/app/graph'
     | '/app/map'
   fileRoutesByTo: FileRoutesByTo
@@ -272,8 +272,8 @@ export interface FileRouteTypes {
     | '/app/closed-beta'
     | '/app/onboarding'
     | '/app/tg-sign-in'
-    | '/app/contacts/$dialogId'
-    | '/app/contacts'
+    | '/app/dialogs/$dialogId'
+    | '/app/dialogs'
     | '/app/graph'
     | '/app/map'
   id:
@@ -285,8 +285,8 @@ export interface FileRouteTypes {
     | '/app/onboarding'
     | '/app/tg-sign-in'
     | '/app/'
-    | '/app/_tab-bar/contacts/$dialogId'
-    | '/app/_tab-bar/contacts/'
+    | '/app/_tab-bar/dialogs/$dialogId'
+    | '/app/_tab-bar/dialogs/'
     | '/app/_tab-bar/graph/'
     | '/app/_tab-bar/map/'
   fileRoutesById: FileRoutesById
@@ -333,8 +333,8 @@ export const routeTree = rootRoute
       "filePath": "app/_tab-bar.tsx",
       "parent": "/app",
       "children": [
-        "/app/_tab-bar/contacts/$dialogId",
-        "/app/_tab-bar/contacts/",
+        "/app/_tab-bar/dialogs/$dialogId",
+        "/app/_tab-bar/dialogs/",
         "/app/_tab-bar/graph/",
         "/app/_tab-bar/map/"
       ]
@@ -355,12 +355,12 @@ export const routeTree = rootRoute
       "filePath": "app/index.tsx",
       "parent": "/app"
     },
-    "/app/_tab-bar/contacts/$dialogId": {
-      "filePath": "app/_tab-bar/contacts/$dialogId.tsx",
+    "/app/_tab-bar/dialogs/$dialogId": {
+      "filePath": "app/_tab-bar/dialogs/$dialogId.tsx",
       "parent": "/app/_tab-bar"
     },
-    "/app/_tab-bar/contacts/": {
-      "filePath": "app/_tab-bar/contacts/index.tsx",
+    "/app/_tab-bar/dialogs/": {
+      "filePath": "app/_tab-bar/dialogs/index.tsx",
       "parent": "/app/_tab-bar"
     },
     "/app/_tab-bar/graph/": {

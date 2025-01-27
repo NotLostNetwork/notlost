@@ -9,7 +9,7 @@ import {
   JazzListOfContacts,
   RootUserProfile,
 } from "~/lib/jazz/schema"
-import { Route as ContactsRoute } from "./_tab-bar/contacts/index"
+import { Route as ContactsRoute } from "./_tab-bar/dialogs/index"
 
 function OnboardingPage() {
   const { me } = useAccount()
