@@ -1,54 +1,30 @@
-import { JazzDialog, JazzFolder } from "~/lib/jazz/schema"
+import { JazzFolder } from "~/lib/jazz/schema"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useState, useRef, useEffect } from "react"
 import { Icon16Cancel } from "@telegram-apps/telegram-ui/dist/icons/16/cancel"
-import { Accordion, Tappable } from "@telegram-apps/telegram-ui"
-import {
-  jazzDeleteFolder,
-  jazzRemoveDialogFromFolder,
-} from "~/lib/jazz/actions/jazz-folder"
+import { Accordion } from "@telegram-apps/telegram-ui"
+import { jazzDeleteFolder } from "~/lib/jazz/actions/jazz-folder"
 import { useJazzProfile } from "~/lib/jazz/hooks/use-jazz-profile"
-import { AnimatePresence, motion } from "framer-motion"
 import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent"
 import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionSummary/AccordionSummary"
 import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Blocks/InlineButtons/components/InlineButtonsItem/InlineButtonsItem"
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
 import ConfirmModal from "~/ui/modals/confirm-modal"
-import { truncateWord } from "./(modals)/-manage-dialogs-modal"
-import MoreIcon from "~/assets/icons/more.svg?react"
-import { useRouter } from "@tanstack/react-router"
-import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts/index"
-import { ID } from "jazz-tools"
 import { useAppStore } from "~/lib/zustand-store/store"
+import { motion } from "framer-motion"
+import { Dialog } from "./-dialog"
 
 export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
   const jazzProfile = useJazzProfile()
-  const router = useRouter()
+
   const { expandedFolder, setExpandedFolder } = useAppStore()
 
   const [folderTitle, setFolderTitle] = useState(folder?.title || "")
   const [isEditTitle, setIsEditTitle] = useState(false)
 
-  const [tooltipDialogId, setTooltipDialogId] = useState<null | string>(null)
-  const [overlayVisible, setOverlayVisible] = useState(false)
-
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const tooltipRef = useRef<HTMLDivElement>(null)
-
-  const deleteFolder = () => {
-    if (jazzProfile && folder) {
-      jazzDeleteFolder(jazzProfile, folder)
-      setExpandedFolder(null)
-    }
-  }
-
-  const deleteDialogFromFolder = (dialog: JazzDialog) => {
-    if (jazzProfile && folder) {
-      jazzRemoveDialogFromFolder(jazzProfile, folder, dialog)
-    }
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsEditTitle(true)
@@ -65,47 +41,15 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
     }
   }, [folderTitle])
 
-  const timerRef = useRef<number | null>(null)
-  const isLongPress = useRef(false)
-
-  const startPress = (dialogId: string | null) => {
-    isLongPress.current = false
-    timerRef.current = window.setTimeout(() => {
-      setTooltipDialogId(dialogId)
-      setOverlayVisible(true)
-      isLongPress.current = true
-    }, 200)
-  }
-
-  const endPress = (username: string) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-
-      if (!isLongPress.current) {
-        window.open(`https://t.me/${username}`, "_blank")
-      }
+  const deleteFolder = () => {
+    if (jazzProfile && folder) {
+      jazzDeleteFolder(jazzProfile, folder)
+      setExpandedFolder(null)
     }
-  }
-
-  const navigateToDialogInfo = (dialogId: ID<JazzDialog>) => {
-    router.navigate({ to: `${ContactsRoute.to}/${dialogId}` })
   }
 
   return (
     <div className="no-select">
-      {overlayVisible && (
-        <div
-          onTouchStart={(e) => {
-            setTooltipDialogId(null)
-            setTimeout(() => {
-              setOverlayVisible(false)
-            }, 150)
-          }}
-          className={`h-screen w-screen absolute top-0 left-0 z-20 pointer-events-auto`}
-        ></div>
-      )}
-
       <motion.div className="px-4 py-1 rounded-b-xl">
         <Accordion
           expanded={expandedFolder?.id === folder?.id}
@@ -180,79 +124,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
               </InlineButtonsItem>
             </div>
             <div className="px-4 py-2 flex items-center justify-center flex-wrap">
-              {folder?.dialogs?.map(
-                (d) =>
-                  d && (
-                    <div key={d.id} className={`relative`}>
-                      <Tappable
-                        onTouchStart={() => {
-                          if (d?.id) {
-                            startPress(d.id)
-                          }
-                        }}
-                        onTouchEnd={() => {
-                          if (d?.username) {
-                            endPress(d.username)
-                          }
-                        }}
-                        className="flex flex-col items-center justify-center gap-1 rounded-xl p-2"
-                      >
-                        <img
-                          loading="lazy"
-                          src={`https://t.me/i/userpic/320/${d?.username}.svg`}
-                          className={`h-12 w-12 rounded-full ${tooltipDialogId === d.id && "animate-pulse"}`}
-                          decoding="async"
-                          alt=""
-                        />
-                        <span
-                          className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
-                        >
-                          {truncateWord(d?.name || "", 5)}
-                        </span>
-                      </Tappable>
-                      <AnimatePresence>
-                        {d?.id === tooltipDialogId && (
-                          <motion.div
-                            ref={tooltipRef}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.1 }}
-                            className={`absolute left-1 -bottom-full -translate-x-1/4 backdrop-blur-lg bg-secondary bg-opacity-70 border-primary border-[2px] rounded-xl shadow-lg z-30`}
-                          >
-                            <ToolTipItem
-                              Icon={
-                                <div className="text-link h-4 w-4">
-                                  <MoreIcon />
-                                </div>
-                              }
-                              title={"Info"}
-                              action={() => {
-                                navigateToDialogInfo(d.id)
-                                setTooltipDialogId(null)
-                                setOverlayVisible(false)
-                              }}
-                            />
-                            <div className="h-[2px] bg-divider"></div>
-                            <ToolTipItem
-                              Icon={
-                                <div className="text-link">
-                                  <Icon16Cancel />
-                                </div>
-                              }
-                              title={`Remove`}
-                              action={() => {
-                                deleteDialogFromFolder(d)
-                                setTooltipDialogId(null)
-                                setOverlayVisible(false)
-                              }}
-                            />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ),
-              )}
+              {folder?.dialogs?.map((d) => d && <Dialog dialog={d} />)}
             </div>
           </AccordionContent>
         </Accordion>
@@ -264,28 +136,5 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
         action={deleteFolder}
       />
     </div>
-  )
-}
-
-const Tooltip = ({}) => {}
-
-const ToolTipItem = ({
-  Icon,
-  title,
-  action,
-}: {
-  Icon: React.ReactElement
-  title: string
-  action: () => void
-}) => {
-  return (
-    <Tappable className=" p-2" onClick={action}>
-      <div className="flex w-full items-center">
-        {Icon}
-        <div className="ml-2 text-left font-medium whitespace-nowrap">
-          {title}
-        </div>
-      </div>
-    </Tappable>
   )
 }

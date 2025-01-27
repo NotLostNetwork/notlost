@@ -30,6 +30,7 @@ module.exports = {
         primary: "#f5f5f5",
         hint: "#708499",
         link: "#6ab3f3",
+        linkPurple: "#cd5afa",
         accent: "#6ab2f2",
         subtitle: "#708499",
       },
@@ -40,6 +41,7 @@ module.exports = {
         buttonBezeled: "rgba(41, 144, 255, .15)",
         divider: "hsla(0, 0%, 100%, .05)",
         skeleton: "hsla(0, 0%, 100%, .03)",
+        purple: "#b947e6",
       },
       borderColor: {
         primary: "hsla(0, 0%, 100%, .05)",

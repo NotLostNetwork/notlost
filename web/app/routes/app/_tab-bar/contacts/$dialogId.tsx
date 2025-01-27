@@ -1,22 +1,15 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import WebApp from "@twa-dev/sdk"
-import { Route as ContactsRoute } from "@/routes/app/_tab-bar/contacts/index"
+import { Route as ContactsRoute } from "~/routes/app/_tab-bar/contacts/index"
 import { useCoState } from "~/lib/jazz/jazz-provider"
 import { JazzDialog } from "~/lib/jazz/schema"
 import { ID } from "jazz-tools"
 import { AnimatePresence, motion } from "framer-motion"
 import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { useLaunchParams } from "@telegram-apps/sdk-react"
-import {
-  List,
-  Section,
-  Cell,
-  ButtonCell,
-  Input,
-} from "@telegram-apps/telegram-ui"
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react"
-import { Icon28AddCircle } from "@telegram-apps/telegram-ui/dist/icons/28/add_circle"
 import TagIcon from "@/assets/icons/tag.svg?react"
+import { InlineButtonsItem } from "@telegram-apps/telegram-ui/dist/components/Blocks/InlineButtons/components/InlineButtonsItem/InlineButtonsItem"
 
 function RouteComponent() {
   const { dialogId } = Route.useParams()
@@ -65,14 +58,17 @@ function RouteComponent() {
               />
               <div className="pt-2 text-xl">{jazzDialog?.name}</div>
               <span className={`text-link`}>@{jazzDialog?.username}</span>
-              <div className="w-full mt-4">
-                <div className="p-2 ml-4 uppercase text-hint">Tags</div>
-                <Input
-                  className="text-white bg-secondary w-full flex-1"
-                  style={{ color: "white", width: "100% !important" }}
-                  type="text"
-                  placeholder="Search"
-                />
+              <div className="flex gap-4 mt-4 w-full justify-center items-center">
+                <InlineButtonsItem mode="plain" text="Add tag">
+                  <div className="h-5 w-5">
+                    <TagIcon />
+                  </div>
+                </InlineButtonsItem>
+                <InlineButtonsItem mode="plain" text="Add note">
+                  <div className="h-5 w-5">
+                    <PencilIcon />
+                  </div>
+                </InlineButtonsItem>
               </div>
             </div>
           </div>

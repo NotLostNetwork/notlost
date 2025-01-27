@@ -4,6 +4,7 @@ import BottomModal from "~/ui/modals/bottom-modal"
 import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
 import { useKeyboardState } from "~/lib/utils/funcs/use-keyboard-visible"
+import { Avatar } from "@telegram-apps/telegram-ui"
 
 interface ManageDialogsModal {
   isOpen: boolean
@@ -28,7 +29,7 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
   const dialogRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const newFolderRef = useRef<HTMLDivElement | null>(null)
 
-  const { setDragState, draggableItem } = useDragStore()
+  const { setDragState } = useDragStore()
 
   const handleTouchStart = (
     e: React.TouchEvent,
@@ -127,12 +128,9 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
                   }}
                   className="flex flex-col justify-center items-center gap-1 touch-none relative"
                 >
-                  <img
-                    loading="lazy"
+                  <Avatar
                     src={`https://t.me/i/userpic/320/${d.username}.svg`}
-                    className="h-12 w-12 rounded-full "
-                    decoding="async"
-                    alt=""
+                    size={20}
                   />
                   <span
                     className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
@@ -159,12 +157,9 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
                   }}
                   className="flex flex-col justify-center items-center gap-1 touch-none relative"
                 >
-                  <img
-                    loading="lazy"
+                  <Avatar
                     src={`https://t.me/i/userpic/320/${d.username}.svg`}
-                    className="h-12 w-12 rounded-full "
-                    decoding="async"
-                    alt=""
+                    size={48}
                   />
                   <span
                     className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
