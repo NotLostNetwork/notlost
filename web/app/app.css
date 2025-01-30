@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background: var(--tg-theme-bg-color, white);
+  background: #1c1c1d;
   height: 100%;
   -webkit-overflow-scrolling: auto !important;
 }

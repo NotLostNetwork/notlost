@@ -11,6 +11,7 @@ import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
 import { Route as ContactsRoute } from "~/routes/app/_tab-bar/dialogs"
 import { Route as TryRoute } from "~/routes/app/_tab-bar/map"
 import tgWallpaper from "~/assets/tg-wallpaper-paris.svg"
+import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
 
 export default function TabBar() {
   return (
@@ -88,9 +89,10 @@ function LayoutComponent() {
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto text-white">
         <div
-          className="h-full w-full -z-10 absolute bg-link bg-opacity-5"
+          className="h-full w-full -z-10 absolute"
           style={{
             mask: `url(${tgWallpaper}) center / contain`,
+            backgroundColor: `${hexToRgba(getCssVariableValue("--tg-theme-link-color"), 0.05)}`,
           }}
         ></div>
         <Outlet />

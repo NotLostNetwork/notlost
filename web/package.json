@@ -25,6 +25,7 @@
     "@twa-dev/sdk": "^8.0.1",
     "@twallpaper/react": "^2.1.2",
     "@vis.gl/react-maplibre": "^1.0.0-alpha.4",
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
     "axios": "^1.7.9",
     "eruda": "^3.4.1",
     "framer-motion": "^11.18.2",

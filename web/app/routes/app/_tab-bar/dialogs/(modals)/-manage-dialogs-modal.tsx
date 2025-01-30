@@ -5,6 +5,8 @@ import FolderIcon from "@/assets/icons/folder.svg?react"
 import { useDragStore } from "~/lib/zustand-store/drag-store"
 import { useKeyboardState } from "~/lib/utils/funcs/use-keyboard-visible"
 import { Avatar } from "@telegram-apps/telegram-ui"
+import { getCssVariableValue } from "~/lib/utils/funcs/get-css-variable-value"
+import { hexToRgba } from "~/lib/utils/funcs/hex-to-rgba"
 
 interface ManageDialogsModal {
   isOpen: boolean
@@ -101,7 +103,12 @@ export const ManageDialogsModal: React.FC<ManageDialogsModal> = ({
   return (
     <BottomModal title="Manage dialogs" isOpen={isOpen} onClose={close}>
       <div className="flex items-center text-link justify-center mb-6">
-        <div className="absolute bg-primary px-2 py-1 rounded-2xl -z-10 h-10 w-[180px] bg-opacity-30"></div>
+        <div
+          className="absolute px-2 py-1 rounded-2xl -z-10 h-10 w-[180px]"
+          style={{
+            backgroundColor: `${hexToRgba(getCssVariableValue("--tg-theme-bg-color"), 0.3)}`,
+          }}
+        ></div>
         <div
           ref={newFolderRef}
           onTouchStart={(e) => handleTouchStart(e, "folder")}
