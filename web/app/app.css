@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background: #1c1c1d;
+  background: var(--tg-theme-secondary-bg-color, #0f0f0f);
   height: 100%;
   -webkit-overflow-scrolling: auto !important;
 }
@@ -71,10 +71,6 @@ iframe {
 
 .tgui-9b2ad13855aef059 {
   min-height: 0 !important;
-}
-
-.tgui-7707c5d942b7b9af .tgui-0f5050defacbf813 {
-  background: var(--tg-theme-secondary-bg-color) !important;
 }
 
 /* Make small button full rounded */

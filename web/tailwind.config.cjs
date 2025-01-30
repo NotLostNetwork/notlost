@@ -16,7 +16,7 @@ module.exports = {
       },
       backgroundColor: {
         primary: "#1C1C1D",
-        secondary: "#060606",
+        secondary: "var(--tg-theme-secondary-bg-color, #212121)",
         button: "var(--tg-theme-button-color)",
         buttonBezeled: "var(--tgui--secondary_fill)",
         divider: "var(--tgui--divider)",
