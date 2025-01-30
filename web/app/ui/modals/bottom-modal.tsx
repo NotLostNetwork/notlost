@@ -18,7 +18,7 @@ const BottomModal = ({ isOpen, onClose, title, children }: ModalProps) => {
       }`}
     >
       <div
-        className={`bg-secondary pointer-events-auto p-6 rounded-t-2xl shadow-lg transform transition-transform ease-in-out duration-300 absolute bottom-0 w-full ${
+        className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transform transition-transform ease-in-out duration-300 absolute bottom-0 w-full ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         onClick={(e) => e.stopPropagation()}

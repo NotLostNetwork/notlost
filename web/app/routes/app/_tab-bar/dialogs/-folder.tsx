@@ -61,7 +61,7 @@ export const Folder = ({ folder }: { folder: JazzFolder | null }) => {
             }
           }}
         >
-          <AccordionSummary className="rounded-xl bg-secondary">
+          <AccordionSummary className="rounded-xl bg-primary">
             <div className="flex gap-2 items-center">
               <div className="h-6 w-6 text-link">
                 <FolderIcon />

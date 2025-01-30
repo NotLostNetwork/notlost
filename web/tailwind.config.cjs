@@ -15,7 +15,7 @@ module.exports = {
         subtitle: "var(--tg-theme-subtitle-text-color)",
       },
       backgroundColor: {
-        primary: "#1C1C1D",
+        primary: "var(--tgui--bg_color, #212121)",
         secondary: "var(--tg-theme-secondary-bg-color, #212121)",
         button: "var(--tg-theme-button-color)",
         buttonBezeled: "var(--tgui--secondary_fill)",
