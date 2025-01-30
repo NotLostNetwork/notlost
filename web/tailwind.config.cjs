@@ -10,8 +10,8 @@ module.exports = {
         DEFAULT: "var(--tg-theme-text-color)",
         primary: "var(--tg-theme-text-color)",
         hint: "var(--tg-theme-hint-color)",
-        link: "var(--tg-theme-link-color)",
-        accent: "var(--tg-theme-accent-text-color)",
+        link: "var(--tgui--link_color)",
+        accent: "var(--tgui--accent_text_color)",
         subtitle: "var(--tg-theme-subtitle-text-color)",
       },
       backgroundColor: {
